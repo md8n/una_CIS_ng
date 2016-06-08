@@ -51,3 +51,4 @@ Temporary Items
 /src/una_CIS_ng/wwwroot/lib
 /src/una_CIS_ng/wwwroot/css/*.min.css
 /src/una_CIS_ng/wwwroot/js/*.min.js
+*.suo

@@ -45,3 +45,9 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+/src/una_CIS_ng/bin
+/src/una_CIS_ng/node_modules
+/src/una_CIS_ng/obj
+/src/una_CIS_ng/wwwroot/lib
+/src/una_CIS_ng/wwwroot/css/*.min.css
+/src/una_CIS_ng/wwwroot/js/*.min.js

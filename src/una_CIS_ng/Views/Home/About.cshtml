@@ -1,7 +1,50 @@
-﻿@{
-    ViewData["Title"] = "About";
+﻿@using una_CIS_ng.Core
+
+@{
+  ViewData["Title"] = "About";
 }
+
 <h2>@ViewData["Title"].</h2>
 <h3>@ViewData["Message"]</h3>
 
-<p>Use this area to provide additional information.</p>
+<div class="row">
+  <div class="col-md-4">
+    <h2><img src="/mstile-150x150.png" alt="@Constants.LasimraAbbr" width="150" height="150" />@Constants.LasimraAbbr</h2>
+    <h4>@Constants.LasimraFullTitle (@Constants.LasimraAbbr)</h4>
+    <p>@Constants.LasimraAbbr is a @Constants.LagosFullTitle regulatory body charged with managing the usage of public spaces (land, air and water) for infrastructure.</p>
+    <p>Its current focus is on telecommunications infrastructure, both towers and underground cabling.</p>
+    <ul>
+      <li>Safety</li>
+      <li>Standards</li>
+      <li>Regulation</li>
+      <li>Control</li>
+      <li>Maintenance</li>
+      <li>Management</li>
+    </ul>
+  </div>
+  <div class="col-md-4">
+    <h2>@Constants.UnaFullTitle</h2>
+    <h4>@Constants.UnaFullTitle (@Constants.UnaAbbr)</h4>
+    <p>@Constants.LagosAbbr needs significant telecommunications infrastructure to meet present needs and to grow.</p>
+    <p>Unfortunately the installation of a lot of this infrastructure has been haphazard and much of it is non-compliant with @Constants.LasimraAbbr regulations and policies.</p>
+    <p>The @Constants.UnaFullTitle (@Constants.UnaAbbr) is to provide authoritative information to @Constants.LasimraAbbr</p>
+    <ul>
+      <li>To map the existing infrastructure</li>
+      <li>To facilitate compliance orders for non-compliant infrastructure</li>
+      <li>To provide information for other systems and services, for example "Dial-before-you-dig"</li>
+      <li>To provide guidance to @Constants.LasimraAbbr for future infrastructure planning</li>
+      <li>To guide the development of new @Constants.LasimraAbbr policies and regulations and the phasing out of redundant ones</li>
+      <li>To provide information to other statutory bodies, organisations and individuals for their use</li>
+      <li>To facilitate thorough and fast tracked approvals processes for infrastructure works</li>
+      <li>To encourage best practice in approving, installing, maintaining and decommissioning infrastructure within @Constants.LagosAbbr</li>
+    </ul>
+  </div>
+  <div class="col-md-4">
+    <h2>@Constants.CisAbbr</h2>
+    <h4>@Constants.CisFullTitle (@Constants.CisAbbr)</h4>
+    <p>@Constants.CisAbbr has been mandated by @Constants.LasimraAbbr to conduct the @Constants.UnaFullTitle including the activities related to handling Right-of-Way permit compliance issues.</p>
+    <p>@Constants.CisAbbr has significant experience in performing physical audits of underground infrastructure, and has teamed up with other organisations experienced in systems, regulation and policy development to develop a complete solution for @Constants.UnaAbbr.</p>
+    <p>@Constants.CisAbbr' goal with @Constants.UnaAbbr is to provide @Constants.LasimraAbbr and @Constants.LagosAbbr businesses with the highest quality audit practice and best possible processes for infrastructure development.</p>
+    <p>@Constants.CisFullTitle is a wholly Nigerian owned entity with offices in Nigeria and New Zealand.</p>
+  </div>
+</div>

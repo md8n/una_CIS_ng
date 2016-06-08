@@ -1,35 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using una_CIS_ng.Core;
+using una_CIS_ng.Models;
 
 namespace una_CIS_ng.Controllers
 {
-    public class HomeController : Controller
+  public class HomeController : Controller
+  {
+    private readonly AppCodes _appCodes;
+
+    public HomeController(IOptions<AppCodes> optionsAccessor)
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View();
-        }
+      _appCodes = optionsAccessor.Value;
     }
+
+    public IActionResult Index()
+    {
+      return View();
+    }
+
+    public IActionResult About()
+    {
+      ViewData["Message"] = Constants.LasimraAbbr + ", " + Constants.UnaAbbr + ", " + Constants.CisAbbr;
+
+      return View();
+    }
+
+    public IActionResult Permit()
+    {
+      ViewData["Message"] = "Right-of-Way / Construction";
+
+      return View();
+    }
+
+    public IActionResult Map()
+    {
+      ViewData["Map:GoogleAPIKey"] = _appCodes.GoogleApiKey;
+      ViewData["Message"] = "Infrastructure Map";
+
+      return View();
+    }
+
+    public IActionResult Contact()
+    {
+      ViewData["Message"] = "Contacts for the " + Constants.UnaFullTitle;
+
+      return View();
+    }
+
+    public IActionResult Error()
+    {
+      return View();
+    }
+  }
 }

@@ -1,0 +1,34 @@
+﻿@{
+  ViewData["Title"] = "Map";
+  var mapKey = ViewData["Map:GoogleAPIKey"];
+  var mapInitUrl = "https://maps.googleapis.com/maps/api/js?key=" + @mapKey + "&libraries=drawing,geometry&callback=initMap";
+  //var mapInitUrl = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=" + @mapKey;
+
+  var mapUrl = ViewData["Map:Url"];
+}
+
+<div class="row">
+  <div class="col-md-4">
+    <h2>Infrastructure Route</h2>
+    <dl id="infRt">
+      <dt>Rate per m</dt>
+      <dd><input name="RatePerM" id="RatePerM" type="text" value="500" /></dd>
+      <dt>Rate per Construction Permit</dt>
+      <dd><input name="RatePerCP" id="RatePerCP" type="text" value="10000" /></dd>
+    </dl>
+  </div>
+  <div class="col-md-6">
+    <h2>Map</h2>
+    <p>Draw your infrastructure route on the map below.</p>
+    <p>To finish; double-click the last point on your route, or click on the hand symbol.</p>
+    <div id="map" style="height: 480px;"></div>
+  </div>
+</div>
+
+@section scripts
+{
+  <script src=@mapInitUrl async defer></script>
+  <script type="text/javascript" async defer>
+    function initMap() { Una.Map(google.maps, "map"); }
+  </script>
+}

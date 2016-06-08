@@ -8,7 +8,7 @@
     public const string LasimraFullTitle = LagosFullTitle + " Infrastructure and Maintenance Regulatory Agency";
     public const string LasimraAbbr = "LASIMRA";
 
-    public const string CisFullTitle = "Critical Infrastructure Services Ltd";
+    public const string CisFullTitle = "Critical Infrastructural Services Ltd";
     public const string CisAbbr = "CIS";
 
     public const string UnaFullTitle = "Utility Network Audit";

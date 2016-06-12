@@ -2,7 +2,7 @@
 
 // ReSharper disable StringConcatenationToTemplateString
 
-Una.Map = function(gm, mapElId) {
+Una.Map = function (gm, mapElId) {
   const mapEl = document.getElementById(mapElId);
 
   var map = null;
@@ -36,7 +36,7 @@ Una.Map = function(gm, mapElId) {
 
     gm.event.addListener(drawingManager,
       "polylinecomplete",
-      function(pl) {
+      function (pl) {
         const plP = pl.getPath();
         const dist = Math.floor(gm.geometry.spherical.computeLength(plP));
         const infRt = document.getElementById("infRt");
@@ -44,7 +44,7 @@ Una.Map = function(gm, mapElId) {
           infRt.insertAdjacentHTML("beforeend", "<dt>Route of your infrastructure</dt>");
           const rtDd = infRt.appendChild(document.createElement("dd"));
           var rtUl = rtDd.appendChild(document.createElement("ul"));
-          plP.forEach(function(el) {
+          plP.forEach(function (el) {
             //var addr = geocodeLatLng(el, infowindow);
             rtUl.insertAdjacentHTML("beforeend", "<li>" + el.toString() + "</li>");
           });
@@ -82,7 +82,7 @@ Una.Map = function(gm, mapElId) {
           infRt.insertAdjacentHTML("beforeend", "<dd>" + gdTotalStr + "</dd>");
         } else {
           var plList = "";
-          plP.forEach(function(el) {
+          plP.forEach(function (el) {
             //var addr = geocodeLatLng(el, infowindow);
             plList += el.toString() + " |||";
           });
@@ -91,41 +91,41 @@ Una.Map = function(gm, mapElId) {
         }
       });
 
-  //  //function geocodeLatLng(latlng, iw) {
-  //  //  var result = "";
-  //  //  geocoder.geocode({ 'location': latlng }, function (results, status) {
-  //  //    if (status === gm.GeocoderStatus.OK) {
-  //  //      if (results[1]) {
-  //  //        iw.setContent(results[1].formatted_address);
-  //  //        result = results[1].formatted_address;
-  //  //      } else {
-  //  //        result = "Could not determine address.";
-  //  //      }
-  //  //    } else {
-  //  //      result = ("Geocoder failed due to: " + status);
-  //  //    }
-  //  //  });
+    //  //function geocodeLatLng(latlng, iw) {
+    //  //  var result = "";
+    //  //  geocoder.geocode({ 'location': latlng }, function (results, status) {
+    //  //    if (status === gm.GeocoderStatus.OK) {
+    //  //      if (results[1]) {
+    //  //        iw.setContent(results[1].formatted_address);
+    //  //        result = results[1].formatted_address;
+    //  //      } else {
+    //  //        result = "Could not determine address.";
+    //  //      }
+    //  //    } else {
+    //  //      result = ("Geocoder failed due to: " + status);
+    //  //    }
+    //  //  });
 
-  //  //  return result;
-  //  //}
+    //  //  return result;
+    //  //}
 
-  //  ////gm.event.addListener(drawingManager, 'overlaycomplete', function (event) {
-  //  ////  if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
-  //  ////    var plP = event.overlay.getPath();
-  //  ////    alert('has plP');
-  //  ////  }
-  //  ////});
+    //  ////gm.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+    //  ////  if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
+    //  ////    var plP = event.overlay.getPath();
+    //  ////    alert('has plP');
+    //  ////  }
+    //  ////});
 
-  //  //function loadKmlLayer(src, map) {
-  //  //  var kmlLayer = new google.maps.KmlLayer(src, {
-  //  //    clickable: false,
-  //  //    suppressInfoWindows: false,
-  //  //    preserveViewport: false
-  //  //  });
-  //  //  kmlLayer.setMap(map);
-  //  //}
+    //  //function loadKmlLayer(src, map) {
+    //  //  var kmlLayer = new google.maps.KmlLayer(src, {
+    //  //    clickable: false,
+    //  //    suppressInfoWindows: false,
+    //  //    preserveViewport: false
+    //  //  });
+    //  //  kmlLayer.setMap(map);
+    //  //}
 
-  //  //loadKmlLayer("@mapUrl", map);
+    //  //loadKmlLayer("@mapUrl", map);
   }
 
 

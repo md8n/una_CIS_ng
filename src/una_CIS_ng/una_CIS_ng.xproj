@@ -6,7 +6,7 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>ff5bf319-c835-4f73-9809-4502327c535a</ProjectGuid>
+    <ProjectGuid>7afc40fa-c1f5-481d-9ce7-ca439ebcc27c</ProjectGuid>
     <RootNamespace>una_CIS_ng</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
@@ -14,7 +14,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-    <ApplicationInsightsResourceId>/subscriptions/20df4fc3-f1a2-434b-8cf3-f26d09b4798b/resourcegroups/cisng/providers/microsoft.insights/components/CISng</ApplicationInsightsResourceId>
+    <ApplicationInsightsResourceId>/subscriptions/20df4fc3-f1a2-434b-8cf3-f26d09b4798b/resourcegroups/Default-ApplicationInsights-CentralUS/providers/microsoft.insights/components/una_CIS_ng</ApplicationInsightsResourceId>
   </PropertyGroup>
   <ItemGroup>
     <DnxInvisibleContent Include="bower.json" />

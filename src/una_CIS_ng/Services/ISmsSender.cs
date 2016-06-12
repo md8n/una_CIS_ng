@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace una_CIS_ng.Services
 {
-    public interface ISmsSender
-    {
-        Task SendSmsAsync(string number, string message);
-    }
+  public interface ISmsSender
+  {
+    Task SendSmsAsync(string number, string message);
+  }
 }

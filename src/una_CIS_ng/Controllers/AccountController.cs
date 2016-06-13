@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using una_CIS_ng.Models;
-using una_CIS_ng.Models.AccountViewModels;
 using una_CIS_ng.Services;
+using una_CIS_ng.ViewModels.Account;
 
 namespace una_CIS_ng.Controllers
 {

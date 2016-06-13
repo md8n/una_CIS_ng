@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using una_CIS_ng.Models;
-using una_CIS_ng.Models.ManageViewModels;
 using una_CIS_ng.Services;
+using una_CIS_ng.ViewModels.Manage;
 
 namespace una_CIS_ng.Controllers
 {

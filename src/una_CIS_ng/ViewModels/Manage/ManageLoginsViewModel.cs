@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-namespace una_CIS_ng.Models.ManageViewModels
+namespace una_CIS_ng.ViewModels.Manage
 {
   public class ManageLoginsViewModel
   {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace una_CIS_ng.Models.AccountViewModels
+namespace una_CIS_ng.ViewModels.Account
 {
     public class LoginViewModel
     {

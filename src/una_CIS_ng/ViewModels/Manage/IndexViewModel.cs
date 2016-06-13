@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
-namespace una_CIS_ng.Models.ManageViewModels
+namespace una_CIS_ng.ViewModels.Manage
 {
   public class IndexViewModel
   {

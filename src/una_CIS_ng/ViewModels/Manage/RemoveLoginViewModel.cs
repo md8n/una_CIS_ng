@@ -1,4 +1,4 @@
-﻿namespace una_CIS_ng.Models.ManageViewModels
+﻿namespace una_CIS_ng.ViewModels.Manage
 {
   public class RemoveLoginViewModel
   {

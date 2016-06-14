@@ -16,6 +16,8 @@ namespace una_CIS_ng.Controllers
 
     public IActionResult Index()
     {
+      ViewData["AppCodes"] = _appCodes;
+
       return View();
     }
 

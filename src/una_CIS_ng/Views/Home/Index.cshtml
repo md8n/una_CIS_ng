@@ -1,7 +1,9 @@
 ﻿@using una_CIS_ng.Core
+@using una_CIS_ng.Models
 
 @{
   ViewData["Title"] = "Home Page";
+  var appCodes = (AppCodes)ViewData["AppCodes"];
 }
 
 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
@@ -72,7 +74,8 @@
     <h2>UNA</h2>
     <h3>Utility Network Audit</h3>
     <p>The Utility Network Audit is a review of installed infrastructure within Lagos State, ordered by LASIMRA, and performed by CIS under authority from LASIMRA.</p>
-    <p>The current focus of UNA reflects the focus of LASIMRA, that is, telecommunications infrastructure.  UNA will specifically be reviewing underground telecommunications infrastructure.</p>
+    <p>The current focus of UNA reflects the focus of LASIMRA, that is, telecommunications infrastructure. UNA will specifically be reviewing underground telecommunications infrastructure.</p>
+    <p>@appCodes.MongoDbName</p>
   </div>
   <div class="col-md-4">
     <h2>LASIMRA</h2>

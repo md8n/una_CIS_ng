@@ -7,7 +7,7 @@ namespace una_CIS_ng.Models
   {
     public ObjectId Id { get; set; }
 
-    [BsonElement("DummyStuff")]
+    [BsonElement("dummyStuff")]
     public string DummyStuff { get; set; }
   }
 }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using una_CIS_ng.Data;
 using una_CIS_ng.Models;
+using una_CIS_ng.Repository;
 using una_CIS_ng.Services;
 
 namespace una_CIS_ng
@@ -52,8 +53,8 @@ namespace una_CIS_ng
       services.Configure<AppCodes>(ac =>
       {
         ac.GoogleApiKey = Configuration["GoogleMapApiKey"];
-        ac.MongoClient = Configuration["Data:MongoClient"];
-        ac.MongoDbName = Configuration["Data:MongoDbName"];
+        ac.MongoConnection = Configuration.GetConnectionString("MongoConnection");
+        ac.MongoDbName = Configuration["MongoDbName"];
       });
 
       services.AddMvc();
@@ -61,6 +62,9 @@ namespace una_CIS_ng
       // Add application services.
       services.AddTransient<IEmailSender, AuthMessageSender>();
       services.AddTransient<ISmsSender, AuthMessageSender>();
+
+      // Add repository services.
+      services.AddSingleton<IGeoDataRepository, GeoDataRepository>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

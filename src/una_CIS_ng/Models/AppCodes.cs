@@ -4,7 +4,7 @@
   {
     public string GoogleApiKey { get; set; }
 
-    public string MongoClient { get; set; }
+    public string MongoConnection { get; set; }
     public string MongoDbName { get; set; }
   }
 }

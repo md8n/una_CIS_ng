@@ -9,16 +9,22 @@ namespace una_CIS_ng.Repository
   public interface IGeoDataRepository
   {
     /// <summary>
+    /// Return whether the DB is connected (does not return whether the GeoData collection is available)
+    /// </summary>
+    /// <returns></returns>
+    bool IsDbConnected();
+
+    /// <summary>
     /// Get all GeoData records
     /// </summary>
     /// <returns></returns>
-    Task<IAsyncCursor<GeoData>> GetAllGeoData();
+    Task<IAsyncCursor<GeoData>> GetAllGeoDataAsync();
 
     /// <summary>
     /// Get all GeoData records that intersect a bounding box
     /// </summary>
     /// <returns></returns>
-    Task<IAsyncCursor<GeoData>> GetBoundedGeoData<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox)
+    Task<IAsyncCursor<GeoData>> GetBoundedGeoDataAsync<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox)
       where TCoordinates : GeoJsonCoordinates;
 
     /// <summary>
@@ -26,20 +32,20 @@ namespace una_CIS_ng.Repository
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<GeoData> Get(ObjectId id);
+    Task<GeoData> GetAsync(ObjectId id);
 
     /// <summary>
     /// Add or Update a GeoData record
     /// </summary>
     /// <param name="geoData"></param>
     /// <returns>The Id of the new/updated GeoData record, or ObjectId.Empty if the add/update failed.</returns>
-    Task<ObjectId> AddOrUpdate(GeoData geoData);
+    Task<ObjectId> AddOrUpdateAsync(GeoData geoData);
 
     /// <summary>
     /// Delete the GeoData record
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<bool> Delete(ObjectId id);
+    Task<bool> DeleteAsync(ObjectId id);
   }
 }

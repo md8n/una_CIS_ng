@@ -2,7 +2,7 @@
 @using una_CIS_ng.Core
 
 <!DOCTYPE html>
-<html>
+<html ng-app="geoDataApp">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -70,11 +70,18 @@
   </div>
 
   <environment names="Development">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-resource.js"></script>
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/geoDataApp.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/geoDataFactory.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/geoDataController.js" asp-append-version="true"></script>
   </environment>
   <environment names="Staging,Production">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-resource.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
             asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
             asp-fallback-test="window.jQuery">
@@ -84,6 +91,9 @@
             asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
     </script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
+    <script src="~/js/geoDataApp.min.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/geoDataFactory.min.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/geoDataController.min.js" asp-append-version="true"></script>
   </environment>
 
   @RenderSection("scripts", required: false)

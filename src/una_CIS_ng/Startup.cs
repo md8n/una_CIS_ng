@@ -97,6 +97,7 @@ namespace una_CIS_ng
         routes.MapRoute(
                   name: "default",
                   template: "{controller=Home}/{action=Index}/{id?}");
+        routes.MapRoute("ApiRoute", "{controller}/{id?}");
       });
     }
   }

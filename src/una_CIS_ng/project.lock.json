@@ -3,6 +3,21 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.6.1": {
+      "AngularJS.Core/1.5.6": {
+        "type": "package"
+      },
+      "AngularJS.Resource/1.5.6": {
+        "type": "package",
+        "dependencies": {
+          "AngularJS.Core": "1.5.6"
+        }
+      },
+      "AngularJS.Route/1.5.6": {
+        "type": "package",
+        "dependencies": {
+          "AngularJS.Core": "1.5.6"
+        }
+      },
       "Ix-Async/1.2.5": {
         "type": "package",
         "frameworkAssemblies": [
@@ -2550,6 +2565,40 @@
     }
   },
   "libraries": {
+    "AngularJS.Core/1.5.6": {
+      "sha512": "3hS3NyPd9U71MU127d4ZKmF8gFcDJZuauJ6N7KYZnxGvcBZ7pf1r9luGIQpf7U7/v0bhjY4bLIRP73Pr0CQefA==",
+      "type": "package",
+      "files": [
+        "AngularJS.Core.1.5.6.nupkg.sha512",
+        "AngularJS.Core.nuspec",
+        "content/Scripts/angular-mocks.js",
+        "content/Scripts/angular.js",
+        "content/Scripts/angular.min.js",
+        "content/Scripts/angular.min.js.map"
+      ]
+    },
+    "AngularJS.Resource/1.5.6": {
+      "sha512": "z51fovZ5FAj97U/Cckh5uLCh5v8i2bvj7qR6b3dpBKwNPikAsRUVTUs9oCvEVQjUcP5+IoK2+DxsVTaaNT0kEw==",
+      "type": "package",
+      "files": [
+        "AngularJS.Resource.1.5.6.nupkg.sha512",
+        "AngularJS.Resource.nuspec",
+        "content/Scripts/angular-resource.js",
+        "content/Scripts/angular-resource.min.js",
+        "content/Scripts/angular-resource.min.js.map"
+      ]
+    },
+    "AngularJS.Route/1.5.6": {
+      "sha512": "UEQ2aVkHCxcUnjEXDQlxT6qwC/NMnIpQkqlUmx26ld9mSIPrZB65bYnk96sQe+oMSn/A6Dd83kZNW+3fDohCIQ==",
+      "type": "package",
+      "files": [
+        "AngularJS.Route.1.5.6.nupkg.sha512",
+        "AngularJS.Route.nuspec",
+        "content/Scripts/angular-route.js",
+        "content/Scripts/angular-route.min.js",
+        "content/Scripts/angular-route.min.js.map"
+      ]
+    },
     "Ix-Async/1.2.5": {
       "sha512": "8EXO8q7cpDUH9G2q+UOPOO/6uZ9aN7mx/4xjFIfkp+qLWVJiYuglkRhjY8Ggs2CucXzHR8GHnovJKB5yQoYaJg==",
       "type": "package",
@@ -6875,6 +6924,9 @@
   },
   "projectFileDependencyGroups": {
     "": [
+      "AngularJS.Core >= 1.5.6",
+      "AngularJS.Resource >= 1.5.6",
+      "AngularJS.Route >= 1.5.6",
       "Microsoft.ApplicationInsights.AspNetCore >= 1.0.0-rc2-final",
       "Microsoft.AspNetCore.Authentication.Cookies >= 1.0.0-rc2-final",
       "Microsoft.AspNetCore.Diagnostics >= 1.0.0-rc2-final",

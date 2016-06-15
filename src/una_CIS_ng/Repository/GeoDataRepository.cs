@@ -23,23 +23,23 @@ namespace una_CIS_ng.Repository
     #endregion
 
     #region Interface Members
-    public Task<IAsyncCursor<GeoData>> GetAllGeoData()
-    {
-      var allGeoDataTask = Collection()
-        .FindAsync(null);
 
-      return allGeoDataTask;
+    public bool IsDbConnected()
+    {
+      return _database != null;
     }
 
-    public Task<IAsyncCursor<GeoData>> GetBoundedGeoData<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox) where TCoordinates : GeoJsonCoordinates
+    public async Task<IAsyncCursor<GeoData>> GetAllGeoDataAsync()
     {
-      var allGeoDataTask = Collection()
-        .FindAsync(null);
-
-      return allGeoDataTask;
+      return await Collection().FindAsync(x => true);
     }
 
-    public async Task<GeoData> Get(ObjectId id)
+    public async Task<IAsyncCursor<GeoData>> GetBoundedGeoDataAsync<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox) where TCoordinates : GeoJsonCoordinates
+    {
+      return await Collection().FindAsync(x => true);
+    }
+
+    public async Task<GeoData> GetAsync(ObjectId id)
     {
       var geoDataTask = await Collection()
         .FindAsync(x => x.Id.Equals(id));
@@ -49,7 +49,7 @@ namespace una_CIS_ng.Repository
       return geoData;
     }
 
-    public async Task<ObjectId> AddOrUpdate(GeoData geoData)
+    public async Task<ObjectId> AddOrUpdateAsync(GeoData geoData)
     {
       var upOpt = new UpdateOptions {IsUpsert = true};
       var replaceResult = await Collection()
@@ -63,7 +63,7 @@ namespace una_CIS_ng.Repository
       return ObjectId.Empty;
     }
 
-    public async Task<bool> Delete(ObjectId id)
+    public async Task<bool> DeleteAsync(ObjectId id)
     {
       var deleteResult = await Collection()
         .DeleteOneAsync(x => x.Id.Equals(id));

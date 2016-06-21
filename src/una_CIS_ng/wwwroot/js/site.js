@@ -34,52 +34,82 @@ Una.Map = function (gm, mapElId) {
     });
     drawingManager.setMap(map);
 
+    function getRate(elId) {
+      const rateEl = document.getElementById(elId);
+      return (rateEl) ? rateEl.value : 0;
+    }
+
+    function appendPolylinePath(ul, polylinePath) {
+      var li = null;
+      if (ul) {
+        polylinePath.forEach(function (el) {
+          li = createElement("li", el.toString());
+          //var addr = geocodeLatLng(el, infowindow);
+          ul.appendChild(li);
+        });
+      }
+
+      return li;
+    }
+
+    function appendDlDd(dl, dd) {
+      var ddEl = null;
+      if (dl) {
+        ddEl = createElement("dd", dd);
+        dl.appendChild(ddEl);
+      }
+
+      return ddEl;
+    }
+
+    function appendDlPair(dl, dt, dd) {
+      var ddEl = null;
+      if (dl) {
+        const dtEl = createElement("dt", dt);
+        dl.appendChild(dtEl);
+        ddEl = appendDlDd(dl, dd);
+      }
+
+      return ddEl;
+    }
+
+    function createElement(tag, body) {
+      return document.createElement("<" + tag + ">" + body + "</" + tag + ">");
+    }
+
+    function formatNairaStr(sourceVal) {
+      return sourceVal.toLocaleString(lgCode,
+        { style: "currency", currency: curCode, minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
     gm.event.addListener(drawingManager,
       "polylinecomplete",
       function (pl) {
         const plP = pl.getPath();
         const dist = Math.floor(gm.geometry.spherical.computeLength(plP));
+        const distStr = dist.toLocaleString(lgCode, { maximumFractionDigits: 0 });
+        const distkm = (dist / 1000).toLocaleString(lgCode, { maximumFractionDigits: 3 });
+
+        const ratePerM = getRate("RatePerM");
+        const rowTotal = Math.floor(dist * ratePerM);
+
+        const ratePerCp = getRate("RatePerCP");
+        const cpTotal = Math.floor(1 * ratePerCp);
+
         const infRt = document.getElementById("infRt");
         if (infRt) {
-          infRt.insertAdjacentHTML("beforeend", "<dt>Route of your infrastructure</dt>");
-          const rtDd = infRt.appendChild(document.createElement("dd"));
-          var rtUl = rtDd.appendChild(document.createElement("ul"));
-          plP.forEach(function (el) {
-            //var addr = geocodeLatLng(el, infowindow);
-            rtUl.insertAdjacentHTML("beforeend", "<li>" + el.toString() + "</li>");
-          });
-          infRt.insertAdjacentHTML("beforeend", "<dt>Total Distance</dt>");
-          const distStr = dist.toLocaleString(lgCode, { maximumFractionDigits: 0 });
-          infRt.insertAdjacentHTML("beforeend", "<dd>" + distStr + " m</dd>");
+          const rtDd = appendDlPair(infRt, "Route of your infrastructure", "");
+          const rtUl = rtDd.appendChild(document.createElement("ul"));
+          appendPolylinePath(rtUl, plP);
+
+          appendDlPair(infRt, "Total Distance", distStr + " m");
           if (dist > 1000) {
-            const distkm = (dist / 1000).toLocaleString(lgCode, { maximumFractionDigits: 3 });
-            infRt.insertAdjacentHTML("beforeend", "<dd>" + distkm + " km</dd>");
+            appendDlDd(infRt, distkm + " km");
           }
 
-          const ratePerMEl = document.getElementById("RatePerM");
-          const ratePerM = ratePerMEl.value;
-          const rowTotal = Math.floor(dist * ratePerM);
-          const rowTotalStr = rowTotal.toLocaleString(lgCode,
-            { style: "currency", currency: curCode, minimumFractionDigits: 0, maximumFractionDigits: 0 });
-
-          const ratePerCpEl = document.getElementById("RatePerCP");
-          const ratePerCp = ratePerCpEl.value;
-          const cpTotal = Math.floor(1 * ratePerCp);
-          const cpTotalStr = cpTotal.toLocaleString(lgCode,
-            { style: "currency", currency: curCode, minimumFractionDigits: 0, maximumFractionDigits: 0 });
-
-          const gdTotalStr = (rowTotal + cpTotal).toLocaleString(lgCode,
-            { style: "currency", currency: curCode, minimumFractionDigits: 0, maximumFractionDigits: 0 });
-
-          infRt.insertAdjacentHTML("beforeend", "<dt>Right-of-Way fee</dt>");
-          //infRt.insertAdjacentHTML("beforeend", `<dd><span style="text-decoration: line-through; text-align: right;">N</span> <span id="rowTotal">${rowTotal}</span></dd>`);
-          infRt.insertAdjacentHTML("beforeend", "<dd>" + rowTotalStr + "</dd>");
-
-          infRt.insertAdjacentHTML("beforeend", "<dt>Construction Permit fee</dt>");
-          infRt.insertAdjacentHTML("beforeend", "<dd>" + cpTotalStr + "</dd>");
-
-          infRt.insertAdjacentHTML("beforeend", "<dt>Total fee</dt>");
-          infRt.insertAdjacentHTML("beforeend", "<dd>" + gdTotalStr + "</dd>");
+          appendDlPair(infRt, "Right-of-Way fee", formatNairaStr(rowTotal));
+          appendDlPair(infRt, "Construction Permit fee", formatNairaStr(cpTotal));
+          appendDlPair(infRt, "Total fee", formatNairaStr(rowTotal + cpTotal));
         } else {
           var plList = "";
           plP.forEach(function (el) {

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
@@ -11,14 +12,16 @@ namespace una_CIS_ng.Repository
   public class GeoDataRepository : IGeoDataRepository
   {
     private readonly AppCodes _appCodes;
-    private readonly IMongoDatabase _database;
-    private const string CollectionName = "geoData";
+    private MongoClient _client;
+    private IMongoDatabase _database;
+    private const string CollectionName = "GeoData";
 
     #region Constructors
     public GeoDataRepository(IOptions<AppCodes> appCodes)
     {
       _appCodes = appCodes.Value;
-      _database = Connect();
+      // calling connect ensure that the _client and _database members are set
+      Connect();
     }
     #endregion
 
@@ -29,61 +32,70 @@ namespace una_CIS_ng.Repository
       return _database != null;
     }
 
-    public async Task<IAsyncCursor<GeoData>> GetAllGeoDataAsync()
+    public async Task<List<BsonDocument>> GetAllGeoDataAsync()
+    {
+      var gdColl = Collection();
+      var docList = await gdColl.Find(_ => true).ToListAsync();
+      return docList;
+    }
+
+    public async Task<IAsyncCursor<BsonDocument>> GetBoundedGeoDataAsync<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox) where TCoordinates : GeoJsonCoordinates
     {
       return await Collection().FindAsync(x => true);
     }
 
-    public async Task<IAsyncCursor<GeoData>> GetBoundedGeoDataAsync<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox) where TCoordinates : GeoJsonCoordinates
+    public async Task<BsonDocument> GetAsync(ObjectId id)
     {
-      return await Collection().FindAsync(x => true);
+      return new BsonDocument();
+      //var geoDataTask = await Collection()
+      //  .FindAsync(x => x.Id.Equals(id));
+      //var list = await geoDataTask.ToListAsync();
+      //var geoData = list.FirstOrDefault();
+
+      //return geoData;
     }
 
-    public async Task<GeoData> GetAsync(ObjectId id)
-    {
-      var geoDataTask = await Collection()
-        .FindAsync(x => x.Id.Equals(id));
-      var list = await geoDataTask.ToListAsync();
-      var geoData = list.FirstOrDefault();
-
-      return geoData;
-    }
-
-    public async Task<ObjectId> AddOrUpdateAsync(GeoData geoData)
+    public async Task<ObjectId> AddOrUpdateAsync(BsonDocument geoData)
     {
       var upOpt = new UpdateOptions {IsUpsert = true};
-      var replaceResult = await Collection()
-        .ReplaceOneAsync(x => x.Id.Equals(geoData.Id), geoData, upOpt);
-
-      if (replaceResult.IsAcknowledged)
-      {
-        return (ObjectId) replaceResult.UpsertedId;
-      }
-
       return ObjectId.Empty;
+      //var replaceResult = await Collection()
+      //  .ReplaceOneAsync(x => x.Id.Equals(geoData.Id), geoData, upOpt);
+
+      //if (replaceResult.IsAcknowledged)
+      //{
+      //  return (ObjectId) replaceResult.UpsertedId;
+      //}
+
+      //return ObjectId.Empty;
     }
 
     public async Task<bool> DeleteAsync(ObjectId id)
     {
-      var deleteResult = await Collection()
-        .DeleteOneAsync(x => x.Id.Equals(id));
+      return false;
+      //var deleteResult = await Collection()
+      //  .DeleteOneAsync(x => ((GeoData)x).Id.Equals(id));
 
-      return deleteResult.IsAcknowledged;
+      //return deleteResult.IsAcknowledged;
     }
     #endregion
 
-    private IMongoCollection<GeoData> Collection()
+    private IMongoCollection<BsonDocument> Collection()
     {
-      return _database
-        .GetCollection<GeoData>(CollectionName);
+      return Connect()
+        .GetCollection<BsonDocument>(CollectionName);
     }
 
     private IMongoDatabase Connect()
     {
-      var client = new MongoClient(_appCodes.MongoConnection);
-      var database = client.GetDatabase(_appCodes.MongoDbName);
+      if (_client == null)
+      {
+        var url = MongoUrl.Create(_appCodes.MongoConnection);
 
-      return database;
+        _client = new MongoClient(url);
+      }
+
+      return _database ?? (_database = _client.GetDatabase(_appCodes.MongoDbName));
     }
   }
 }

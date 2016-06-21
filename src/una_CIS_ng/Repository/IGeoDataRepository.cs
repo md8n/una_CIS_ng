@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GeoJsonObjectModel;
-using una_CIS_ng.Models;
 
 namespace una_CIS_ng.Repository
 {
@@ -18,13 +18,13 @@ namespace una_CIS_ng.Repository
     /// Get all GeoData records
     /// </summary>
     /// <returns></returns>
-    Task<IAsyncCursor<GeoData>> GetAllGeoDataAsync();
+    Task<List<BsonDocument>> GetAllGeoDataAsync();
 
     /// <summary>
     /// Get all GeoData records that intersect a bounding box
     /// </summary>
     /// <returns></returns>
-    Task<IAsyncCursor<GeoData>> GetBoundedGeoDataAsync<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox)
+    Task<IAsyncCursor<BsonDocument>> GetBoundedGeoDataAsync<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox)
       where TCoordinates : GeoJsonCoordinates;
 
     /// <summary>
@@ -32,14 +32,14 @@ namespace una_CIS_ng.Repository
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<GeoData> GetAsync(ObjectId id);
+    Task<BsonDocument> GetAsync(ObjectId id);
 
     /// <summary>
     /// Add or Update a GeoData record
     /// </summary>
     /// <param name="geoData"></param>
     /// <returns>The Id of the new/updated GeoData record, or ObjectId.Empty if the add/update failed.</returns>
-    Task<ObjectId> AddOrUpdateAsync(GeoData geoData);
+    Task<ObjectId> AddOrUpdateAsync(BsonDocument geoData);
 
     /// <summary>
     /// Delete the GeoData record

@@ -31,12 +31,11 @@ namespace una_CIS_ng.Controllers
     {
       var allGeoData = new List<GeoData>();
 
-      using (var cursor = await _geoDataRepository.GetAllGeoDataAsync())
+      var gdList = await _geoDataRepository.GetAllGeoDataAsync();
+      foreach (var gd in gdList)
       {
-        while (await cursor.MoveNextAsync())
-        {
-          allGeoData.AddRange(cursor.Current);
-        }
+        var something = gd;
+        //allGeoData.AddRange(gd..Current);
       }
 
       return new ObjectResult(allGeoData);
@@ -85,7 +84,7 @@ namespace una_CIS_ng.Controllers
         return BadRequest();
       }
 
-      var objId = await _geoDataRepository.AddOrUpdateAsync(geoData);
+      var objId = await _geoDataRepository.AddOrUpdateAsync(geoData.Feature.ToBsonDocument());
       if (objId == ObjectId.Empty)
       {
         return NoContent();

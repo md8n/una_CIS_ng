@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using MongoDB.Driver.GeoJsonObjectModel;
 using una_CIS_ng.Models;
 using una_CIS_ng.Repository;
 
@@ -34,7 +35,13 @@ namespace una_CIS_ng.Controllers
       var gdList = await _geoDataRepository.GetAllGeoDataAsync();
       foreach (var gd in gdList)
       {
-        var something = gd;
+        var something = gd.ToDictionary();
+        var geoFeature = something?["geoData"];
+        var geoData = geoFeature as GeoJsonFeature<GeoJson2DGeographicCoordinates>;
+        if (geoData != null)
+        {
+          var bbox = geoData.Geometry.BoundingBox;
+        }
         //allGeoData.AddRange(gd..Current);
       }
 

@@ -7,15 +7,22 @@
   var mapUrl = ViewData["Map:Url"];
 }
 
-<div class="row">
+<div class="row" ng-controller="geoDataController">
   <div class="col-md-4">
     <h2>Infrastructure Route</h2>
     <dl id="infRt">
       <dt>Rate per m</dt>
-      <dd><input name="RatePerM" id="RatePerM" type="text" value="500" /></dd>
+      <dd><input name="RatePerM" id="RatePerM" type="text" value="500"/></dd>
       <dt>Rate per Construction Permit</dt>
-      <dd><input name="RatePerCP" id="RatePerCP" type="text" value="10000" /></dd>
+      <dd><input name="RatePerCP" id="RatePerCP" type="text" value="10000"/></dd>
     </dl>
+    <dl>
+      <dt>GeoData is:</dt>
+      <dd>{{IsDbConnected ? "connected" : "not available"}}</dd>
+    </dl>
+    <ul>
+      <li ng-repeat="gd in geoData">{{gd.Id}}</li>
+    </ul>
   </div>
   <div class="col-md-6">
     <h2>Map</h2>

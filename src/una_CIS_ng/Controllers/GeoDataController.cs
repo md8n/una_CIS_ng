@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Driver.GeoJsonObjectModel;
+using una_CIS_ng.Core;
 using una_CIS_ng.Models;
 using una_CIS_ng.Repository;
 
@@ -31,14 +34,18 @@ namespace una_CIS_ng.Controllers
     public async Task<IActionResult> GetAll()
     {
       var gdList = await _geoDataRepository.GetAllGeoDataAsync();
+
       var allGeoData = (
         from gd in gdList
         select gd.AsBsonDocument into geoData
         where geoData != null
-        select BsonSerializer.Deserialize<GeoData>(geoData)
+        select BsonSerializer.Deserialize<GeoData>(geoData) into geoD
+        select new Dictionary<string, string> {{"Id", "\"" + geoD.Id + "\""}, {"Feature", geoD.Feature.ToJson<GeoJsonFeature<GeoJson2DGeographicCoordinates>>()}}
         ).ToList();
 
-      return new ObjectResult(allGeoData);
+      var geoDataJson = new JsonStringResult(allGeoData);
+
+      return geoDataJson;
     }
 
     // GET: api/GeoData/5

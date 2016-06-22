@@ -5,14 +5,13 @@
     .module("geoDataApp")
     .factory("geoDataService", ["$resource",
     function ($resource) {
-      alert("hi1");
-      return $resource("/api/geoData/", {},
+      return $resource("/api/GeoData/", {},
       {
-        All: { method: "GET", verb: "All", isArray: true },
-        APIData: { method: "GET", params: {}, isArray: false },
-        IsDbConnected: { method: "GET", verb: "IsDbConnected", isArray: false }
+        "All": { method: "GET", url: "/api/GeoData/All", isArray: true },
+        "APIData": { method: "GET", params: {}, isArray: false },
+        "IsDbConnected": { method: "GET", url: "/api/GeoData/IsDbConnected", isArray: false }
       });
-      alert("hi2");
+      alert("Failed to set up connection to server");
     }
   ]);
 })(angular);

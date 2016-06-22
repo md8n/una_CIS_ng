@@ -9,7 +9,7 @@
     $scope.title = "geoDataController";
     //$scope.apiData = geoDataService.APIData;
     //$scope.geoData = geoDataService.All;
-    $scope.IsDbConnected = geoDataService.IsDbConnected;
+    $scope.IsDbConnected = geoDataService.IsDbConnected();
 
     //activate();
 

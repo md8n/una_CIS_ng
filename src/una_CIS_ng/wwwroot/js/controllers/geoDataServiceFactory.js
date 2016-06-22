@@ -1,11 +1,14 @@
 ﻿(function (angular) {
   "use strict";
 
-  var geoDataService = angular.module("geoDataService", ["ngResource"]);
-  geoDataService.factory("geoData", ["$resource",
-    function($resource) {
+  angular
+    .module("geoDataApp")
+    .factory("geoDataService", ["$resource",
+    function ($resource) {
+      alert("hi1");
       return $resource("/api/geoData/", {},
       {
+        All: { method: "GET", verb: "All", isArray: true },
         APIData: { method: "GET", params: {}, isArray: false },
         IsDbConnected: { method: "GET", verb: "IsDbConnected", isArray: false }
       });

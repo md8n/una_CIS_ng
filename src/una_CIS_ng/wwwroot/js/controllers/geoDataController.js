@@ -2,18 +2,19 @@
   "use strict";
 
   angular
-      .module("geoDataApp")
-      .controller("geoDataController", geoDataController);
+    .module("geoDataApp") // defined in geoDataApp.js
+    .controller("geoDataController", geoDataController);
 
-  function geoDataController($scope, geoData) {
+  function geoDataController($scope, geoDataService) {
     $scope.title = "geoDataController";
-    $scope.geoData = geoData.APIData;
-    $scope.IsDbConnected = geoData.IsDbConnected;
+    //$scope.apiData = geoDataService.APIData;
+    //$scope.geoData = geoDataService.All;
+    $scope.IsDbConnected = geoDataService.IsDbConnected;
 
     //activate();
 
     //function activate() { }
   }
 
-  geoDataController.$inject = ["$scope", "geoData"];
+  geoDataController.$inject = ["$scope", "geoDataService"];
 })(angular);

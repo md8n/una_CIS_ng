@@ -4,10 +4,10 @@
     angular.module("geoDataApp", [
         // Angular modules 
         //"ngRoute",
-        "ngResource",
+        "ngResource"//,
 
         // Custom modules 
-        "geoDataService"
+        //"geoDataService"
 
         // 3rd Party Modules
         

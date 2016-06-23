@@ -37,6 +37,7 @@ namespace una_CIS_ng.Controllers
     {
       ViewData["Message"] = "Infrastructure Map";
       ViewData["GoogleAPIKey"] = _appCodes.GoogleApiKey;
+      ViewData["GoogleAPIBrowserKey"] = _appCodes.GoogleApiBrowserKey;
 
       return View();
     }

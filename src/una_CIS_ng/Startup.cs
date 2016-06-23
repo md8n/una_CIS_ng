@@ -53,6 +53,7 @@ namespace una_CIS_ng
       services.Configure<AppCodes>(ac =>
       {
         ac.GoogleApiKey = Configuration["GoogleMapApiKey"];
+        ac.GoogleApiBrowserKey = Configuration["GoogleMapReverseGeocodeBrowserKey"];
         ac.MongoConnection = Configuration.GetConnectionString("MongoConnection");
         ac.MongoDbName = Configuration["MongoDbName"];
       });

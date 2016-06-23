@@ -1,6 +1,7 @@
 ﻿@{
   ViewData["Title"] = "Map";
-  var mapKey = ViewData["GoogleAPIKey"];
+  var geoCodeKey = ViewData["GoogleAPIKey"];
+  var mapKey = ViewData["GoogleAPIBrowserKey"];
   var mapInitUrl = "https://maps.googleapis.com/maps/api/js?key=" + @mapKey + "&libraries=drawing,geometry&callback=initMap";
   //var mapInitUrl = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=" + @mapKey;
 
@@ -28,7 +29,7 @@
     <h2>Map</h2>
     <p>Draw your infrastructure route on the map below.</p>
     <p>To finish; double-click the last point on your route, or click on the hand symbol.</p>
-    <div id="map" style="height: 480px;"></div>
+    <div id="map" style="height: 480px;width: 100%"></div>
   </div>
 </div>
 

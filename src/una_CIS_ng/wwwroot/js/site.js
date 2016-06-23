@@ -44,7 +44,8 @@ Una.Map = function (gm, mapElId) {
       if (ul) {
         polylinePath.forEach(function (el) {
           li = createElement("li", el.toString());
-          //var addr = geocodeLatLng(el, infowindow);
+          var addr = geocodeLatLng(el);
+          //alert(addr);
           ul.appendChild(li);
         });
       }
@@ -74,7 +75,11 @@ Una.Map = function (gm, mapElId) {
     }
 
     function createElement(tag, body) {
-      return document.createElement("<" + tag + ">" + body + "</" + tag + ">");
+      const t = document.createElement(tag);
+      const b = document.createTextNode(body);
+      t.appendChild(b);
+
+      return t;
     }
 
     function formatNairaStr(sourceVal) {
@@ -113,7 +118,7 @@ Una.Map = function (gm, mapElId) {
         } else {
           var plList = "";
           plP.forEach(function (el) {
-            //var addr = geocodeLatLng(el, infowindow);
+            var addr = geocodeLatLng(el);
             plList += el.toString() + " |||";
           });
           plList += "distance:" + dist;
@@ -121,23 +126,25 @@ Una.Map = function (gm, mapElId) {
         }
       });
 
-    //  //function geocodeLatLng(latlng, iw) {
-    //  //  var result = "";
-    //  //  geocoder.geocode({ 'location': latlng }, function (results, status) {
-    //  //    if (status === gm.GeocoderStatus.OK) {
-    //  //      if (results[1]) {
-    //  //        iw.setContent(results[1].formatted_address);
-    //  //        result = results[1].formatted_address;
-    //  //      } else {
-    //  //        result = "Could not determine address.";
-    //  //      }
-    //  //    } else {
-    //  //      result = ("Geocoder failed due to: " + status);
-    //  //    }
-    //  //  });
+      function geocodeLatLng(latlng) {
+        var result = "";
+        geocoder.geocode({ 'location': latlng }, function (results, status) {
+          if (status === gm.GeocoderStatus.OK) {
+            if (results[1]) {
+              //iw.setContent(results[1].formatted_address);
+              result = results[1].formatted_address;
+            } else {
+              result = "Could not determine address.";
+            }
+          } else {
+            result = ("Geocoder failed due to: " + status);
+          }
+        });
 
-    //  //  return result;
-    //  //}
+        alert(result);
+
+        return result;
+      }
 
     //  ////gm.event.addListener(drawingManager, 'overlaycomplete', function (event) {
     //  ////  if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
@@ -162,8 +169,8 @@ Una.Map = function (gm, mapElId) {
     map: map,
     drawingManager: drawingManager,
     infoWindow: infowindow,
-    geocoder: geocoder//,
-    //geocodeLatLng: geocodeLatLng
+    geocoder: geocoder,
+    geocodeLatLng: geocodeLatLng
   };
 };
 

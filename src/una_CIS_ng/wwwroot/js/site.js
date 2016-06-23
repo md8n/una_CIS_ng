@@ -157,14 +157,13 @@ Una.Map = function (gm, mapElId) {
 
     //  //loadKmlLayer("@mapUrl", map);
   }
-
-
+  
   return {
     map: map,
     drawingManager: drawingManager,
     infoWindow: infowindow,
-    geocoder: geocoder,
-    geocodeLatLng: geocodeLatLng
+    geocoder: geocoder//,
+    //geocodeLatLng: geocodeLatLng
   };
 };
 

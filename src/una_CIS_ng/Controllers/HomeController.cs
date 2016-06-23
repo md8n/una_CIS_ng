@@ -35,8 +35,8 @@ namespace una_CIS_ng.Controllers
 
     public IActionResult Map()
     {
-      ViewData["Map:GoogleAPIKey"] = _appCodes.GoogleApiKey;
       ViewData["Message"] = "Infrastructure Map";
+      ViewData["GoogleAPIKey"] = _appCodes.GoogleApiKey;
 
       return View();
     }

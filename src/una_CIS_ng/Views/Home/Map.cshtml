@@ -1,6 +1,6 @@
 ﻿@{
   ViewData["Title"] = "Map";
-  var mapKey = ViewData["Map:GoogleAPIKey"];
+  var mapKey = ViewData["GoogleAPIKey"];
   var mapInitUrl = "https://maps.googleapis.com/maps/api/js?key=" + @mapKey + "&libraries=drawing,geometry&callback=initMap";
   //var mapInitUrl = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=" + @mapKey;
 
@@ -36,6 +36,9 @@
 {
   <script src="@mapInitUrl" async defer></script>
   <script type="text/javascript" async defer>
-    function initMap() { Una.Map(google.maps, "map"); }
+    function initMap() {
+      var unaMap = Una.Map(google.maps, "map");
+      Una.gMap = unaMap.map;
+    }
   </script>
 }

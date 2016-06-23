@@ -2,9 +2,7 @@
 /// <reference path="../gulpfile.js" />
 /// <reference path="js/controllers/geodatacontroller.js" />
 /// <reference path="js/controllers/geodataservicefactory.js" />
-/// <reference path="js/geodata.min.js" />
 /// <reference path="js/geodataapp.js" />
-/// <reference path="js/site - copy.js" />
 /// <reference path="js/site.js" />
 /// <reference path="lib/bootstrap/dist/js/bootstrap.js" />
 /// <reference path="lib/jquery/dist/jquery.js" />

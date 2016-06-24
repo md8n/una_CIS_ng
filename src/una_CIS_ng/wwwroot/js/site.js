@@ -39,14 +39,17 @@ Una.Map = function (gm, mapElId) {
       return (rateEl) ? rateEl.value : 0;
     }
 
-    function appendPolylinePath(ul, polylinePath) {
+    function appendPolylinePath(ul, polylinePath, ll) {
       var li = null;
       if (ul) {
         polylinePath.forEach(function (el) {
-          li = createElement("li", el.toString());
-          var addr = geocodeLatLng(el);
-          //alert(addr);
+          var lat = Number(Math.round(el.lat() + 'e7') + 'e-7');
+          var lon = Number(Math.round(el.lng() + 'e7') + 'e-7');
+          li = createElement("li", "Lat:" + lat.toFixed(7) + " Lon:" + lon.toFixed(7));
           ul.appendChild(li);
+
+          var latlng = { lat: parseFloat(lat.toFixed(7)), lng: parseFloat(lon.toFixed(7)) };
+          var addr = geocodeLatLng(latlng, ll);
         });
       }
 
@@ -105,7 +108,9 @@ Una.Map = function (gm, mapElId) {
         if (infRt) {
           const rtDd = appendDlPair(infRt, "Route of your infrastructure", "");
           const rtUl = rtDd.appendChild(document.createElement("ul"));
-          appendPolylinePath(rtUl, plP);
+          const rtLd = appendDlPair(infRt, "Location of your infrastructure", "");
+          const rtLl = rtLd.appendChild(document.createElement("ul"));
+          appendPolylinePath(rtUl, plP, rtLl);
 
           appendDlPair(infRt, "Total Distance", distStr + " m");
           if (dist > 1000) {
@@ -126,22 +131,30 @@ Una.Map = function (gm, mapElId) {
         }
       });
 
-      function geocodeLatLng(latlng) {
+      function geocodeLatLng(latlng, ll) {
         var result = "";
         geocoder.geocode({ 'location': latlng }, function (results, status) {
           if (status === gm.GeocoderStatus.OK) {
-            if (results[1]) {
-              //iw.setContent(results[1].formatted_address);
-              result = results[1].formatted_address;
+            if (results[0]) {
+              if (ll) {
+                var li = createElement("li", results[0].formatted_address);
+                ll.appendChild(li);
+              } else {
+                var infowindow = new gm.InfoWindow;
+                var marker = new gm.Marker({
+                  position: latlng,
+                  map: map
+                });
+                infowindow.setContent(results[0].formatted_address);
+                infowindow.open(map, marker);
+              }
             } else {
-              result = "Could not determine address.";
+              window.alert('No results found');
             }
           } else {
-            result = ("Geocoder failed due to: " + status);
+            window.alert('Geocoder failed due to: ' + status);
           }
         });
-
-        alert(result);
 
         return result;
       }

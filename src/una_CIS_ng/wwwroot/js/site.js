@@ -12,6 +12,13 @@ Una.Map = function (gm, mapElId) {
   const lgCode = "en-NG";
   const curCode = "NGN";
 
+  // These are the address types we're after. 
+  // If none of these are present then we'll fall back to just taking the first result
+  const preferredTypes = ["room", "floor", "subpremise", "premise", "street_address",
+    "bus_station", "train_station", "transit_station", "airport",
+    "establishment", "point_of_interest", "natural_feature", "park", "parking"
+  ];
+
   if (!!gm && !!gm.Map) {
     map = new gm.Map(mapEl,
     {
@@ -131,33 +138,66 @@ Una.Map = function (gm, mapElId) {
         }
       });
 
-      function geocodeLatLng(latlng, ll) {
-        var result = "";
-        geocoder.geocode({ 'location': latlng }, function (results, status) {
-          if (status === gm.GeocoderStatus.OK) {
-            if (results[0]) {
-              if (ll) {
-                var li = createElement("li", results[0].formatted_address);
-                ll.appendChild(li);
-              } else {
-                var infowindow = new gm.InfoWindow;
-                var marker = new gm.Marker({
-                  position: latlng,
-                  map: map
-                });
-                infowindow.setContent(results[0].formatted_address);
-                infowindow.open(map, marker);
-              }
+    function geocodeLatLng(latlng, ll) {
+      var result = "";
+      geocoder.geocode({ 'location': latlng }, function (results, status) {
+        if (status === gm.GeocoderStatus.OK) {
+          if (results.length > 0) {
+            if (ll) {
+              var li = createElement("li", getClosestAddress(results, latlng).formatted_address);
+              ll.appendChild(li);
             } else {
-              window.alert('No results found');
+              var marker = new gm.Marker({
+                position: latlng,
+                map: map
+              });
+              infowindow.setContent(results[0].formatted_address);
+              infowindow.open(map, marker);
             }
           } else {
-            window.alert('Geocoder failed due to: ' + status);
+            window.alert('No results found');
           }
-        });
+        } else {
+          window.alert('Geocoder failed due to: ' + status);
+        }
+      });
 
-        return result;
+      return result;
+    }
+
+    function getClosestAddress(addressResults, latlng) {
+      if (!addressResults || !Array.isArray(addressResults)) {
+        return null;
       }
+
+      const preferredResults = addressResults.filter(a => a.types.filter(t => preferredTypes.includes(t)).length > 0);
+      const prefCount = preferredResults.length;
+      if (prefCount === 0) {
+        // nothing in the preferred list - so return the first result we got
+        return addressResults[0];
+      }
+      if (prefCount === 1) {
+        return preferredResults[0];
+      } else {
+        // Get the closest
+        const preferredResult = preferredResults.sort(function (a, b) {
+          const aDist = distance(a.geometry.location, latlng);
+          const bDist = distance(b.geometry.location, latlng);
+          if (aDist > bDist) return 1;
+          if (aDist < bDist) return -1;
+          return 0;
+        })[0];
+
+        return preferredResult;
+      }
+    }
+
+    function buildAddress(addressComponents, formattedAddress) {
+      if (!addressComponents || !addressComponents.isArray) {
+        return formattedAddress;
+      }
+
+    }
 
     //  ////gm.event.addListener(drawingManager, 'overlaycomplete', function (event) {
     //  ////  if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
@@ -176,8 +216,19 @@ Una.Map = function (gm, mapElId) {
     //  //}
 
     //  //loadKmlLayer("@mapUrl", map);
+
+    // distance calc derived from www.geodatasource.com
+    function distance(latlon1, latlon2) {
+      const radlat1 = Math.PI * latlon1.lat / 180;
+      const radlat2 = Math.PI * latlon2.lat / 180;
+      const radtheta = Math.PI * (latlon1.lng - latlon2.lng) / 180;
+      const dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+
+      // note: not interested in conversion to miles, Kms, Nms, etc.
+      return Math.acos(dist) * (180 / Math.PI);
+    }
   }
-  
+
   return {
     map: map,
     drawingManager: drawingManager,

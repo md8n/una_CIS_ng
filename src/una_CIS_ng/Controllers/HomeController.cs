@@ -29,6 +29,8 @@ namespace una_CIS_ng.Controllers
     public IActionResult Permit()
     {
       ViewData["Message"] = "Right-of-Way / Construction";
+      ViewData["GoogleAPIKey"] = _appCodes.GoogleApiKey;
+      ViewData["GoogleAPIBrowserKey"] = _appCodes.GoogleApiBrowserKey;
 
       return View();
     }

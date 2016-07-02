@@ -19,6 +19,128 @@ Una.Map = function (gm, mapElId) {
     "establishment", "point_of_interest", "natural_feature", "park", "parking"
   ];
 
+  function getRate(elId) {
+    const rateEl = document.getElementById(elId);
+    return rateEl ? rateEl.value : 0;
+  }
+
+  function appendPolylinePath(ul, polylinePath, ll) {
+    var li = null;
+    if (ul) {
+      polylinePath.forEach(function (el) {
+        var lat = Number(Math.round(el.lat() + 'e7') + 'e-7');
+        var lon = Number(Math.round(el.lng() + 'e7') + 'e-7');
+        li = createElement("li", "Lat:" + lat.toFixed(7) + " Lon:" + lon.toFixed(7));
+        ul.appendChild(li);
+
+        var latlng = { lat: parseFloat(lat.toFixed(7)), lng: parseFloat(lon.toFixed(7)) };
+        var addr = geocodeLatLng(latlng, ll);
+      });
+    }
+
+    return li;
+  }
+
+  function appendDlDd(dl, dd) {
+    var ddEl = null;
+    if (dl) {
+      ddEl = createElement("dd", dd);
+      dl.appendChild(ddEl);
+    }
+
+    return ddEl;
+  }
+
+  function appendDlPair(dl, dt, dd) {
+    var ddEl = null;
+    if (dl) {
+      const dtEl = createElement("dt", dt);
+      dl.appendChild(dtEl);
+      ddEl = appendDlDd(dl, dd);
+    }
+
+    return ddEl;
+  }
+
+  function createElement(tag, body) {
+    const t = document.createElement(tag);
+    const b = document.createTextNode(body);
+    t.appendChild(b);
+
+    return t;
+  }
+
+  function formatNairaStr(sourceVal) {
+    return sourceVal.toLocaleString(lgCode,
+      { style: "currency", currency: curCode, minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+
+  function geocodeLatLng(latlng, ll) {
+    var result = "";
+    geocoder.geocode({ 'location': latlng }, function (results, status) {
+      if (status === gm.GeocoderStatus.OK) {
+        if (results.length > 0) {
+          if (ll) {
+            var li = createElement("li", getClosestAddress(results, latlng).formatted_address);
+            //var li = createElement("li", results[0].formatted_address);
+            ll.appendChild(li);
+          } else {
+            var marker = new gm.Marker({
+              position: latlng,
+              map: map
+            });
+            infowindow.setContent(results[0].formatted_address);
+            infowindow.open(map, marker);
+          }
+        } else {
+          window.alert('No results found');
+        }
+      } else {
+        window.alert('Geocoder failed due to: ' + status);
+      }
+    });
+
+    return result;
+  }
+
+  function getClosestAddress(addressResults, latlng) {
+    if (!addressResults || !Array.isArray(addressResults)) {
+      return null;
+    }
+
+    const preferredResults = addressResults.filter(function(a) { return a.types.filter(function(t){ return preferredTypes.includes(t); }).length > 0; });
+    const prefCount = preferredResults.length;
+    if (prefCount === 0) {
+      // nothing in the preferred list - so return the first result we got
+      return addressResults[0];
+    }
+    if (prefCount === 1) {
+      return preferredResults[0];
+    } else {
+      // Get the closest
+      const preferredResult = preferredResults.sort(function (a, b) {
+        const aDist = distance(a.geometry.location, latlng);
+        const bDist = distance(b.geometry.location, latlng);
+        if (aDist > bDist) return 1;
+        if (aDist < bDist) return -1;
+        return 0;
+      })[0];
+
+      return preferredResult;
+    }
+  }
+
+  // distance calc derived from www.geodatasource.com
+  function distance(latlon1, latlon2) {
+    const radlat1 = Math.PI * latlon1.lat / 180;
+    const radlat2 = Math.PI * latlon2.lat / 180;
+    const radtheta = Math.PI * (latlon1.lng - latlon2.lng) / 180;
+    const dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+
+    // note: not interested in conversion to miles, Kms, Nms, etc.
+    return Math.acos(dist) * (180 / Math.PI);
+  }
+
   if (!!gm && !!gm.Map) {
     map = new gm.Map(mapEl,
     {
@@ -40,62 +162,6 @@ Una.Map = function (gm, mapElId) {
       }
     });
     drawingManager.setMap(map);
-
-    function getRate(elId) {
-      const rateEl = document.getElementById(elId);
-      return (rateEl) ? rateEl.value : 0;
-    }
-
-    function appendPolylinePath(ul, polylinePath, ll) {
-      var li = null;
-      if (ul) {
-        polylinePath.forEach(function (el) {
-          var lat = Number(Math.round(el.lat() + 'e7') + 'e-7');
-          var lon = Number(Math.round(el.lng() + 'e7') + 'e-7');
-          li = createElement("li", "Lat:" + lat.toFixed(7) + " Lon:" + lon.toFixed(7));
-          ul.appendChild(li);
-
-          var latlng = { lat: parseFloat(lat.toFixed(7)), lng: parseFloat(lon.toFixed(7)) };
-          var addr = geocodeLatLng(latlng, ll);
-        });
-      }
-
-      return li;
-    }
-
-    function appendDlDd(dl, dd) {
-      var ddEl = null;
-      if (dl) {
-        ddEl = createElement("dd", dd);
-        dl.appendChild(ddEl);
-      }
-
-      return ddEl;
-    }
-
-    function appendDlPair(dl, dt, dd) {
-      var ddEl = null;
-      if (dl) {
-        const dtEl = createElement("dt", dt);
-        dl.appendChild(dtEl);
-        ddEl = appendDlDd(dl, dd);
-      }
-
-      return ddEl;
-    }
-
-    function createElement(tag, body) {
-      const t = document.createElement(tag);
-      const b = document.createTextNode(body);
-      t.appendChild(b);
-
-      return t;
-    }
-
-    function formatNairaStr(sourceVal) {
-      return sourceVal.toLocaleString(lgCode,
-        { style: "currency", currency: curCode, minimumFractionDigits: 0, maximumFractionDigits: 0 });
-    }
 
     gm.event.addListener(drawingManager,
       "polylinecomplete",
@@ -138,66 +204,12 @@ Una.Map = function (gm, mapElId) {
         }
       });
 
-    function geocodeLatLng(latlng, ll) {
-      var result = "";
-      geocoder.geocode({ 'location': latlng }, function (results, status) {
-        if (status === gm.GeocoderStatus.OK) {
-          if (results.length > 0) {
-            if (ll) {
-              var li = createElement("li", getClosestAddress(results, latlng).formatted_address);
-              ll.appendChild(li);
-            } else {
-              var marker = new gm.Marker({
-                position: latlng,
-                map: map
-              });
-              infowindow.setContent(results[0].formatted_address);
-              infowindow.open(map, marker);
-            }
-          } else {
-            window.alert('No results found');
-          }
-        } else {
-          window.alert('Geocoder failed due to: ' + status);
-        }
-      });
+    //function buildAddress(addressComponents, formattedAddress) {
+    //  if (!addressComponents || !addressComponents.isArray) {
+    //    return formattedAddress;
+    //  }
 
-      return result;
-    }
-
-    function getClosestAddress(addressResults, latlng) {
-      if (!addressResults || !Array.isArray(addressResults)) {
-        return null;
-      }
-
-      const preferredResults = addressResults.filter(a => a.types.filter(t => preferredTypes.includes(t)).length > 0);
-      const prefCount = preferredResults.length;
-      if (prefCount === 0) {
-        // nothing in the preferred list - so return the first result we got
-        return addressResults[0];
-      }
-      if (prefCount === 1) {
-        return preferredResults[0];
-      } else {
-        // Get the closest
-        const preferredResult = preferredResults.sort(function (a, b) {
-          const aDist = distance(a.geometry.location, latlng);
-          const bDist = distance(b.geometry.location, latlng);
-          if (aDist > bDist) return 1;
-          if (aDist < bDist) return -1;
-          return 0;
-        })[0];
-
-        return preferredResult;
-      }
-    }
-
-    function buildAddress(addressComponents, formattedAddress) {
-      if (!addressComponents || !addressComponents.isArray) {
-        return formattedAddress;
-      }
-
-    }
+    //}
 
     //  ////gm.event.addListener(drawingManager, 'overlaycomplete', function (event) {
     //  ////  if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
@@ -216,17 +228,6 @@ Una.Map = function (gm, mapElId) {
     //  //}
 
     //  //loadKmlLayer("@mapUrl", map);
-
-    // distance calc derived from www.geodatasource.com
-    function distance(latlon1, latlon2) {
-      const radlat1 = Math.PI * latlon1.lat / 180;
-      const radlat2 = Math.PI * latlon2.lat / 180;
-      const radtheta = Math.PI * (latlon1.lng - latlon2.lng) / 180;
-      const dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-
-      // note: not interested in conversion to miles, Kms, Nms, etc.
-      return Math.acos(dist) * (180 / Math.PI);
-    }
   }
 
   return {

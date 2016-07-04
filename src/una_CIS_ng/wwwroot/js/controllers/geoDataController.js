@@ -2,6 +2,7 @@
   "use strict";
 
   var handleGeoData = function (response) {
+    // Una.gMap is the google maps object returned by Map.cshtml and Permit.cshtml
     if (Una.gMap) {
       const geoFeatures = response.map(function (obj) { return obj.Feature; });
       geoFeatures.forEach(function (feature) { Una.gMap.data.addGeoJson(feature) });
@@ -10,7 +11,7 @@
   };
 
   angular
-    .module("geoDataApp") // defined in geoDataApp.js
+    .module("unaApp") // defined in unaApp.js
     .controller("geoDataController", geoDataController);
 
   function geoDataController($scope, geoDataService) {

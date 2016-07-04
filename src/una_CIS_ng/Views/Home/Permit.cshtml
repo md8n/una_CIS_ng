@@ -24,8 +24,7 @@
         <div class="panel-body">
           <p>To obtain a Right-of-Way Permit for your infrastructure several things are required:</p>
           <ul>
-            <li>The <a href="#RoWPermitParties">Permit Holder</a> must be identified.</li>
-            <li>Other people and organisations may need to be identified.</li>
+            <li>The <a href="#RoWPermitParties">Permit Holder</a> must be identified. Other people and organisations may need to be identified also.</li>
             <li>The <a href="#RoWLocation">route of your infrastructure</a> must be clearly identified.</li>
             <li>If you are putting in new infrastructure then a Construction Permit is also required.</li>
             <li>The relevant fees, charges and penalties must be paid.</li>
@@ -46,89 +45,90 @@
         </h4>
       </div>
       <div id="RoWPermitParties" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRoWPermitParties">
+        <pre>{{permit | json}}</pre>
         <div class="panel-body">
           <h3 id="RoWPermitHolder">Permit Holder<span title="Required">*</span></h3>
           <div class="form-group">
             <label class="col-sm-2">The Permit Holder is a:</label>
-            <div class="btn-group col-sm-6" data-toggle="buttons" role="group" aria-label="Permit Holding Entity Type">
-              <label class="btn btn-primary active">
-                <input type="radio" name="rowHoldingEntityType" id="rowHoldingEntityTypePerson" ng-model="permit.row.holder.type" value="Person" autocomplete="off" checked> Person
+            <div class="btn-group col-sm-6" role="group" aria-label="Permit Holding Entity Type">
+              <label class="btn btn-radio btn-primary" ng-class="{'active': permit['row'].party['holder'].type == 'Person'}">
+                <input type="radio" name="rowHoldingEntityType" ng-model="permit['row'].party['holder'].type" value="Person" autocomplete="off"> Person
               </label>
-              <label class="btn btn-primary">
-                <input type="radio" name="rowHoldingEntityType" id="rowHoldingEntityTypeOrganisation" ng-model="permit.row.holder.type" value="Organisation" autocomplete="off"> Organisation
+              <label class="btn btn-radio btn-primary" ng-class="{'active': permit['row'].party['holder'].type == 'Organisation'}">
+                <input type="radio" name="rowHoldingEntityType" ng-model="permit['row'].party['holder'].type" value="Organisation" autocomplete="off"> Organisation
               </label>
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingEntityName">Name</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingEntityName" name="rowHoldingEntityName" type="text" placeholder="Name" ng-model="permit.row.holder.name" maxlength="128" required="required">
+              <input class="form-control" id="rowHoldingEntityName" name="rowHoldingEntityName" type="text" placeholder="Name" ng-model="permit['row'].party['holder'].name" maxlength="128" required="required">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingEntityEmail">Email</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingEntityEmail" type="email" placeholder="Email" ng-model="permit.row.holder.email" maxlength="512" required="required">
+              <input class="form-control" id="rowHoldingEntityEmail" type="email" placeholder="Email" ng-model="permit['row'].party['holder'].email" maxlength="512" required="required">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingEntityMobile">Mobile Phone</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingEntityMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.row.holder.mobile" maxlength="36" required="required">
+              <input class="form-control" id="rowHoldingEntityMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit['row'].party['holder'].mobile" maxlength="36" required="required">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingEntityOfficePhone">Office Phone</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingEntityOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.row.holder.officePhone" maxlength="36">
+              <input class="form-control" id="rowHoldingEntityOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit['row'].party['holder'].officePhone" maxlength="36">
             </div>
           </div>
           <h4>Office Physical Address</h4>
-          <small>A Postal Box is NOT acceptable for the Office Physical Address fields.  If you do not have a physical address you may not be the Permit Holder.</small>
+          <small>A Postal Box is NOT acceptable for the Office Physical Address fields. If you do not have a physical address you may not be the Permit Holder.</small>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingEntityPhysicalAddressUnit" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingEntityPhysicalAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.row.holder.address.physical.unit" maxlength="50">
+              <input class="form-control" id="rowHoldingEntityPhysicalAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit['row'].party['holder'].address['physical'].unit" maxlength="50">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingEntityPhysicalAddressStreet" title="Number and Street / Lot Number">Number and Street</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingEntityPhysicalAddressStreet" type="text" placeholder="# Street" ng-model="permit.row.holder.address.physical.street" maxlength="128" required="required">
+              <input class="form-control" id="rowHoldingEntityPhysicalAddressStreet" type="text" placeholder="# Street" ng-model="permit['row'].party['holder'].address['physical'].street" maxlength="128" required="required">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingEntityPhysicalAddressSuburb" title="Village / Town / Suburb / City">Suburb</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingEntityPhysicalAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.row.holder.address.physical.suburb" maxlength="128" required="required">
+              <input class="form-control" id="rowHoldingEntityPhysicalAddressSuburb" type="text" placeholder="Suburb" ng-model="permit['row'].party['holder'].address['physical'].suburb" maxlength="128" required="required">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingEntityPhysicalAddressState" title="State / Province / Territory / Prefecture">State</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingEntityPhysicalAddressState" type="text" placeholder="State" ng-model="permit.row.holder.address.physical.state" maxlength="50" required="required">
+              <input class="form-control" id="rowHoldingEntityPhysicalAddressState" type="text" placeholder="State" ng-model="permit['row'].party['holder'].address['physical'].state" maxlength="50" required="required">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingEntityPhysicalAddressCode" title="Post Code / Zip Code">Post Code</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingEntityPhysicalAddressCode" type="text" placeholder="Post Code" ng-model="permit.row.holder.address.physical.postcode" maxlength="12">
+              <input class="form-control" id="rowHoldingEntityPhysicalAddressCode" type="text" placeholder="Post Code" ng-model="permit['row'].party['holder'].address['physical'].postcode" maxlength="12">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingEntityPhysicalAddressCountry">Country</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingEntityPhysicalAddressCountry" type="text" placeholder="Country" ng-model="permit.row.holder.address.physical.country" maxlength="128" required="required">
+              <input class="form-control" id="rowHoldingEntityPhysicalAddressCountry" type="text" placeholder="Country" ng-model="permit['row'].party['holder'].address['physical'].country" maxlength="128" required="required">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2">Use Office Physical Address for Postal Address?</label>
             <div class="btn-group col-sm-6" data-toggle="buttons" role="group" aria-label="Permit Holder Office Address Is Also Postal Address">
               <label class="btn btn-primary active">
-                <input type="radio" name="rowHoldingEntityPhysicalAddressPostal" id="rowHoldingEntityPhysicalAddressPostalTrue" ng-model="permit.row.holder.address.physical.isPostal" value="true" autocomplete="off" checked> Yes
+                <input type="radio" name="rowHoldingEntityPhysicalAddressPostal" id="rowHoldingEntityPhysicalAddressPostalTrue" ng-model="permit['row'].party['holder'].address['physical'].isPostal" value="true" autocomplete="off" checked> Yes
               </label>
               <label class="btn btn-primary">
-                <input type="radio" name="rowHoldingEntityPhysicalAddressPostal" id="rowHoldingEntityPhysicalAddressPostalFalse" ng-model="permit.row.holder.address.physical.isPostal" value="false" autocomplete="off"> No
+                <input type="radio" name="rowHoldingEntityPhysicalAddressPostal" id="rowHoldingEntityPhysicalAddressPostalFalse" ng-model="permit['row'].party['holder'].address['physical'].isPostal" value="false" autocomplete="off"> No
               </label>
             </div>
           </div>
@@ -140,29 +140,29 @@
           <div class="form-group">
             <div class="col-sm-3">
               <label for="rowHoldingContactNamePersonal" title="Personal names / First names">Personal name</label>
-              <input class="form-control" type="text" id="rowHoldingContactNamePersonal" placeholder="Personal name" ng-model="permit.row.holderContact.personalName" maxlength="128" required="required">
+              <input class="form-control" type="text" id="rowHoldingContactNamePersonal" placeholder="Personal name" ng-model="permit['row'].party['holderContact'].personalName" maxlength="128" required="required">
             </div>
             <div class="col-sm-3">
               <label for="rowHoldingContactNameSurname" title="Surname / Family name / Patronymic">Surname</label>
-              <input class="form-control" type="text" id="rowHoldingContactNameSurname" placeholder="Surname" ng-model="permit.row.holderContact.surname" maxlength="128" required="required">
+              <input class="form-control" type="text" id="rowHoldingContactNameSurname" placeholder="Surname" ng-model="permit['row'].party['holderContact'].surname" maxlength="128" required="required">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingContactEmail">Email</label>
             <div class="col-sm-6">
-              <input class="form-control col-sm-6" id="rowHoldingContactEmail" type="email" placeholder="Email" ng-model="permit.row.holderContact.email" maxlength="512" required="required">
+              <input class="form-control col-sm-6" id="rowHoldingContactEmail" type="email" placeholder="Email" ng-model="permit['row'].party['holderContact'].email" maxlength="512" required="required">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingContactMobile">Mobile Phone</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingContactMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.row.holderContact.mobile" maxlength="36" required="required">
+              <input class="form-control" id="rowHoldingContactMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit['row'].party['holderContact'].mobile" maxlength="36" required="required">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingContactOfficePhone">Office Phone</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingContactOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.row.holderContact.officePhone" maxlength="36">
+              <input class="form-control" id="rowHoldingContactOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit['row'].party['holderContact'].officePhone" maxlength="36">
             </div>
           </div>
           <h4>Contact Primary Mailing Address</h4>
@@ -170,47 +170,47 @@
             <label class="col-sm-2">Mailing Address Type</label>
             <div class="btn-group col-sm-6" data-toggle="buttons" role="group" aria-label="Permit Holder Contact Mailing Address">
               <label class="btn btn-primary active">
-                <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalTrue" ng-model="permit.row.holder.address.mailing.isPostal" value="true" autocomplete="off" checked> Postal
+                <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalTrue" ng-model="permit['row'].party['holderContact'].address['mailing'].isPostal" value="true" autocomplete="off" checked> Postal
               </label>
               <label class="btn btn-primary">
-                <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalFalse" ng-model="permit.row.holder.address.mailing.isPostal" value="false" autocomplete="off"> Street
+                <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalFalse" ng-model="permit['row'].party['holderContact'].address['mailing'].isPostal" value="false" autocomplete="off"> Street
               </label>
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingContactMailingAddressUnit" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingContactMailingAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.row.holderContact.address.mailing.unit" maxlength="50">
+              <input class="form-control" id="rowHoldingContactMailingAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit['row'].party['holderContact'].address['mailing'].unit" maxlength="50">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingContactMailingAddressStreet" title="Number and Street / Lot Number">Number and Street</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingContactMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.row.holderContact.address.mailing.street" maxlength="128" required="required">
+              <input class="form-control" id="rowHoldingContactMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.['row'].party['holderContact'].address['mailing'].street" maxlength="128" required="required">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingContactMailingAddressSuburb" title="Village / Town / Suburb / City">Suburb</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingContactMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.row.holderContact.address.mailing.suburb" maxlength="128" required="required">
+              <input class="form-control" id="rowHoldingContactMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit['row'].party['holderContact'].address['mailing'].suburb" maxlength="128" required="required">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingContactMailingAddressState" title="State / Province / Territory / Prefecture">State</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingContactMailingAddressState" type="text" placeholder="State" ng-model="permit.row.holderContact.address.mailing.state" maxlength="50" required="required">
+              <input class="form-control" id="rowHoldingContactMailingAddressState" type="text" placeholder="State" ng-model="permit['row'].party['holderContact'].address['mailing'].state" maxlength="50" required="required">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingContactMailingAddressCode" title="Post Code / Zip Code">Post Code</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingContactMailingAddressCode" type="text" placeholder="Post Code" ng-model="permit.row.holderContact.address.mailing.postcode" maxlength="12">
+              <input class="form-control" id="rowHoldingContactMailingAddressCode" type="text" placeholder="Post Code" ng-model="permit['row'].party['holderContact'].address['mailing'].postcode" maxlength="12">
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2" for="rowHoldingContactMailingAddressCountry">Country</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingContactMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.row.holderContact.address.mailing.country" maxlength="128" required="required">
+              <input class="form-control" id="rowHoldingContactMailingAddressCountry" type="text" placeholder="Country" ng-model="permit['row'].party['holderContact'].address['mailing'].country" maxlength="128" required="required">
             </div>
           </div>
           <p>Note that contact details will be checked as part of the approval process.</p>

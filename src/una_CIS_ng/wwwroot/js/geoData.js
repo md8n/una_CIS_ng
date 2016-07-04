@@ -94,24 +94,6 @@ Una.GeoData = function (gm, geoDataDbStatusId) {
         }
       });
 
-    //  //function geocodeLatLng(latlng, iw) {
-    //  //  var result = "";
-    //  //  geocoder.geocode({ 'location': latlng }, function (results, status) {
-    //  //    if (status === gm.GeocoderStatus.OK) {
-    //  //      if (results[1]) {
-    //  //        iw.setContent(results[1].formatted_address);
-    //  //        result = results[1].formatted_address;
-    //  //      } else {
-    //  //        result = "Could not determine address.";
-    //  //      }
-    //  //    } else {
-    //  //      result = ("Geocoder failed due to: " + status);
-    //  //    }
-    //  //  });
-
-    //  //  return result;
-    //  //}
-
     //  ////gm.event.addListener(drawingManager, 'overlaycomplete', function (event) {
     //  ////  if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
     //  ////    var plP = event.overlay.getPath();

@@ -9,15 +9,15 @@ using una_CIS_ng.Models;
 
 namespace una_CIS_ng.Repository
 {
-  public class GeoDataRepository : IGeoDataRepository
+  public class PermitRepository : IPermitRepository
   {
     private readonly AppCodes _appCodes;
     private MongoClient _client;
     private IMongoDatabase _database;
-    private const string CollectionName = "GeoData";
+    private const string CollectionName = "Permit";
 
     #region Constructors
-    public GeoDataRepository(IOptions<AppCodes> appCodes)
+    public PermitRepository(IOptions<AppCodes> appCodes)
     {
       _appCodes = appCodes.Value;
       // calling connect ensure that the _client and _database members are set
@@ -32,15 +32,14 @@ namespace una_CIS_ng.Repository
       return _database != null;
     }
 
-    public async Task<List<BsonDocument>> GetAllGeoDataAsync()
+    public async Task<List<BsonDocument>> GetAllPermitAsync()
     {
       var gdColl = Collection();
       var docList = await gdColl.Find(_ => true).ToListAsync();
-
       return docList;
     }
 
-    public async Task<IAsyncCursor<BsonDocument>> GetBoundedGeoDataAsync<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox) where TCoordinates : GeoJsonCoordinates
+    public async Task<IAsyncCursor<BsonDocument>> GetBoundedPermitAsync<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox) where TCoordinates : GeoJsonCoordinates
     {
       return await Collection().FindAsync(x => true);
     }
@@ -56,19 +55,18 @@ namespace una_CIS_ng.Repository
       //return geoData;
     }
 
-    public async Task<ObjectId> AddOrUpdateAsync(BsonDocument geoData)
+    public async Task<ObjectId> AddOrUpdateAsync(BsonDocument permit)
     {
       var upOpt = new UpdateOptions {IsUpsert = true};
-      return ObjectId.Empty;
       //var replaceResult = await Collection()
-      //  .ReplaceOneAsync(x => x.Id.Equals(geoData.Id), geoData, upOpt);
+      //  .ReplaceOneAsync(x => x.Id.Equals(permit.Id), permit, upOpt);
 
       //if (replaceResult.IsAcknowledged)
       //{
-      //  return (ObjectId) replaceResult.UpsertedId;
+      //  return (ObjectId)replaceResult.UpsertedId;
       //}
 
-      //return ObjectId.Empty;
+      return ObjectId.Empty;
     }
 
     public async Task<bool> DeleteAsync(ObjectId id)

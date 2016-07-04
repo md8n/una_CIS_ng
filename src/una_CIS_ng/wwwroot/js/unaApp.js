@@ -1,7 +1,7 @@
 ﻿(function (angular) {
     "use strict";
 
-    angular.module("geoDataApp", [
+    angular.module("unaApp", [
         // Angular modules 
         //"ngRoute",
         "ngResource"//,

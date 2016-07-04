@@ -35,6 +35,13 @@ namespace una_CIS_ng.Controllers
       return View();
     }
 
+    public IActionResult PermitInfo()
+    {
+      ViewData["Message"] = "General Permit Information";
+
+      return View();
+    }
+
     public IActionResult Map()
     {
       ViewData["Message"] = "Infrastructure Map";

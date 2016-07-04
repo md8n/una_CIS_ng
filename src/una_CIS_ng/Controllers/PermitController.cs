@@ -49,7 +49,7 @@ namespace una_CIS_ng.Controllers
     }
 
     // GET: api/Permit/5
-    [HttpGet("{id:length(24)}", Name = "Get")]
+    [HttpGet("{id:length(24)}", Name = "GetPermit")]
     public async Task<IActionResult> Get(ObjectId id)
     {
       if (!ModelState.IsValid || id == ObjectId.Empty)

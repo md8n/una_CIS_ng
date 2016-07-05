@@ -25,13 +25,19 @@
           "holder": {
             "id": null,
             "type": "holder",
-            "addresses": { "physical": { "id": null, "type": "physical", "isMailing": true }, "mailing": { "id": null, "type": "mailing" } }
+            "addresses": { "physical": { "id": null, "type": "physical", "isMailing": true } }
           }
         }
       }
     };
     //$scope.apiData = geoDataService.APIData;
     $scope.permit.All = permitService.All().$promise.then(handlePermits);
+    $scope.permit.Save = function () {
+      var permit = $scope.permit.permits.row;
+      alert('trying to save: ' + JSON.stringify(permit));
+      permitService.save(permit);
+    };
+
     $scope.permit.IsDbConnected = permitService.IsDbConnected();
 
     //activate();

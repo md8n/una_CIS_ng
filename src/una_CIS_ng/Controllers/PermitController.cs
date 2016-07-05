@@ -77,9 +77,9 @@ namespace una_CIS_ng.Controllers
     [HttpGet("New")]
     public IActionResult GetNew()
     {
-      var gData = new GeoData();
+      var permit = new Permit();
 
-      return Ok(gData);
+      return Ok(permit);
     }
 
     // POST: api/Permit

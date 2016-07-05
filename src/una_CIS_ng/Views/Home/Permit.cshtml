@@ -10,42 +10,42 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<form class="form-horizontal" role="form">
-  <div class="panel-group" id="AccordRow" role="tablist" aria-multiselectable="true">
-    <div class="panel panel-default">
-      <div class="panel-heading" role="tab" id="HeadingRoWInstructions">
-        <h4 class="panel-title">
-          <a role="button" data-toggle="collapse" data-parent="#AccordRow" href="#RoWInstructions" aria-expanded="true" aria-controls="collapseRoWInstructions">
-            Issuing a Right-of-Way Permit
-          </a>
-        </h4>
-      </div>
-      <div id="RoWInstructions" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRoWInstructions">
-        <div class="panel-body">
-          <p>To obtain a Right-of-Way Permit for your infrastructure several things are required:</p>
-          <ul>
-            <li>The <a href="#RoWPermitParties">Permit Holder</a> must be identified. Other people and organisations may need to be identified also.</li>
-            <li>The <a href="#RoWLocation">route of your infrastructure</a> must be clearly identified.</li>
-            <li>If you are putting in new infrastructure then a Construction Permit is also required.</li>
-            <li>The relevant fees, charges and penalties must be paid.</li>
-            <li><small>(Some other agencies may require you to obtain relevant permits / authorisation also - LASIMRA and its authorised agencies are not responsible for this)</small></li>
-          </ul>
-          <p>
-            Please see <a href="./PermitInfo">Permit Info</a> for more information about obtaining Permits and keeping them.
-          </p>
-        </div>
+<div class="panel-group" id="AccordRow" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="HeadingRoWInstructions">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#AccordRow" href="#RoWInstructions" aria-expanded="true" aria-controls="collapseRoWInstructions">
+          Issuing a Right-of-Way Permit
+        </a>
+      </h4>
+    </div>
+    <div id="RoWInstructions" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRoWInstructions">
+      <div class="panel-body">
+        <p>To obtain a Right-of-Way Permit for your infrastructure several things are required:</p>
+        <ul>
+          <li>The <a href="#RoWPermitParties">Permit Holder</a> must be identified. Other people and organisations may need to be identified also.</li>
+          <li>The <a href="#RoWLocation">route of your infrastructure</a> must be clearly identified.</li>
+          <li>If you are putting in new infrastructure then a Construction Permit is also required.</li>
+          <li>The relevant fees, charges and penalties must be paid.</li>
+          <li><small>(Some other agencies may require you to obtain relevant permits / authorisation also - LASIMRA and its authorised agencies are not responsible for this)</small></li>
+        </ul>
+        <p>
+          Please see <a href="./PermitInfo">Permit Info</a> for more information about obtaining Permits and keeping them.
+        </p>
       </div>
     </div>
-    <div class="panel panel-default" ng-controller="permitController">
-      <div class="panel-heading" role="tab" id="HeadingRoWPermitParties">
-        <h4 class="panel-title">
-          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#AccordRow" href="#RoWPermitParties" aria-expanded="true" aria-controls="collapseRoWPermitParties">
-            Parties to the Permit
-          </a>
-        </h4>
-      </div>
-      <div id="RoWPermitParties" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRoWPermitParties">
-        <pre>{{permit | json}}</pre>
+  </div>
+  <div class="panel panel-default" ng-controller="permitController">
+    <div class="panel-heading" role="tab" id="HeadingRoWPermitParties">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#AccordRow" href="#RoWPermitParties" aria-expanded="true" aria-controls="collapseRoWPermitParties">
+          Parties to the Permit
+        </a>
+      </h4>
+    </div>
+    <div id="RoWPermitParties" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRoWPermitParties">
+      @*<pre>{{permit | json}}</pre>*@
+      <form class="form-horizontal" role="form" ng-submit="permit.Save()" novalidate>
         <div class="panel-body">
           <h3 id="RoWPermitHolder">Permit Holder<span title="Required">*</span></h3>
           <div class="form-group">
@@ -73,17 +73,17 @@
           <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.holderType === 'Person'">
             <div class="col-sm-3">
               <label for="rowHoldingContactNamePersonal" title="Personal names / First names">Personal name</label>
-              <input class="form-control" type="text" id="rowHoldingEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holder.personalName" maxlength="128" required="required">
+              <input class="form-control" type="text" name="rowHoldingEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holder.personalName" maxlength="128" required="required">
             </div>
             <div class="col-sm-3">
               <label for="rowHoldingContactNameSurname" title="Surname / Family name / Patronymic">Surname</label>
-              <input class="form-control" type="text" id="rowHoldingEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holder.surname" maxlength="128" required="required">
+              <input class="form-control" type="text" name="rowHoldingEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holder.surname" maxlength="128" required="required">
             </div>
           </div>
           <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.holderType === 'Organisation'">
             <label class="col-sm-2" for="rowHoldingEntityName">Organisation Name</label>
             <div class="col-sm-6">
-              <input class="form-control" id="rowHoldingEntityName" name="rowHoldingEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.holder.name" maxlength="128" required="required">
+              <input class="form-control" id="rowHoldingEntityName" name="rowHoldingEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.holder.name" maxlength="128">
             </div>
           </div>
           <div ng-show="permit.permits.row.parties.holder.holderType">
@@ -296,204 +296,209 @@
             </div>
           </div>
           <p>Note that contact details will be checked as part of the approval process.</p>
+          <div class="form-group">
+            <div class="col-sm-6">
+              <input class="btn btn-primary" id="rowPartiesSave" type="submit" value="Save">
+            </div>
+          </div>
           <dl class="dl-horizontal">
             <dt>Permit is:</dt>
             <dd>{{permit.IsDbConnected ? "connected" : "not available"}}</dd>
           </dl>
         </div>
-      </div>
+      </form>
     </div>
-    <div class="panel panel-default" ng-controller="geoDataController">
-      <div class="panel-heading" role="tab" id="HeadingRoWLocation">
-        <h4 class="panel-title">
-          <a role="button" data-toggle="collapse" data-parent="#AccordRow" href="#RoWLocation" aria-expanded="true" aria-controls="collapseRoWLocation">
-            Location
-          </a>
-        </h4>
-      </div>
-      <div id="RoWLocation" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRoWLocation">
-        <div class="panel-body">
-          <p>Drawing on the map, show the route required for this Right-of-Way permit.</p>
-          <p>The GPS coordinates, and total distance in meters (rounded down to the nearest meter) will be calculated for you.</p>
-          <p>The route must have no breaks.</p>
-          <div class="row">
-            <div class="col-md-4">
-              <h2>Infrastructure Route</h2>
-              <dl id="infRt">
-                <dt>Rate per m</dt>
-                <dd><input name="RatePerM" id="RatePerM" type="text" value="500" readonly="readonly" /></dd>
-                <dt>Rate per Construction Permit</dt>
-                <dd><input name="RatePerCP" id="RatePerCP" type="text" value="10000" readonly="readonly" /></dd>
-              </dl>
-              <dl class="dl-horizontal">
-                <dt>GeoData is:</dt>
-                <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
-              </dl>
-              @*<ul>
-                  <li ng-repeat="gd in geoData.geoFeatures">{{gd.properties.id}}</li>
-                </ul>*@
-              @*<pre>{{geoData.geoFeatures | json}}</pre>*@
-            </div>
-            <div class="col-md-6">
-              <h2>Map</h2>
-              <p>Draw your infrastructure route on the map below.</p>
-              <p>To finish; double-click the last point on your route, or click on the hand symbol.</p>
-              <div id="map" style="height: 480px; width: 100%"></div>
-            </div>
+  </div>
+  <div class="panel panel-default" ng-controller="geoDataController">
+    <div class="panel-heading" role="tab" id="HeadingRoWLocation">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#AccordRow" href="#RoWLocation" aria-expanded="true" aria-controls="collapseRoWLocation">
+          Location
+        </a>
+      </h4>
+    </div>
+    <div id="RoWLocation" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRoWLocation">
+      <div class="panel-body">
+        <p>Drawing on the map, show the route required for this Right-of-Way permit.</p>
+        <p>The GPS coordinates, and total distance in meters (rounded down to the nearest meter) will be calculated for you.</p>
+        <p>The route must have no breaks.</p>
+        <div class="row">
+          <div class="col-md-4">
+            <h2>Infrastructure Route</h2>
+            <dl id="infRt">
+              <dt>Rate per m</dt>
+              <dd><input name="RatePerM" id="RatePerM" type="text" value="500" readonly="readonly" /></dd>
+              <dt>Rate per Construction Permit</dt>
+              <dd><input name="RatePerCP" id="RatePerCP" type="text" value="10000" readonly="readonly" /></dd>
+            </dl>
+            <dl class="dl-horizontal">
+              <dt>GeoData is:</dt>
+              <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
+            </dl>
+            @*<ul>
+                <li ng-repeat="gd in geoData.geoFeatures">{{gd.properties.id}}</li>
+              </ul>*@
+            @*<pre>{{geoData.geoFeatures | json}}</pre>*@
+          </div>
+          <div class="col-md-6">
+            <h2>Map</h2>
+            <p>Draw your infrastructure route on the map below.</p>
+            <p>To finish; double-click the last point on your route, or click on the hand symbol.</p>
+            <div id="map" style="height: 480px; width: 100%"></div>
           </div>
         </div>
       </div>
     </div>
-    <div class="panel panel-default">
-      <div class="panel-heading" role="tab" id="HeadingConstructionPermit">
-        <h4 class="panel-title">
-          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#ConstructionPermit" aria-expanded="false" aria-controls="collapseRowConstructionPermitHolder">
-            Construction Permit Holder
-          </a>
-        </h4>
-      </div>
-      <div id="ConstructionPermit" class="panel-collapse collapse" role="tabpanel" aria-labelledby="HeadingConstructionPermit">
-        <div class="panel-body">
-          <p>Enter details about how the Construction will be performed.</p>
-          <dl>
-            <dt title="Traffic Management may be Required">Will the construction be in or next to any roadway / driveway / vehicle access?</dt>
-            <dd>
-              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Vehicle Access">
-                <label class="btn btn-primary active">
-                  <input type="radio" name="cpVehicleAccess" id="cpVehicleAccessYes" autocomplete="off" checked> Yes
-                </label>
-                <label class="btn btn-primary">
-                  <input type="radio" name="cpVehicleAccess" id="cpVehicleAccessNo" autocomplete="off"> No
-                </label>
-              </div>
-            </dd>
-            <dt title="Traffic Management definitely Required">Will vehicle access be obstructed during construction?</dt>
-            <dd>
-              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Impacting to Vehicle Access">
-                <label class="btn btn-primary active">
-                  <input type="radio" name="cpVehicleAccessImpact" id="cpVehicleAccessImpactYes" autocomplete="off" checked> Yes
-                </label>
-                <label class="btn btn-primary">
-                  <input type="radio" name="cpVehicleAccessImpact" id="cpVehicleAccessImpactNo" autocomplete="off"> No
-                </label>
-              </div>
-            </dd>
-            <dt title="Pedestrian Management may be Required">Will the construction be in or next to any pathway / walkway / pedestrian access?</dt>
-            <dd>
-              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Pedestrian Access">
-                <label class="btn btn-primary active">
-                  <input type="radio" name="cpPedestrianAccess" id="cpPedestrianAccessYes" autocomplete="off" checked> Yes
-                </label>
-                <label class="btn btn-primary">
-                  <input type="radio" name="cpPedestrianAccess" id="cpPedestrianAccessNo" autocomplete="off"> No
-                </label>
-              </div>
-            </dd>
-            <dt title="Pedestrian Management definitely Required">Will pedestrian access be obstructed during construction?</dt>
-            <dd>
-              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Impacting to Pedestrian Access">
-                <label class="btn btn-primary active">
-                  <input type="radio" name="cpPedestrianAccessImpact" id="cpPedestrianAccessImpactYes" autocomplete="off" checked> Yes
-                </label>
-                <label class="btn btn-primary">
-                  <input type="radio" name="cpPedestrianAccessImpact" id="cpPedestrianAccessImpactNo" autocomplete="off"> No
-                </label>
-              </div>
-            </dd>
-            <dt title="Engineering Report may be Required">Will the construction be in, under or next to any structure?</dt>
-            <dd>
-              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Structure">
-                <label class="btn btn-primary active">
-                  <input type="radio" name="cpStructure" id="cpStructureYes" autocomplete="off" checked> Yes
-                </label>
-                <label class="btn btn-primary">
-                  <input type="radio" name="cpStructure" id="cpStructureNo" autocomplete="off"> No
-                </label>
-              </div>
-            </dd>
-            <dt title="Engineering Report definitely Required">Will any structure next to / over the construction be potentially affected in terms of its appearance / function / structural integrity?</dt>
-            <dd>
-              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Potentially Impacting Structure">
-                <label class="btn btn-primary active">
-                  <input type="radio" name="cpStructureImpact" id="cpStructureImpactYes" autocomplete="off" checked> Yes
-                </label>
-                <label class="btn btn-primary">
-                  <input type="radio" name="cpStructureImpact" id="cpStructureImpactNo" autocomplete="off"> No
-                </label>
-              </div>
-            </dd>
-          </dl>
-          <p>Enter details about the immediate area (50m) around Construction.</p>
-          <dl>
-            <dt title="Restricted Hours of Operation, Noise Levels, Use of Artificial Lighting, Number of Vehicles parked on street">Are there residential dwellings?</dt>
-            <dd>
-              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Residences">
-                <label class="btn btn-primary active">
-                  <input type="radio" name="cpAreaResidential" id="cpAreaResidentialYes" autocomplete="off" checked> Yes
-                </label>
-                <label class="btn btn-primary">
-                  <input type="radio" name="cpAreaResidential" id="cpAreaResidentialNo" autocomplete="off"> No
-                </label>
-              </div>
-            </dd>
-            <dt title="Restricted Hours of Operation, Noise Levels, Number of Vehicles parked on street">Are there office buildings?</dt>
-            <dd>
-              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Offices">
-                <label class="btn btn-primary active">
-                  <input type="radio" name="cpAreaOffice" id="cpAreaOfficeYes" autocomplete="off" checked> Yes
-                </label>
-                <label class="btn btn-primary">
-                  <input type="radio" name="cpAreaOffice" id="cpAreaOfficeNo" autocomplete="off"> No
-                </label>
-              </div>
-            </dd>
-            <dt title="Restricted Number of Vehicles parked on street">Are there industrial buildings and other structures?</dt>
-            <dd>
-              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Industry and Other Structures">
-                <label class="btn btn-primary active">
-                  <input type="radio" name="cpAreaIndustrial" id="cpAreaIndustrialYes" autocomplete="off" checked> Yes
-                </label>
-                <label class="btn btn-primary">
-                  <input type="radio" name="cpAreaIndustrial" id="cpAreaIndustrialNo" autocomplete="off"> No
-                </label>
-              </div>
-            </dd>
-            <dt title="Restricted Number of Vehicles parked on street, potential security restrictions">Are there Federal / State services (including emergency services, hospitals)?</dt>
-            <dd>
-              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Federal / State Services / Emergency Services">
-                <label class="btn btn-primary active">
-                  <input type="radio" name="cpAreaSpecial" id="cpAreaSpecialYes" autocomplete="off" checked> Yes
-                </label>
-                <label class="btn btn-primary">
-                  <input type="radio" name="cpAreaSpecial" id="cpAreaSpecialNo" autocomplete="off"> No
-                </label>
-              </div>
-            </dd>
-          </dl>
-          <p>Enter the required details for whom the Construction permit(s) will be issued to.</p>
-          <dl>
-            <dt>Organisation Name</dt>
-            <dd><input id="cpOrgName" type="text" /></dd>
-            <dt>Organisation Physical Address</dt>
-            <dd><input id="cpOrgAddressPhysical" type="text" /></dd>
-            <dt>Organisation Mailing Address</dt>
-            <dd><input id="cpOrgAddressMailing" type="text" /></dd>
-            <dt>Organisation Phone Number</dt>
-            <dd><input id="cpOrgPhone" type="text" /></dd>
-            <dt>Organisation Email Address</dt>
-            <dd><input id="cpOrgEmail" type="email" /></dd>
-            <dt>Organisation Contact Person</dt>
-            <dd><input id="cpOrgContact" type="text" /></dd>
-            <dt>Organisation Contact Phone</dt>
-            <dd><input id="cpOrgContactPhone" type="text" /></dd>
-          </dl>
-          <p>Construction permits have a short life span and are limited in area. The area will also be limited on the basis of how the construction will impact the use of public assets such as roads and footpaths.</p>
-          <p>We recommend you break up your route into several areas and request an appropriate number of Construction permits covering each area and spread across several time periods. Taking into account all of the factors that will affect your construction.</p>
-        </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="HeadingConstructionPermit">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#ConstructionPermit" aria-expanded="false" aria-controls="collapseRowConstructionPermitHolder">
+          Construction Permit Holder
+        </a>
+      </h4>
+    </div>
+    <div id="ConstructionPermit" class="panel-collapse collapse" role="tabpanel" aria-labelledby="HeadingConstructionPermit">
+      <div class="panel-body">
+        <p>Enter details about how the Construction will be performed.</p>
+        <dl>
+          <dt title="Traffic Management may be Required">Will the construction be in or next to any roadway / driveway / vehicle access?</dt>
+          <dd>
+            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Vehicle Access">
+              <label class="btn btn-primary active">
+                <input type="radio" name="cpVehicleAccess" id="cpVehicleAccessYes" autocomplete="off" checked> Yes
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="cpVehicleAccess" id="cpVehicleAccessNo" autocomplete="off"> No
+              </label>
+            </div>
+          </dd>
+          <dt title="Traffic Management definitely Required">Will vehicle access be obstructed during construction?</dt>
+          <dd>
+            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Impacting to Vehicle Access">
+              <label class="btn btn-primary active">
+                <input type="radio" name="cpVehicleAccessImpact" id="cpVehicleAccessImpactYes" autocomplete="off" checked> Yes
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="cpVehicleAccessImpact" id="cpVehicleAccessImpactNo" autocomplete="off"> No
+              </label>
+            </div>
+          </dd>
+          <dt title="Pedestrian Management may be Required">Will the construction be in or next to any pathway / walkway / pedestrian access?</dt>
+          <dd>
+            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Pedestrian Access">
+              <label class="btn btn-primary active">
+                <input type="radio" name="cpPedestrianAccess" id="cpPedestrianAccessYes" autocomplete="off" checked> Yes
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="cpPedestrianAccess" id="cpPedestrianAccessNo" autocomplete="off"> No
+              </label>
+            </div>
+          </dd>
+          <dt title="Pedestrian Management definitely Required">Will pedestrian access be obstructed during construction?</dt>
+          <dd>
+            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Impacting to Pedestrian Access">
+              <label class="btn btn-primary active">
+                <input type="radio" name="cpPedestrianAccessImpact" id="cpPedestrianAccessImpactYes" autocomplete="off" checked> Yes
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="cpPedestrianAccessImpact" id="cpPedestrianAccessImpactNo" autocomplete="off"> No
+              </label>
+            </div>
+          </dd>
+          <dt title="Engineering Report may be Required">Will the construction be in, under or next to any structure?</dt>
+          <dd>
+            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Structure">
+              <label class="btn btn-primary active">
+                <input type="radio" name="cpStructure" id="cpStructureYes" autocomplete="off" checked> Yes
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="cpStructure" id="cpStructureNo" autocomplete="off"> No
+              </label>
+            </div>
+          </dd>
+          <dt title="Engineering Report definitely Required">Will any structure next to / over the construction be potentially affected in terms of its appearance / function / structural integrity?</dt>
+          <dd>
+            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Potentially Impacting Structure">
+              <label class="btn btn-primary active">
+                <input type="radio" name="cpStructureImpact" id="cpStructureImpactYes" autocomplete="off" checked> Yes
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="cpStructureImpact" id="cpStructureImpactNo" autocomplete="off"> No
+              </label>
+            </div>
+          </dd>
+        </dl>
+        <p>Enter details about the immediate area (50m) around Construction.</p>
+        <dl>
+          <dt title="Restricted Hours of Operation, Noise Levels, Use of Artificial Lighting, Number of Vehicles parked on street">Are there residential dwellings?</dt>
+          <dd>
+            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Residences">
+              <label class="btn btn-primary active">
+                <input type="radio" name="cpAreaResidential" id="cpAreaResidentialYes" autocomplete="off" checked> Yes
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="cpAreaResidential" id="cpAreaResidentialNo" autocomplete="off"> No
+              </label>
+            </div>
+          </dd>
+          <dt title="Restricted Hours of Operation, Noise Levels, Number of Vehicles parked on street">Are there office buildings?</dt>
+          <dd>
+            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Offices">
+              <label class="btn btn-primary active">
+                <input type="radio" name="cpAreaOffice" id="cpAreaOfficeYes" autocomplete="off" checked> Yes
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="cpAreaOffice" id="cpAreaOfficeNo" autocomplete="off"> No
+              </label>
+            </div>
+          </dd>
+          <dt title="Restricted Number of Vehicles parked on street">Are there industrial buildings and other structures?</dt>
+          <dd>
+            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Industry and Other Structures">
+              <label class="btn btn-primary active">
+                <input type="radio" name="cpAreaIndustrial" id="cpAreaIndustrialYes" autocomplete="off" checked> Yes
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="cpAreaIndustrial" id="cpAreaIndustrialNo" autocomplete="off"> No
+              </label>
+            </div>
+          </dd>
+          <dt title="Restricted Number of Vehicles parked on street, potential security restrictions">Are there Federal / State services (including emergency services, hospitals)?</dt>
+          <dd>
+            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Federal / State Services / Emergency Services">
+              <label class="btn btn-primary active">
+                <input type="radio" name="cpAreaSpecial" id="cpAreaSpecialYes" autocomplete="off" checked> Yes
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="cpAreaSpecial" id="cpAreaSpecialNo" autocomplete="off"> No
+              </label>
+            </div>
+          </dd>
+        </dl>
+        <p>Enter the required details for whom the Construction permit(s) will be issued to.</p>
+        <dl>
+          <dt>Organisation Name</dt>
+          <dd><input id="cpOrgName" type="text" /></dd>
+          <dt>Organisation Physical Address</dt>
+          <dd><input id="cpOrgAddressPhysical" type="text" /></dd>
+          <dt>Organisation Mailing Address</dt>
+          <dd><input id="cpOrgAddressMailing" type="text" /></dd>
+          <dt>Organisation Phone Number</dt>
+          <dd><input id="cpOrgPhone" type="text" /></dd>
+          <dt>Organisation Email Address</dt>
+          <dd><input id="cpOrgEmail" type="email" /></dd>
+          <dt>Organisation Contact Person</dt>
+          <dd><input id="cpOrgContact" type="text" /></dd>
+          <dt>Organisation Contact Phone</dt>
+          <dd><input id="cpOrgContactPhone" type="text" /></dd>
+        </dl>
+        <p>Construction permits have a short life span and are limited in area. The area will also be limited on the basis of how the construction will impact the use of public assets such as roads and footpaths.</p>
+        <p>We recommend you break up your route into several areas and request an appropriate number of Construction permits covering each area and spread across several time periods. Taking into account all of the factors that will affect your construction.</p>
       </div>
     </div>
   </div>
-</form>
+</div>
 
 @section scripts
 {

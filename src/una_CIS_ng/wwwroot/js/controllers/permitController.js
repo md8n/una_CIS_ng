@@ -14,14 +14,37 @@
     .controller("permitController", permitController);
 
   function permitController($scope, permitService) {
-    $scope.title = "permitController";
+    $scope.permit = $scope.permit || {};
+    $scope.permit.title = "permitController";
+    $scope.permit.permits = {
+      "row": {
+        "id": null,
+        "type": "row",
+        "locations": [],
+        "parties": {
+          "holder": {
+            "id": null,
+            "type": "holder",
+            "addresses": { "physical": { "id": null, "type": "physical", "isMailing": true }, "mailing": { "id": null, "type": "mailing" } }
+          }
+        }
+      }
+    };
     //$scope.apiData = geoDataService.APIData;
-    $scope.permit = permitService.All().$promise.then(handlePermits);
-    $scope.IsDbConnected = permitService.IsDbConnected();
+    $scope.permit.All = permitService.All().$promise.then(handlePermits);
+    $scope.permit.IsDbConnected = permitService.IsDbConnected();
 
     //activate();
 
     //function activate() { }
+
+    $scope.permit.copyAddress = function(srcAddr, dstAddrType) {
+      var dstAddr = { "type": dstAddrType };
+      if (typeof srcAddr === "undefined" || srcAddr === null) {
+        return dstAddr;
+      };
+      return dstAddr;
+    };
   }
 
   permitController.$inject = ["$scope", "permitService"];

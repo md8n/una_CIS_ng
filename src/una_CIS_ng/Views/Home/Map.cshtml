@@ -13,17 +13,18 @@
     <h2>Infrastructure Route</h2>
     <dl id="infRt">
       <dt>Rate per m</dt>
-      <dd><input name="RatePerM" id="RatePerM" type="text" value="500"/></dd>
+      <dd><input name="RatePerM" id="RatePerM" type="text" value="500" readonly="readonly"/></dd>
       <dt>Rate per Construction Permit</dt>
-      <dd><input name="RatePerCP" id="RatePerCP" type="text" value="10000"/></dd>
+      <dd><input name="RatePerCP" id="RatePerCP" type="text" value="10000" readonly="readonly"/></dd>
     </dl>
-    <dl>
+    <dl class="dl-horizontal">
       <dt>GeoData is:</dt>
-      <dd>{{IsDbConnected ? "connected" : "not available"}}</dd>
+      <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
     </dl>
-    <ul>
-      <li ng-repeat="gd in geoData">{{gd.Id}}</li>
-    </ul>
+    @*<ul>
+      <li ng-repeat="gd in geoData.geoFeatures">{{gd.properties.id}}</li>
+    </ul>*@
+    @*<pre>{{geoData.geoFeatures | json}}</pre>*@
   </div>
   <div class="col-md-6">
     <h2>Map</h2>

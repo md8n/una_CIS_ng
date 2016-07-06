@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver.GeoJsonObjectModel;
+using Newtonsoft.Json.Linq;
 using una_CIS_ng.Core;
 using una_CIS_ng.Models;
 using una_CIS_ng.Repository;
@@ -40,7 +42,7 @@ namespace una_CIS_ng.Controllers
         select perm.AsBsonDocument into permit
         where permit != null
         select BsonSerializer.Deserialize<Permit>(permit) into prm
-        select new Dictionary<string, string> {{"Id", "\"" + prm.Id + "\""}, {"Permit", prm.Permi.ToJson()}}
+        select new Dictionary<string, string> { { "Id", "\"" + prm.id + "\"" }, { "Permit", prm.ToJson() } }
         ).ToList();
 
       var geoDataJson = new JsonStringResult(allPermits);
@@ -84,18 +86,54 @@ namespace una_CIS_ng.Controllers
 
     // POST: api/Permit
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody]Permit permit)
+    public async Task<IActionResult> Post([FromBody]object value)
     {
       if (!ModelState.IsValid)
       {
         return BadRequest();
       }
 
-      var objId = await _permitRepository.AddOrUpdateAsync(permit.Permi.ToBsonDocument());
-      if (objId == ObjectId.Empty)
+      var jPerm = value as JObject;
+      if (jPerm == null)
       {
-        return NoContent();
+        return BadRequest();
       }
+
+      var permit = new Permit();
+      foreach (var jPermKid in jPerm.Children())
+      {
+        var jProp = jPermKid as JProperty;
+        if (jProp != null)
+        {
+          var jValue = jProp.Value.ToString();
+          if (jProp.Value.Type == JTokenType.Array)
+          {
+
+          }
+
+          switch (jProp.Name)
+          {
+            case "id":
+              permit.id = !string.IsNullOrWhiteSpace(jValue) ? new ObjectId(jValue) : new ObjectId();
+              break;
+            case "type":
+              permit.type = jValue;
+              break;
+            case "locations":
+              break;
+            case "parties":
+              break;
+          }
+        }
+      }
+
+
+      var objId = new Guid();
+      //var objId = await _permitRepository.AddOrUpdateAsync(permit.Permi.ToBsonDocument());
+      //if (objId == ObjectId.Empty)
+      //{
+      //  return NoContent();
+      //}
 
       return Ok(objId);
     }

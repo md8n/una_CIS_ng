@@ -11,7 +11,7 @@
         "APIData": { method: "GET", params: {}, isArray: false },
         "IsDbConnected": { method: "GET", url: "/api/Permit/IsDbConnected", isArray: false }
       });
-      alert("Failed to set up connection to server");
+      //alert("Failed to set up connection to server");
     }
   ]);
 })(angular);

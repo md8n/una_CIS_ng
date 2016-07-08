@@ -1,4 +1,5 @@
 ﻿/// <binding Clean='clean' />
+/// <reference path="~/lib/jquery/dist/jquery.js" />
 "use strict";
 
 var gulp = require("gulp"),
@@ -31,6 +32,7 @@ gulp.task("clean", ["clean:js", "clean:css"]);
 gulp.task("min:js", function () {
     return gulp.src([paths.js, "!" + paths.minJs], { base: "." })
         .pipe(concat(paths.concatJsDest))
+        //.pipe(uglify().on("error", function (e) { console.log("\x07", e.message); return this.end(); }))
         .pipe(uglify())
         .pipe(gulp.dest("."));
 });

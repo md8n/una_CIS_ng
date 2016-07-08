@@ -1,23 +1,22 @@
 ﻿var $body = $(document.body);
-var navHeight = $('.navbar').outerHeight(true) + 10;
+var navHeight = $(".navbar").outerHeight(true) + 10;
 
-
-$('#sidebar').affix({
+$("#sidebar").affix({
   offset: {
     top: function () {
-      var offsetTop = $('#sidebar').offset().top;
-      var sideBarMargin = parseInt($('#sidebar').children(0).css('margin-top'), 10);
-      var navOuterHeight = $('#masthead').height();
+      const offsetTop = $("#sidebar").offset().top;
+      const sideBarMargin = parseInt($("#sidebar").children(0).css("margin-top"), 10);
+      const navOuterHeight = $("#masthead").height();
 
       return (this.top = offsetTop - navOuterHeight - sideBarMargin);
     },
     bottom: function () {
-      return (this.bottom = $('footer').outerHeight(true));
+      return (this.bottom = $("footer").outerHeight(true));
     }
   }
 });
 
 $body.scrollspy({
-  target: '#rightSideNav',
+  target: "#rightSideNav",
   offset: navHeight
 });

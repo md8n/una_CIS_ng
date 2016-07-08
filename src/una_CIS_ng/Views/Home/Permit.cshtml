@@ -8,18 +8,6 @@
   var mapUrl = ViewData["Map:Url"];
 }
 
-@section styles
-{
-<environment names="Development">
-  <link rel="stylesheet" href="~/css/bs-callout.css" />
-  <link rel="stylesheet" href="~/css/bs-docs-sidebar.css" />
-</environment>
-<environment names="Staging,Production">
-  <link rel="stylesheet" href="~/css/bs-callout.min.css" asp-append-version="true" />
-  <link rel="stylesheet" href="~/css/bs-docs-sidebar.min.css" asp-append-version="true" />
-</environment>
-}
-
 <div class="container bs-docs-container" ng-controller="permitController">
   <div class="row">
     <div class="col-md-9 col-lg-10" role="main">
@@ -522,11 +510,4 @@
       Una.gMap = unaMap.map;
     }
   </script>
-  <environment names="Development">
-    <script type="text/javascript" src="~/js/sidebar.js"></script>
-  </environment>
-  <environment names="Staging,Production">
-    <script type="text/javascript" src="~/js/sidebar.min.js"></script>
-  </environment>
-
 }

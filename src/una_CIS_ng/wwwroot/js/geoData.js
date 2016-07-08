@@ -3,11 +3,6 @@
 // ReSharper disable StringConcatenationToTemplateString
 
 Una.GeoData = function (gm, geoDataDbStatusId) {
-  const geoDataDbStatusEl = document.getElementById(geoDataDbStatusId);
-
-  if (!!geoDataDbStatusEl) {
-    
-  }
   var map = null;
   var geocoder = null;
   var infowindow = null;

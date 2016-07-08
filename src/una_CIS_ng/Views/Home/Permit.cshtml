@@ -11,39 +11,37 @@
 <div class="container bs-docs-container" ng-controller="permitController">
   <div class="row">
     <div class="col-md-9 col-lg-10" role="main">
-      <div class="bs-docs-section">
-        <h1 id="PermitApplication" class="page-header">
-          <a class="anchorjs-link" href="#PermitApplication" aria-label="Anchor link for: permit application">Permit Application</a>
-        </h1>
-      </div>
-      <div class="bs-docs-section">
-        <h2 id="PermitApplicationInstructions">
-          <a class="anchorjs-link" href="#PermitApplicationInstructions" aria-label="Anchor link for: permit application instructions">Instructions</a>
-        </h2>
-        <p>To obtain a Permit for your infrastructure several things are required:</p>
-        <ul>
-          <li>The <a href="#PermitApplicationParties">Permit Holder</a> must be identified. Other people and organisations may need to be identified also.</li>
-          <li>The <a href="#PermitApplicationLocation">location / route of your infrastructure</a> must be clearly identified.</li>
-          <li>The relevant fees, charges and penalties must be paid.</li>
-        </ul>
-        <div class="bs-callout-sm bs-callout-info">
-          <small>If you are putting in new infrastructure then a Construction Permit is also required. This is not available at present.</small>
+      <form class="form-horizontal" role="form" ng-submit="permit.Save()">
+        <div class="bs-docs-section">
+          <h1 id="PermitApplication" class="page-header">
+            <a class="anchorjs-link" href="#PermitApplication" aria-label="Anchor link for: permit application">Permit Application</a>
+          </h1>
         </div>
-        <div class="bs-callout-sm bs-callout-warning">
-          <small>Some other agencies may require you to obtain relevant permits / authorisation also - LASIMRA and its authorised agencies are not responsible for this.</small>
+        <div class="bs-docs-section">
+          <h2 id="PermitApplicationInstructions">
+            <a class="anchorjs-link" href="#PermitApplicationInstructions" aria-label="Anchor link for: permit application instructions">Instructions</a>
+          </h2>
+          <p>To obtain a Permit for your infrastructure several things are required:</p>
+          <ul>
+            <li>The <a href="#PermitApplicationParties">Permit Holder</a> must be identified. Other people and organisations may need to be identified also.</li>
+            <li>The <a href="#PermitApplicationLocation">location / route of your infrastructure</a> must be clearly identified.</li>
+            <li>The relevant fees, charges and penalties must be paid.</li>
+          </ul>
+          <div class="bs-callout-sm bs-callout-info">
+            <small>If you are putting in new infrastructure then a Construction Permit is also required. This is not available at present.</small>
+          </div>
+          <div class="bs-callout-sm bs-callout-warning">
+            <small>Some other agencies may require you to obtain relevant permits / authorisation also - LASIMRA and its authorised agencies are not responsible for this.</small>
+          </div>
+          <p>Please see <a href="./PermitInfo">Permit Info</a> for more information about obtaining Permits and keeping them.</p>
         </div>
-        <div class="bs-callout-sm bs-callout-info">
-          Please see <a href="./PermitInfo">Permit Info</a> for more information about obtaining Permits and keeping them.
-        </div>
-      </div>
-      <div class="bs-docs-section">
-        <h2 id="PermitApplicationParties">
-          <a class="anchorjs-link" href="#PermitApplicationParties" aria-label="Anchor link for: permit application parties">Parties to the Permit</a>
-        </h2>
-        @*<pre>{{permit | json}}</pre>*@
-        <form class="form-horizontal" role="form" ng-submit="permit.Save()">
+        <div class="bs-docs-section">
+          <h2 id="PermitApplicationParties">
+            <a class="anchorjs-link" href="#PermitApplicationParties" aria-label="Anchor link for: permit application parties">Parties to the Permit</a>
+          </h2>
+          @*<pre>{{permit | json}}</pre>*@
           <div class="well">
-            <h3 id="RoWPermitHolder">Permit Holder<span title="Required">*</span></h3>
+            <h3 id="PermitHolderDeclaration">Permit Holder</h3>
             <div class="form-group row">
               <label class="col-sm-6 col-lg-5 text-right">The Permit Holder is a:</label>
               <div class="btn-group col-sm-6 col-lg-7" role="group" aria-label="Permit Holding Entity Type">
@@ -55,7 +53,7 @@
                 </label>
               </div>
             </div>
-            <div class="form-group row">
+            <div id="PermitApplicationHolder" class="form-group">
               <label class="col-sm-6 col-lg-5 text-right">The Permit Holder is also the Infrastructure Owner:</label>
               <div class="btn-group col-sm-6 col-lg-7" role="group" aria-label="Permit Holding Entity is Infrastructure Owner">
                 <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.isInfrastructureOwner}">
@@ -102,7 +100,8 @@
                   <input class="form-control" name="rowHoldingEntityOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holder.officePhone" maxlength="36">
                 </div>
               </div>
-              <hr />
+            </div>
+            <div class="well" ng-show="permit.permits.row.parties.holder.holderType">
               <h4>Office Physical Address</h4>
               <small>A Postal Box is NOT acceptable for the Office Physical Address fields.<br />If you do not have a physical address you may not be the Permit Holder.</small>
               <div class="form-group">
@@ -152,7 +151,8 @@
                   </label>
                 </div>
               </div>
-              <hr />
+            </div>
+            <div class="well" ng-show="permit.permits.row.parties.holder.holderType">
               <h4>Office Mailing Address</h4>
               <div ng-show="permit.permits.row.parties.holder.addresses.physical.isMailing">
                 <dl class="dl-horizontal">
@@ -202,7 +202,8 @@
                 </div>
               </div>
             </div>
-            <hr />
+          </div>
+          <div id="PermitApplicationHolderContact" class="well" ng-show="permit.permits.row.parties.holder.holderType">
             <h3 id="RoWPermitHolderContact">Permit Holder Contact</h3>
             <small>A Permit Holder Contact is required if the Permit Holder is an Organisation or the Permit Holder is not based in Nigeria.</small>
             <div ng-show="permit.permits.row.parties.holder.holderType === 'Person' && permit.permits.row.parties.holder.addresses.physical.country === 'Nigeria'">
@@ -291,65 +292,82 @@
                 </div>
               </div>
             </div>
-            <p>Note that contact details will be checked as part of the approval process.</p>
-            <div class="form-group">
-              <div class="col-sm-6">
-                <input class="btn btn-primary" id="rowPartiesSave" type="submit" value="Save">
-              </div>
-            </div>
-            <dl class="dl-horizontal">
-              <dt>Permit is:</dt>
-              <dd>{{permit.IsDbConnected ? "connected" : "not available"}}</dd>
-            </dl>
           </div>
-        </form>
-      </div>
-      <div class="bs-docs-section">
-        <h2 id="PermitApplicationLocation">
-          <a class="anchorjs-link" href="#PermitApplicationLocation" aria-label="Anchor link for: permit application location">Location / Route of Infrastructure</a>
-        </h2>
-        <div class="panel-body" ng-controller="geoDataController">
+        </div>
+        <div class="bs-docs-section">
+          <h2 id="PermitApplicationLocation">
+            <a class="anchorjs-link" href="#PermitApplicationLocation" aria-label="Anchor link for: permit application location">Location / Route of Infrastructure</a>
+          </h2>
           <p>Drawing on the map, show the route required for this Right-of-Way permit.</p>
           <p>The GPS coordinates, and total distance in meters (rounded down to the nearest meter) will be calculated for you.</p>
           <p>The route must have no breaks.</p>
-          <div class="row">
-            <div class="col-md-4 col-lg-4">
-              <h2>Infrastructure Route</h2>
-              <dl id="infRt">
-                <dt>Rate per m</dt>
-                <dd><input name="RatePerM" id="RatePerM" type="text" value="500" readonly="readonly" /></dd>
-                <dt>Rate per Construction Permit</dt>
-                <dd><input name="RatePerCP" id="RatePerCP" type="text" value="10000" readonly="readonly" /></dd>
-              </dl>
-              <dl class="dl-horizontal">
-                <dt>GeoData is:</dt>
-                <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
-              </dl>
-              @*<ul>
-                  <li ng-repeat="gd in geoData.geoFeatures">{{gd.properties.id}}</li>
-                </ul>*@
-              @*<pre>{{geoData.geoFeatures | json}}</pre>*@
-              @*<pre id="location">{{permit.permits.row.locations | json}}</pre>*@
-            </div>
-            <div class="col-md-6 col-lg-8">
-              <h2>Map</h2>
-              <p>Draw your infrastructure route on the map below.</p>
-              <p>To finish; double-click the last point on your route, or click on the hand symbol.</p>
-              <div id="map" style="height: 480px; width: 100%"></div>
-            </div>
+        </div>
+        <div id="PermitApplicationMap" ng-controller="geoDataController">
+          <div id="map" style="height: 480px; width: 100%"></div>
+        </div>
+        <div class="bs-docs-section">
+          <h3 id="PermitApplicationLocationCalculation">Location Details</h3>
+          <div class="panel-body" ng-controller="geoDataController">
+            <dl id="infRt" class="dl-horizontal">
+              <dt>Rate per m</dt>
+              <dd><input name="RatePerM" id="RatePerM" type="text" value="500" readonly="readonly" /></dd>
+              <dt>Rate per Construction Permit</dt>
+              <dd><input name="RatePerCP" id="RatePerCP" type="text" value="10000" readonly="readonly" /></dd>
+            </dl>
+            <dl class="dl-horizontal">
+              <dt>GeoData is:</dt>
+              <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
+            </dl>
+            @*<ul>
+                <li ng-repeat="gd in geoData.geoFeatures">{{gd.properties.id}}</li>
+              </ul>*@
+            @*<pre>{{geoData.geoFeatures | json}}</pre>*@
+            @*<pre id="location">{{permit.permits.row.locations | json}}</pre>*@
           </div>
         </div>
-      </div>
+        <div class="bs-docs-section">
+          <h2 id="PermitApplicationSubmit">
+            <a class="anchorjs-link" href="#PermitApplicationSubmit" aria-label="Anchor link for: permit application submit">Submit Application</a>
+          </h2>
+          <p>Note that contact details will be checked as part of the approval process.</p>
+          <div class="form-group">
+            <div class="col-sm-6">
+              <input class="btn btn-primary" id="rowPartiesSave" type="submit" value="Submit">
+            </div>
+          </div>
+          <dl class="dl-horizontal">
+            <dt>Permit Submission Service is:</dt>
+            <dd>{{permit.IsDbConnected ? "connected" : "not available"}}</dd>
+          </dl>
+        </div>
+      </form>
     </div>
-    <div class="col-md-3 col-lg-2" id="rightSideNav">
+    <nav class="col-md-3 col-lg-2 hidden-sm" id="rightSideNav">
 
       <ul class="nav nav-stacked affix-top" id="sidebar">
-        <li><a href="#PermitApplicationInstructions">Instructions</a></li>
-        <li><a href="#PermitApplicationParties">Permit Parties</a></li>
-        <li><a href="#PermitApplicationLocation">Location</a></li>
+        <li>
+          <a href="#PermitApplicationInstructions">Instructions</a>
+        </li>
+        <li>
+          <a href="#PermitApplicationParties">Permit Parties</a>
+          <ul class="nav nav-stacked" ng-show="permit.permits.row.parties.holder.holderType">
+            <li><a href="#PermitApplicationHolder">Permit Holder</a></li>
+            <li ng-show="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'"><a href="#PermitApplicationHolderContact">Holder Contact</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#PermitApplicationLocation">Location</a>
+          <ul class="nav nav-stacked">
+            <li><a href="#PermitApplicationMap">Map</a></li>
+            <li><a href="#PermitApplicationLocationCalculation">Details</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#PermitApplicationSubmit">Submit</a>
+        </li>
       </ul>
 
-    </div>
+    </nav>
   </div>
   @*<div class="panel panel-default">
       <div class="panel-heading" role="tab" id="HeadingConstructionPermit">

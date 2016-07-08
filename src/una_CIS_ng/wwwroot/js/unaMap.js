@@ -249,7 +249,7 @@ Una.Map = function (gm, mapElId) {
     drawingManager: drawingManager,
     infoWindow: infowindow,
     geocoder: geocoder,
-    geocodeLatLng: geocodeLatLng
+    geocodeLngLat: geocodeLngLat
   };
 };
 

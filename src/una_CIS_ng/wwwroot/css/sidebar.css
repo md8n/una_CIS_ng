@@ -1,43 +1,91 @@
-﻿.affix-top,.affix{
-	position: static;
+﻿.affix-top, .affix {
+  position: static;
 }
 
-#sidebar {
-	background-color:#eee;
+#rightSideNav {
+    padding-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-#sidebar li.active {
-  	border:0 #ddd solid;
-  	border-right-width:4px;
+/* all links */
+#rightSideNav .nav > li > a {
+    color: #999;
+    border-left: 2px solid transparent;
+    padding: 4px 20px;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+/* nested links */
+#rightSideNav .nav .nav > li > a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 30px;
+    font-size: 12px;
+}
+
+/* active & hover links */
+#rightSideNav .nav > .active > a, 
+#rightSideNav .nav > li > a:hover, 
+#rightSideNav .nav > li > a:focus {
+    color: #563d7c;                 
+    text-decoration: none;          
+    background-color: transparent;  
+    border-left-color: #563d7c; 
+}
+/* all active links */
+#rightSideNav .nav > .active>a, 
+#rightSideNav .nav > .active:hover > a,
+#rightSideNav .nav > .active:focus > a {
+    font-weight: 700;
+}
+/* nested active links */
+#rightSideNav .nav .nav > .active > a, 
+#rightSideNav .nav .nav > .active:hover > a,
+#rightSideNav .nav .nav > .active:focus > a {
+    font-weight: 500;
+}
+
+/* hide inactive nested list */
+#rightSideNav .nav ul.nav {
+    display: none;           
+}
+/* show active nested list */
+#rightSideNav .nav > .active > ul.nav {
+    display: block;           
 }
 
 @media screen and (min-width: 992px) {
-  
-  #sidebar .nav > .active > ul {
+
+  #rightSideNav .nav > .active > ul {
     display: block;
   }
   /* Widen the fixed sidebar */
-  #sidebar.affix-top {
+  #rightSideNav .affix-top {
     position: static;
-  	margin-top:30px;
-  	width:228px;
-  }
-  
-  #sidebar.affix,
-  #sidebar.affix-bottom {
+    margin-top: 30px;
     width: 228px;
   }
-  #sidebar.affix {
+
+  #rightSideNav .affix,
+  #rightSideNav .affix-bottom {
+    width: 228px;
+  }
+
+  #rightSideNav .affix {
     position: fixed;
     top: 200px;
   }
-  #sidebar.affix-bottom {
+
+  #rightSideNav .affix-bottom {
     position: absolute;
   }
 }
+
 @media screen and (min-width: 1200px) {
-  #sidebar.affix-bottom,
-  #sidebar.affix {
+  #rightSideNav .affix-bottom,
+  #rightSideNav .affix {
     width: 235px;
   }
 }

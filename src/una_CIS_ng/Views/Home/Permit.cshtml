@@ -8,496 +8,509 @@
   var mapUrl = ViewData["Map:Url"];
 }
 
-<h2>@ViewData["Title"]</h2>
+@section styles
+{
+<environment names="Development">
+  <link rel="stylesheet" href="~/css/bs-callout.css" />
+  <link rel="stylesheet" href="~/css/bs-docs-sidebar.css" />
+</environment>
+<environment names="Staging,Production">
+  <link rel="stylesheet" href="~/css/bs-callout.min.css" asp-append-version="true" />
+  <link rel="stylesheet" href="~/css/bs-docs-sidebar.min.css" asp-append-version="true" />
+</environment>
+}
 
-<div class="panel-group" id="AccordRow" role="tablist" aria-multiselectable="true">
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="HeadingRoWInstructions">
-      <h4 class="panel-title">
-        <a role="button" data-toggle="collapse" data-parent="#AccordRow" href="#RoWInstructions" aria-expanded="true" aria-controls="collapseRoWInstructions">
-          Applying for a Right-of-Way Permit
-        </a>
-      </h4>
-    </div>
-    <div id="RoWInstructions" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRoWInstructions">
-      <div class="panel-body">
-        <p>To obtain a Right-of-Way Permit for your infrastructure several things are required:</p>
+<div class="container bs-docs-container" ng-controller="permitController">
+  <div class="row">
+    <div class="col-md-9 col-lg-10" role="main">
+      <div class="bs-docs-section">
+        <h1 id="PermitApplication" class="page-header">
+          <a class="anchorjs-link" href="#PermitApplication" aria-label="Anchor link for: permit application">Permit Application</a>
+        </h1>
+      </div>
+      <div class="bs-docs-section">
+        <h2 id="PermitApplicationInstructions">
+          <a class="anchorjs-link" href="#PermitApplicationInstructions" aria-label="Anchor link for: permit application instructions">Instructions</a>
+        </h2>
+        <p>To obtain a Permit for your infrastructure several things are required:</p>
         <ul>
-          <li>The <a href="#RoWPermitParties">Permit Holder</a> must be identified. Other people and organisations may need to be identified also.</li>
-          <li>The <a href="#RoWLocation">route of your infrastructure</a> must be clearly identified.</li>
+          <li>The <a href="#PermitApplicationParties">Permit Holder</a> must be identified. Other people and organisations may need to be identified also.</li>
+          <li>The <a href="#PermitApplicationLocation">location / route of your infrastructure</a> must be clearly identified.</li>
           <li>The relevant fees, charges and penalties must be paid.</li>
-          <li><small>If you are putting in new infrastructure then a Construction Permit is also required.  This is not available at present.</small></li>
-          <li><small>(Some other agencies may require you to obtain relevant permits / authorisation also - LASIMRA and its authorised agencies are not responsible for this)</small></li>
         </ul>
-        <p>
+        <div class="bs-callout-sm bs-callout-info">
+          <small>If you are putting in new infrastructure then a Construction Permit is also required. This is not available at present.</small>
+        </div>
+        <div class="bs-callout-sm bs-callout-warning">
+          <small>Some other agencies may require you to obtain relevant permits / authorisation also - LASIMRA and its authorised agencies are not responsible for this.</small>
+        </div>
+        <div class="bs-callout-sm bs-callout-info">
           Please see <a href="./PermitInfo">Permit Info</a> for more information about obtaining Permits and keeping them.
-        </p>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="panel panel-default" ng-controller="permitController">
-    <div class="panel-heading" role="tab" id="HeadingRoWPermitParties">
-      <h4 class="panel-title">
-        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#AccordRow" href="#RoWPermitParties" aria-expanded="true" aria-controls="collapseRoWPermitParties">
-          Parties to the Permit
-        </a>
-      </h4>
-    </div>
-    <div id="RoWPermitParties" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRoWPermitParties">
-      @*<pre>{{permit | json}}</pre>*@
-      <form class="form-horizontal" role="form" ng-submit="permit.Save()">
-        <div class="panel-body">
-          <h3 id="RoWPermitHolder">Permit Holder<span title="Required">*</span></h3>
-          <div class="form-group">
-            <label class="col-sm-2">The Permit Holder is a:</label>
-            <div class="btn-group col-sm-6" role="group" aria-label="Permit Holding Entity Type">
-              <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.holderType == 'Person'}">
-                <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.holderType" value="Person" autocomplete="off" ng-required="true"> Person
-              </label>
-              <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.holderType == 'Organisation'}">
-                <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.holderType" value="Organisation" autocomplete="off" ng-required="true"> Organisation
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-2">The Permit Holder is also the Infrastructure Owner:</label>
-            <div class="btn-group col-sm-6" role="group" aria-label="Permit Holding Entity is Infrastructure Owner">
-              <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.isInfrastructureOwner}">
-                <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.holder.isInfrastructureOwner" ng-value="true" autocomplete="off" checked ng-required="true"> Yes
-              </label>
-              <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.parties.holder.isInfrastructureOwner}">
-                <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.holder.isInfrastructureOwner" ng-value="false" autocomplete="off" ng-required="true"> No
-              </label>
-            </div>
-          </div>
-          <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.holderType === 'Person'">
-            <div class="col-sm-3">
-              <label for="rowHoldingContactNamePersonal" title="Personal names / First names">Personal name</label>
-              <input class="form-control" type="text" name="rowHoldingEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holder.personalName" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType === 'Person'">
-            </div>
-            <div class="col-sm-3">
-              <label for="rowHoldingContactNameSurname" title="Surname / Family name / Patronymic">Surname</label>
-              <input class="form-control" type="text" name="rowHoldingEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holder.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType === 'Person'">
-            </div>
-          </div>
-          <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.holderType === 'Organisation'">
-            <label class="col-sm-2">Organisation Name</label>
-            <div class="col-sm-6">
-              <input class="form-control" name="rowHoldingEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.holder.name" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType === 'Organisation'">
-            </div>
-          </div>
-          <div ng-show="permit.permits.row.parties.holder.holderType">
-            <small>At least one of Email or Mobile Phone must be provided.</small>
-            <div class="form-group">
-              <label class="col-sm-2">Email</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingEntityEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holder.email" maxlength="512">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-2">Mobile Phone</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingEntityMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holder.mobile" maxlength="36">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-2">Office Phone</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingEntityOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holder.officePhone" maxlength="36">
-              </div>
-            </div>
-          </div>
-          <hr />
-          <h4>Office Physical Address</h4>
-          <small>A Postal Box is NOT acceptable for the Office Physical Address fields.<br />If you do not have a physical address you may not be the Permit Holder.</small>
-          <div class="form-group">
-            <label class="col-sm-2" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
-            <div class="col-sm-6">
-              <input class="form-control" name="rowHoldingEntityPhysicalAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.holder.addresses.physical.unit" maxlength="50">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-2" title="Number and Street / Lot Number">Number and Street</label>
-            <div class="col-sm-6">
-              <input class="form-control" name="rowHoldingEntityPhysicalAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holder.addresses.physical.street" maxlength="128" ng-required="true">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-2" title="Village / Town / Suburb / City">Suburb</label>
-            <div class="col-sm-6">
-              <input class="form-control" name="rowHoldingEntityPhysicalAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holder.addresses.physical.suburb" maxlength="128" ng-required="true">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-2" title="State / Province / Territory / Prefecture">State</label>
-            <div class="col-sm-6">
-              <input class="form-control" name="rowHoldingEntityPhysicalAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holder.addresses.physical.state" maxlength="50" ng-required="true">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-2" title="Post Code / Zip Code">Post Code</label>
-            <div class="col-sm-6">
-              <input class="form-control" name="rowHoldingEntityPhysicalAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.holder.addresses.physical.postcode" maxlength="12">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-2" >Country</label>
-            <div class="col-sm-6">
-              <input class="form-control" name="rowHoldingEntityPhysicalAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holder.addresses.physical.country" maxlength="128" ng-required="true">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-2">Use Office Physical Address for Mailing Address?</label>
-            <div class="btn-group col-sm-6" role="group" aria-label="Permit Holder Office Address Is Also Mailing Address">
-              <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.addresses.physical.isMailing}">
-                <input type="radio" ng-model="permit.permits.row.parties.holder.addresses.physical.isMailing" ng-value="true" autocomplete="off" checked> Yes
-              </label>
-              <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.parties.holder.addresses.physical.isMailing}">
-                <input type="radio" ng-model="permit.permits.row.parties.holder.addresses.physical.isMailing" ng-value="false" autocomplete="off"> No
-              </label>
-            </div>
-          </div>
-          <hr />
-          <h4>Office Mailing Address</h4>
-          <div ng-show="permit.permits.row.parties.holder.addresses.physical.isMailing">
-            <dl class="dl-horizontal">
-              <dt>Office Mailing Address:</dt>
-              <dd>Use the Office Physical Address</dd>
-            </dl>
-          </div>
-          <div ng-show="!permit.permits.row.parties.holder.addresses.physical.isMailing">
-            <div class="form-group">
-              <label class="col-sm-2" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingEntityMailingAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.holder.addresses.mailing.unit" maxlength="50">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-2" title="Number and Street / Lot Number">Number and Street</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingEntityMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holder.addresses.mailing.street" maxlength="128" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-2" title="Village / Town / Suburb / City">Suburb</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingEntityMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holder.addresses.mailing.suburb" maxlength="128" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-2" title="State / Province / Territory / Prefecture">State</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingEntityMailingAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holder.addresses.mailing.state" maxlength="50" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-2" title="Post Code / Zip Code">Post Code</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingEntityMailingAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.holder.addresses.mailing.postcode" maxlength="12">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-2">Country</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingEntityMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holder.addresses.mailing.country" maxlength="128" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
-              </div>
-            </div>
-            <div class="form-group" ng-show="false">
-              <input class="form-control" type="text" ng-model="permit.permits.row.parties.holder.addresses.mailing.isMailing" ng-value="true">
-            </div>
-          </div>
-          <hr />
-          <h3 id="RoWPermitHolderContact">Permit Holder Contact</h3>
-          <small>A Permit Holder Contact is required if the Permit Holder is an Organisation or the Permit Holder is not based in Nigeria.</small>
-          <div ng-show="permit.permits.row.parties.holder.holderType === 'Person' && permit.permits.row.parties.holder.addresses.physical.country === 'Nigeria'">
-            <dl class="dl-horizontal">
-              <dt>Permit Holder Contact:</dt>
-              <dd>Will be the Permit Holder</dd>
-            </dl>
-          </div>
-          <div ng-show="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-            <small>The Permit Holder Contact must be an individual, based in Nigeria, who is contactable by electronic means, especially via email and txt message (sms).</small><br />
-            <div class="form-group">
-              <div class="col-sm-3">
-                <label title="Personal names / First names">Personal name</label>
-                <input class="form-control" type="text" name="rowHoldingContactNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holderContact.personalName" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-              </div>
-              <div class="col-sm-3">
-                <label title="Surname / Family name / Patronymic">Surname</label>
-                <input class="form-control" type="text" name="rowHoldingContactNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holderContact.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-2">Email</label>
-              <div class="col-sm-6">
-                <input class="form-control col-sm-6" name="rowHoldingContactEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holderContact.email" maxlength="512" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-              </div>
-            </div>
-            <small>All phone numbers provided must be Nigeria based, satellite service numbers are not acceptable.</small>
-            <div class="form-group">
-              <label class="col-sm-2">Mobile Phone</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingContactMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holderContact.mobile" maxlength="36" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-2">Office Phone</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingContactOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holderContact.officePhone" maxlength="36">
-              </div>
-            </div>
-            <h4>Permit Holding Contact Primary Mailing Address</h4>
-            <div class="form-group">
-              <label class="col-sm-2">Mailing Address Type</label>
-              <div class="btn-group col-sm-6" data-toggle="buttons" role="group" aria-label="Permit Holder Contact Mailing Address">
-                <label class="btn btn-primary active">
-                  <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalTrue" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.isPostal" value="true" autocomplete="off" checked> Postal
+      <div class="bs-docs-section">
+        <h2 id="PermitApplicationParties">
+          <a class="anchorjs-link" href="#PermitApplicationParties" aria-label="Anchor link for: permit application parties">Parties to the Permit</a>
+        </h2>
+        @*<pre>{{permit | json}}</pre>*@
+        <form class="form-horizontal" role="form" ng-submit="permit.Save()">
+          <div class="well">
+            <h3 id="RoWPermitHolder">Permit Holder<span title="Required">*</span></h3>
+            <div class="form-group row">
+              <label class="col-sm-6 col-lg-5 text-right">The Permit Holder is a:</label>
+              <div class="btn-group col-sm-6 col-lg-7" role="group" aria-label="Permit Holding Entity Type">
+                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.holderType == 'Person'}">
+                  <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.holderType" value="Person" autocomplete="off" ng-required="true"> Person
                 </label>
-                <label class="btn btn-primary">
-                  <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalFalse" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.isPostal" value="false" autocomplete="off"> Street
+                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.holderType == 'Organisation'}">
+                  <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.holderType" value="Organisation" autocomplete="off" ng-required="true"> Organisation
                 </label>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-sm-2" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingContactMailingAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.unit" maxlength="50">
+            <div class="form-group row">
+              <label class="col-sm-6 col-lg-5 text-right">The Permit Holder is also the Infrastructure Owner:</label>
+              <div class="btn-group col-sm-6 col-lg-7" role="group" aria-label="Permit Holding Entity is Infrastructure Owner">
+                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.isInfrastructureOwner}">
+                  <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.holder.isInfrastructureOwner" ng-value="true" autocomplete="off" checked ng-required="true"> Yes
+                </label>
+                <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.parties.holder.isInfrastructureOwner}">
+                  <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.holder.isInfrastructureOwner" ng-value="false" autocomplete="off" ng-required="true"> No
+                </label>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-sm-2" title="Number and Street / Lot Number">Number and Street</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingContactMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.street" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+            <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.holderType === 'Person'">
+              <div class="col-sm-3">
+                <label for="rowHoldingContactNamePersonal" title="Personal names / First names">Personal name</label>
+                <input class="form-control" type="text" name="rowHoldingEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holder.personalName" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType === 'Person'">
+              </div>
+              <div class="col-sm-3">
+                <label for="rowHoldingContactNameSurname" title="Surname / Family name / Patronymic">Surname</label>
+                <input class="form-control" type="text" name="rowHoldingEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holder.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType === 'Person'">
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-sm-2" title="Village / Town / Suburb / City">Suburb</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingContactMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.suburb" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+            <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.holderType === 'Organisation'">
+              <label class="col-sm-4 col-lg-3 text-right">Organisation Name</label>
+              <div class="col-sm-8 col-lg-9">
+                <input class="form-control" name="rowHoldingEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.holder.name" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType === 'Organisation'">
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-sm-2" title="State / Province / Territory / Prefecture">State</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingContactMailingAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.state" maxlength="50" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+            <div ng-show="permit.permits.row.parties.holder.holderType">
+              <small>At least one of Email or Mobile Phone must be provided.</small>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Email</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingEntityEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holder.email" maxlength="512">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingEntityMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holder.mobile" maxlength="36">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Office Phone</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingEntityOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holder.officePhone" maxlength="36">
+                </div>
+              </div>
+              <hr />
+              <h4>Office Physical Address</h4>
+              <small>A Postal Box is NOT acceptable for the Office Physical Address fields.<br />If you do not have a physical address you may not be the Permit Holder.</small>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingEntityPhysicalAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.holder.addresses.physical.unit" maxlength="50">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="Number and Street / Lot Number">Number and Street</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingEntityPhysicalAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holder.addresses.physical.street" maxlength="128" ng-required="true">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="Village / Town / Suburb / City">Suburb</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingEntityPhysicalAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holder.addresses.physical.suburb" maxlength="128" ng-required="true">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="State / Province / Territory / Prefecture">State</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingEntityPhysicalAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holder.addresses.physical.state" maxlength="50" ng-required="true">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="Post Code / Zip Code">Post Code</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingEntityPhysicalAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.holder.addresses.physical.postcode" maxlength="12">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Country</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingEntityPhysicalAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holder.addresses.physical.country" maxlength="128" ng-required="true">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Use Office Physical Address for Mailing Address?</label>
+                <div class="btn-group col-sm-8 col-lg-9" role="group" aria-label="Permit Holder Office Address Is Also Mailing Address">
+                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.addresses.physical.isMailing}">
+                    <input type="radio" ng-model="permit.permits.row.parties.holder.addresses.physical.isMailing" ng-value="true" autocomplete="off" checked> Yes
+                  </label>
+                  <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.parties.holder.addresses.physical.isMailing}">
+                    <input type="radio" ng-model="permit.permits.row.parties.holder.addresses.physical.isMailing" ng-value="false" autocomplete="off"> No
+                  </label>
+                </div>
+              </div>
+              <hr />
+              <h4>Office Mailing Address</h4>
+              <div ng-show="permit.permits.row.parties.holder.addresses.physical.isMailing">
+                <dl class="dl-horizontal">
+                  <dt>Office Mailing Address:</dt>
+                  <dd>Use the Office Physical Address</dd>
+                </dl>
+              </div>
+              <div ng-show="!permit.permits.row.parties.holder.addresses.physical.isMailing">
+                <div class="form-group">
+                  <label class="col-sm-4 col-lg-3 text-right" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
+                  <div class="col-sm-8 col-lg-9">
+                    <input class="form-control" name="rowHoldingEntityMailingAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.holder.addresses.mailing.unit" maxlength="50">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 col-lg-3 text-right" title="Number and Street / Lot Number">Number and Street</label>
+                  <div class="col-sm-8 col-lg-9">
+                    <input class="form-control" name="rowHoldingEntityMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holder.addresses.mailing.street" maxlength="128" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 col-lg-3 text-right" title="Village / Town / Suburb / City">Suburb</label>
+                  <div class="col-sm-8 col-lg-9">
+                    <input class="form-control" name="rowHoldingEntityMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holder.addresses.mailing.suburb" maxlength="128" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 col-lg-3 text-right" title="State / Province / Territory / Prefecture">State</label>
+                  <div class="col-sm-8 col-lg-9">
+                    <input class="form-control" name="rowHoldingEntityMailingAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holder.addresses.mailing.state" maxlength="50" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 col-lg-3 text-right" title="Post Code / Zip Code">Post Code</label>
+                  <div class="col-sm-8 col-lg-9">
+                    <input class="form-control" name="rowHoldingEntityMailingAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.holder.addresses.mailing.postcode" maxlength="12">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-4 col-lg-3 text-right">Country</label>
+                  <div class="col-sm-8 col-lg-9">
+                    <input class="form-control" name="rowHoldingEntityMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holder.addresses.mailing.country" maxlength="128" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
+                  </div>
+                </div>
+                <div class="form-group" ng-show="false">
+                  <input class="form-control" type="text" ng-model="permit.permits.row.parties.holder.addresses.mailing.isMailing" ng-value="true">
+                </div>
               </div>
             </div>
-            <div class="form-group">
-              <label class="col-sm-2" title="Post Code / Zip Code">Post Code</label>
-              <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingContactMailingAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.postcode" maxlength="12">
+            <hr />
+            <h3 id="RoWPermitHolderContact">Permit Holder Contact</h3>
+            <small>A Permit Holder Contact is required if the Permit Holder is an Organisation or the Permit Holder is not based in Nigeria.</small>
+            <div ng-show="permit.permits.row.parties.holder.holderType === 'Person' && permit.permits.row.parties.holder.addresses.physical.country === 'Nigeria'">
+              <dl class="dl-horizontal">
+                <dt>Permit Holder Contact:</dt>
+                <dd>Will be the Permit Holder</dd>
+              </dl>
+            </div>
+            <div ng-show="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+              <small>The Permit Holder Contact must be an individual, based in Nigeria, who is contactable by electronic means, especially via email and txt message (sms).</small><br />
+              <div class="form-group">
+                <div class="col-sm-3">
+                  <label title="Personal names / First names">Personal name</label>
+                  <input class="form-control" type="text" name="rowHoldingContactNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holderContact.personalName" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                </div>
+                <div class="col-sm-3">
+                  <label title="Surname / Family name / Patronymic">Surname</label>
+                  <input class="form-control" type="text" name="rowHoldingContactNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holderContact.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Email</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control col-sm-6" name="rowHoldingContactEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holderContact.email" maxlength="512" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                </div>
+              </div>
+              <small>All phone numbers provided must be Nigeria based, satellite service numbers are not acceptable.</small>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingContactMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holderContact.mobile" maxlength="36" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Office Phone</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingContactOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holderContact.officePhone" maxlength="36">
+                </div>
+              </div>
+              <h4>Permit Holding Contact Primary Mailing Address</h4>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Mailing Address Type</label>
+                <div class="btn-group col-sm-8 col-lg-9" data-toggle="buttons" role="group" aria-label="Permit Holder Contact Mailing Address">
+                  <label class="btn btn-primary active">
+                    <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalTrue" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.isPostal" value="true" autocomplete="off" checked> Postal
+                  </label>
+                  <label class="btn btn-primary">
+                    <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalFalse" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.isPostal" value="false" autocomplete="off"> Street
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingContactMailingAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.unit" maxlength="50">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="Number and Street / Lot Number">Number and Street</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingContactMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.street" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="Village / Town / Suburb / City">Suburb</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingContactMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.suburb" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="State / Province / Territory / Prefecture">State</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingContactMailingAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.state" maxlength="50" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="Post Code / Zip Code">Post Code</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingContactMailingAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.postcode" maxlength="12">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Country</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowHoldingContactMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.country" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                </div>
               </div>
             </div>
+            <p>Note that contact details will be checked as part of the approval process.</p>
             <div class="form-group">
-              <label class="col-sm-2">Country</label>
               <div class="col-sm-6">
-                <input class="form-control" name="rowHoldingContactMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.country" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                <input class="btn btn-primary" id="rowPartiesSave" type="submit" value="Save">
               </div>
             </div>
-          </div>
-          <p>Note that contact details will be checked as part of the approval process.</p>
-          <div class="form-group">
-            <div class="col-sm-6">
-              <input class="btn btn-primary" id="rowPartiesSave" type="submit" value="Save">
-            </div>
-          </div>
-          <dl class="dl-horizontal">
-            <dt>Permit is:</dt>
-            <dd>{{permit.IsDbConnected ? "connected" : "not available"}}</dd>
-          </dl>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="panel panel-default" ng-controller="geoDataController">
-    <div class="panel-heading" role="tab" id="HeadingRoWLocation">
-      <h4 class="panel-title">
-        <a role="button" data-toggle="collapse" data-parent="#AccordRow" href="#RoWLocation" aria-expanded="true" aria-controls="collapseRoWLocation">
-          Location
-        </a>
-      </h4>
-    </div>
-    <div id="RoWLocation" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="HeadingRoWLocation">
-      <div class="panel-body">
-        <p>Drawing on the map, show the route required for this Right-of-Way permit.</p>
-        <p>The GPS coordinates, and total distance in meters (rounded down to the nearest meter) will be calculated for you.</p>
-        <p>The route must have no breaks.</p>
-        <div class="row">
-          <div class="col-md-4">
-            <h2>Infrastructure Route</h2>
-            <dl id="infRt">
-              <dt>Rate per m</dt>
-              <dd><input name="RatePerM" id="RatePerM" type="text" value="500" readonly="readonly" /></dd>
-              <dt>Rate per Construction Permit</dt>
-              <dd><input name="RatePerCP" id="RatePerCP" type="text" value="10000" readonly="readonly" /></dd>
-            </dl>
             <dl class="dl-horizontal">
-              <dt>GeoData is:</dt>
-              <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
+              <dt>Permit is:</dt>
+              <dd>{{permit.IsDbConnected ? "connected" : "not available"}}</dd>
             </dl>
-            @*<ul>
-                <li ng-repeat="gd in geoData.geoFeatures">{{gd.properties.id}}</li>
-              </ul>*@
-            @*<pre>{{geoData.geoFeatures | json}}</pre>*@
           </div>
-          <div class="col-md-6">
-            <h2>Map</h2>
-            <p>Draw your infrastructure route on the map below.</p>
-            <p>To finish; double-click the last point on your route, or click on the hand symbol.</p>
-            <div id="map" style="height: 480px; width: 100%"></div>
+        </form>
+      </div>
+      <div class="bs-docs-section">
+        <h2 id="PermitApplicationLocation">
+          <a class="anchorjs-link" href="#PermitApplicationLocation" aria-label="Anchor link for: permit application location">Location / Route of Infrastructure</a>
+        </h2>
+        <div class="panel-body" ng-controller="geoDataController">
+          <p>Drawing on the map, show the route required for this Right-of-Way permit.</p>
+          <p>The GPS coordinates, and total distance in meters (rounded down to the nearest meter) will be calculated for you.</p>
+          <p>The route must have no breaks.</p>
+          <div class="row">
+            <div class="col-md-4 col-lg-4">
+              <h2>Infrastructure Route</h2>
+              <dl id="infRt">
+                <dt>Rate per m</dt>
+                <dd><input name="RatePerM" id="RatePerM" type="text" value="500" readonly="readonly" /></dd>
+                <dt>Rate per Construction Permit</dt>
+                <dd><input name="RatePerCP" id="RatePerCP" type="text" value="10000" readonly="readonly" /></dd>
+              </dl>
+              <dl class="dl-horizontal">
+                <dt>GeoData is:</dt>
+                <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
+              </dl>
+              @*<ul>
+                  <li ng-repeat="gd in geoData.geoFeatures">{{gd.properties.id}}</li>
+                </ul>*@
+              @*<pre>{{geoData.geoFeatures | json}}</pre>*@
+              @*<pre id="location">{{permit.permits.row.locations | json}}</pre>*@
+            </div>
+            <div class="col-md-6 col-lg-8">
+              <h2>Map</h2>
+              <p>Draw your infrastructure route on the map below.</p>
+              <p>To finish; double-click the last point on your route, or click on the hand symbol.</p>
+              <div id="map" style="height: 480px; width: 100%"></div>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="col-md-3 col-lg-2" id="rightSideNav">
+
+      <ul class="nav nav-stacked affix-top" id="sidebar">
+        <li><a href="#PermitApplicationInstructions">Instructions</a></li>
+        <li><a href="#PermitApplicationParties">Permit Parties</a></li>
+        <li><a href="#PermitApplicationLocation">Location</a></li>
+      </ul>
+
     </div>
   </div>
   @*<div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="HeadingConstructionPermit">
-      <h4 class="panel-title">
-        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#ConstructionPermit" aria-expanded="false" aria-controls="collapseRowConstructionPermitHolder">
-          Construction Permit Holder
-        </a>
-      </h4>
-    </div>
-    <div id="ConstructionPermit" class="panel-collapse collapse" role="tabpanel" aria-labelledby="HeadingConstructionPermit">
-      <div class="panel-body">
-        <p>Enter details about how the Construction will be performed.</p>
-        <dl>
-          <dt title="Traffic Management may be Required">Will the construction be in or next to any roadway / driveway / vehicle access?</dt>
-          <dd>
-            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Vehicle Access">
-              <label class="btn btn-primary active">
-                <input type="radio" name="cpVehicleAccess" id="cpVehicleAccessYes" autocomplete="off" checked> Yes
-              </label>
-              <label class="btn btn-primary">
-                <input type="radio" name="cpVehicleAccess" id="cpVehicleAccessNo" autocomplete="off"> No
-              </label>
-            </div>
-          </dd>
-          <dt title="Traffic Management definitely Required">Will vehicle access be obstructed during construction?</dt>
-          <dd>
-            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Impacting to Vehicle Access">
-              <label class="btn btn-primary active">
-                <input type="radio" name="cpVehicleAccessImpact" id="cpVehicleAccessImpactYes" autocomplete="off" checked> Yes
-              </label>
-              <label class="btn btn-primary">
-                <input type="radio" name="cpVehicleAccessImpact" id="cpVehicleAccessImpactNo" autocomplete="off"> No
-              </label>
-            </div>
-          </dd>
-          <dt title="Pedestrian Management may be Required">Will the construction be in or next to any pathway / walkway / pedestrian access?</dt>
-          <dd>
-            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Pedestrian Access">
-              <label class="btn btn-primary active">
-                <input type="radio" name="cpPedestrianAccess" id="cpPedestrianAccessYes" autocomplete="off" checked> Yes
-              </label>
-              <label class="btn btn-primary">
-                <input type="radio" name="cpPedestrianAccess" id="cpPedestrianAccessNo" autocomplete="off"> No
-              </label>
-            </div>
-          </dd>
-          <dt title="Pedestrian Management definitely Required">Will pedestrian access be obstructed during construction?</dt>
-          <dd>
-            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Impacting to Pedestrian Access">
-              <label class="btn btn-primary active">
-                <input type="radio" name="cpPedestrianAccessImpact" id="cpPedestrianAccessImpactYes" autocomplete="off" checked> Yes
-              </label>
-              <label class="btn btn-primary">
-                <input type="radio" name="cpPedestrianAccessImpact" id="cpPedestrianAccessImpactNo" autocomplete="off"> No
-              </label>
-            </div>
-          </dd>
-          <dt title="Engineering Report may be Required">Will the construction be in, under or next to any structure?</dt>
-          <dd>
-            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Structure">
-              <label class="btn btn-primary active">
-                <input type="radio" name="cpStructure" id="cpStructureYes" autocomplete="off" checked> Yes
-              </label>
-              <label class="btn btn-primary">
-                <input type="radio" name="cpStructure" id="cpStructureNo" autocomplete="off"> No
-              </label>
-            </div>
-          </dd>
-          <dt title="Engineering Report definitely Required">Will any structure next to / over the construction be potentially affected in terms of its appearance / function / structural integrity?</dt>
-          <dd>
-            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Potentially Impacting Structure">
-              <label class="btn btn-primary active">
-                <input type="radio" name="cpStructureImpact" id="cpStructureImpactYes" autocomplete="off" checked> Yes
-              </label>
-              <label class="btn btn-primary">
-                <input type="radio" name="cpStructureImpact" id="cpStructureImpactNo" autocomplete="off"> No
-              </label>
-            </div>
-          </dd>
-        </dl>
-        <p>Enter details about the immediate area (50m) around Construction.</p>
-        <dl>
-          <dt title="Restricted Hours of Operation, Noise Levels, Use of Artificial Lighting, Number of Vehicles parked on street">Are there residential dwellings?</dt>
-          <dd>
-            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Residences">
-              <label class="btn btn-primary active">
-                <input type="radio" name="cpAreaResidential" id="cpAreaResidentialYes" autocomplete="off" checked> Yes
-              </label>
-              <label class="btn btn-primary">
-                <input type="radio" name="cpAreaResidential" id="cpAreaResidentialNo" autocomplete="off"> No
-              </label>
-            </div>
-          </dd>
-          <dt title="Restricted Hours of Operation, Noise Levels, Number of Vehicles parked on street">Are there office buildings?</dt>
-          <dd>
-            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Offices">
-              <label class="btn btn-primary active">
-                <input type="radio" name="cpAreaOffice" id="cpAreaOfficeYes" autocomplete="off" checked> Yes
-              </label>
-              <label class="btn btn-primary">
-                <input type="radio" name="cpAreaOffice" id="cpAreaOfficeNo" autocomplete="off"> No
-              </label>
-            </div>
-          </dd>
-          <dt title="Restricted Number of Vehicles parked on street">Are there industrial buildings and other structures?</dt>
-          <dd>
-            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Industry and Other Structures">
-              <label class="btn btn-primary active">
-                <input type="radio" name="cpAreaIndustrial" id="cpAreaIndustrialYes" autocomplete="off" checked> Yes
-              </label>
-              <label class="btn btn-primary">
-                <input type="radio" name="cpAreaIndustrial" id="cpAreaIndustrialNo" autocomplete="off"> No
-              </label>
-            </div>
-          </dd>
-          <dt title="Restricted Number of Vehicles parked on street, potential security restrictions">Are there Federal / State services (including emergency services, hospitals)?</dt>
-          <dd>
-            <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Federal / State Services / Emergency Services">
-              <label class="btn btn-primary active">
-                <input type="radio" name="cpAreaSpecial" id="cpAreaSpecialYes" autocomplete="off" checked> Yes
-              </label>
-              <label class="btn btn-primary">
-                <input type="radio" name="cpAreaSpecial" id="cpAreaSpecialNo" autocomplete="off"> No
-              </label>
-            </div>
-          </dd>
-        </dl>
-        <p>Enter the required details for whom the Construction permit(s) will be issued to.</p>
-        <dl>
-          <dt>Organisation Name</dt>
-          <dd><input id="cpOrgName" type="text" /></dd>
-          <dt>Organisation Physical Address</dt>
-          <dd><input id="cpOrgAddressPhysical" type="text" /></dd>
-          <dt>Organisation Mailing Address</dt>
-          <dd><input id="cpOrgAddressMailing" type="text" /></dd>
-          <dt>Organisation Phone Number</dt>
-          <dd><input id="cpOrgPhone" type="text" /></dd>
-          <dt>Organisation Email Address</dt>
-          <dd><input id="cpOrgEmail" type="email" /></dd>
-          <dt>Organisation Contact Person</dt>
-          <dd><input id="cpOrgContact" type="text" /></dd>
-          <dt>Organisation Contact Phone</dt>
-          <dd><input id="cpOrgContactPhone" type="text" /></dd>
-        </dl>
-        <p>Construction permits have a short life span and are limited in area. The area will also be limited on the basis of how the construction will impact the use of public assets such as roads and footpaths.</p>
-        <p>We recommend you break up your route into several areas and request an appropriate number of Construction permits covering each area and spread across several time periods. Taking into account all of the factors that will affect your construction.</p>
+      <div class="panel-heading" role="tab" id="HeadingConstructionPermit">
+        <h4 class="panel-title">
+          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#ConstructionPermit" aria-expanded="false" aria-controls="collapseRowConstructionPermitHolder">
+            Construction Permit Holder
+          </a>
+        </h4>
       </div>
-    </div>
-  </div>*@
+      <div id="ConstructionPermit" class="panel-collapse collapse" role="tabpanel" aria-labelledby="HeadingConstructionPermit">
+        <div class="panel-body">
+          <p>Enter details about how the Construction will be performed.</p>
+          <dl>
+            <dt title="Traffic Management may be Required">Will the construction be in or next to any roadway / driveway / vehicle access?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Vehicle Access">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpVehicleAccess" id="cpVehicleAccessYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpVehicleAccess" id="cpVehicleAccessNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Traffic Management definitely Required">Will vehicle access be obstructed during construction?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Impacting to Vehicle Access">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpVehicleAccessImpact" id="cpVehicleAccessImpactYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpVehicleAccessImpact" id="cpVehicleAccessImpactNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Pedestrian Management may be Required">Will the construction be in or next to any pathway / walkway / pedestrian access?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Pedestrian Access">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpPedestrianAccess" id="cpPedestrianAccessYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpPedestrianAccess" id="cpPedestrianAccessNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Pedestrian Management definitely Required">Will pedestrian access be obstructed during construction?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Impacting to Pedestrian Access">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpPedestrianAccessImpact" id="cpPedestrianAccessImpactYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpPedestrianAccessImpact" id="cpPedestrianAccessImpactNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Engineering Report may be Required">Will the construction be in, under or next to any structure?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Structure">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpStructure" id="cpStructureYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpStructure" id="cpStructureNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Engineering Report definitely Required">Will any structure next to / over the construction be potentially affected in terms of its appearance / function / structural integrity?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Potentially Impacting Structure">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpStructureImpact" id="cpStructureImpactYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpStructureImpact" id="cpStructureImpactNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+          </dl>
+          <p>Enter details about the immediate area (50m) around Construction.</p>
+          <dl>
+            <dt title="Restricted Hours of Operation, Noise Levels, Use of Artificial Lighting, Number of Vehicles parked on street">Are there residential dwellings?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Residences">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpAreaResidential" id="cpAreaResidentialYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpAreaResidential" id="cpAreaResidentialNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Restricted Hours of Operation, Noise Levels, Number of Vehicles parked on street">Are there office buildings?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Offices">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpAreaOffice" id="cpAreaOfficeYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpAreaOffice" id="cpAreaOfficeNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Restricted Number of Vehicles parked on street">Are there industrial buildings and other structures?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Industry and Other Structures">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpAreaIndustrial" id="cpAreaIndustrialYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpAreaIndustrial" id="cpAreaIndustrialNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Restricted Number of Vehicles parked on street, potential security restrictions">Are there Federal / State services (including emergency services, hospitals)?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Federal / State Services / Emergency Services">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpAreaSpecial" id="cpAreaSpecialYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpAreaSpecial" id="cpAreaSpecialNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+          </dl>
+          <p>Enter the required details for whom the Construction permit(s) will be issued to.</p>
+          <dl>
+            <dt>Organisation Name</dt>
+            <dd><input id="cpOrgName" type="text" /></dd>
+            <dt>Organisation Physical Address</dt>
+            <dd><input id="cpOrgAddressPhysical" type="text" /></dd>
+            <dt>Organisation Mailing Address</dt>
+            <dd><input id="cpOrgAddressMailing" type="text" /></dd>
+            <dt>Organisation Phone Number</dt>
+            <dd><input id="cpOrgPhone" type="text" /></dd>
+            <dt>Organisation Email Address</dt>
+            <dd><input id="cpOrgEmail" type="email" /></dd>
+            <dt>Organisation Contact Person</dt>
+            <dd><input id="cpOrgContact" type="text" /></dd>
+            <dt>Organisation Contact Phone</dt>
+            <dd><input id="cpOrgContactPhone" type="text" /></dd>
+          </dl>
+          <p>Construction permits have a short life span and are limited in area. The area will also be limited on the basis of how the construction will impact the use of public assets such as roads and footpaths.</p>
+          <p>We recommend you break up your route into several areas and request an appropriate number of Construction permits covering each area and spread across several time periods. Taking into account all of the factors that will affect your construction.</p>
+        </div>
+      </div>
+    </div>*@
 </div>
 
 @section scripts
@@ -509,4 +522,11 @@
       Una.gMap = unaMap.map;
     }
   </script>
+  <environment names="Development">
+    <script type="text/javascript" src="~/js/sidebar.js"></script>
+  </environment>
+  <environment names="Staging,Production">
+    <script type="text/javascript" src="~/js/sidebar.min.js"></script>
+  </environment>
+
 }

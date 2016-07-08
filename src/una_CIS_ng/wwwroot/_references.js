@@ -5,6 +5,7 @@
 /// <reference path="js/controllers/permitcontroller.js" />
 /// <reference path="js/controllers/permitservicefactory.js" />
 /// <reference path="js/geoData.js" />
+/// <reference path="js/sidebar.js" />
 /// <reference path="js/site.js" />
 /// <reference path="js/unaapp.js" />
 /// <reference path="js/unamap.js" />

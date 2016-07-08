@@ -1,0 +1,73 @@
+﻿@calloutBackgroundColor: #fff;
+@calloutBorderColor: #eee;
+
+@dangerBackgroundColor: #fcf2f2;
+@dangerBorderColor: #dFb5b4;
+@dangerAlertColor: #B94A48;
+@warningBackgroundColor: #fefbed;
+@warningBorderColor: #f1e7bc;
+@warningAlertColor: #C09853;
+@infoBackgroundColor: #f0f7fd;
+@infoBorderColor: #d0e3f0;
+@infoAlertColor: #3A87AD;
+
+/* Base styles (regardless of theme) */
+.bs-callout {
+    margin: 20px 0;
+    padding: 15px 30px 15px 15px;
+    border-left: 5px solid @calloutBorderColor;
+}
+
+.bs-callout-sm {
+    margin: 10px 0;
+    padding: 7px 30px 7px 15px;
+    border-left: 5px solid @calloutBorderColor;
+}
+
+.bs-callout h4 {
+    margin-top: 0;
+}
+
+.bs-callout p:last-child {
+    margin-bottom: 0;
+}
+
+.bs-callout code,
+.bs-callout .highlight {
+    background-color: @calloutBackgroundColor;
+}
+
+/* Themes for different contexts */
+.bs-callout-danger {
+    background-color: @dangerBackgroundColor;
+    border-color: @dangerBorderColor;
+}
+
+.bs-callout-warning {
+    background-color: @warningBackgroundColor;
+    border-color: @warningBorderColor;
+}
+
+.bs-callout-info {
+    background-color: @infoBackgroundColor;
+    border-color: @infoBorderColor;
+}
+
+.bs-callout-danger h4,
+.bs-callout-danger a.alert-link {
+    color: @dangerAlertColor;
+}
+
+.bs-callout-warning h4,
+.bs-callout-warning a.alert-link {
+    color: @warningAlertColor;
+}
+
+.bs-callout-info h4,
+.bs-callout-info a.alert-link {
+    color: @infoAlertColor;
+}
+
+.bs-callout a.alert-link {
+    font-weight: bold;
+}

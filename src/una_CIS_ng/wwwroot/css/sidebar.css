@@ -1,0 +1,43 @@
+﻿.affix-top,.affix{
+	position: static;
+}
+
+#sidebar {
+	background-color:#eee;
+}
+
+#sidebar li.active {
+  	border:0 #ddd solid;
+  	border-right-width:4px;
+}
+
+@media screen and (min-width: 992px) {
+  
+  #sidebar .nav > .active > ul {
+    display: block;
+  }
+  /* Widen the fixed sidebar */
+  #sidebar.affix-top {
+    position: static;
+  	margin-top:30px;
+  	width:228px;
+  }
+  
+  #sidebar.affix,
+  #sidebar.affix-bottom {
+    width: 228px;
+  }
+  #sidebar.affix {
+    position: fixed;
+    top: 200px;
+  }
+  #sidebar.affix-bottom {
+    position: absolute;
+  }
+}
+@media screen and (min-width: 1200px) {
+  #sidebar.affix-bottom,
+  #sidebar.affix {
+    width: 235px;
+  }
+}

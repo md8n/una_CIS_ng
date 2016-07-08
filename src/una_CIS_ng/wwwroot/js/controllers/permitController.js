@@ -1,4 +1,6 @@
-﻿(function (angular) {
+﻿var permitScope;
+
+(function (angular) {
   "use strict";
 
   var handlePermits = function (response) {
@@ -14,13 +16,15 @@
     .controller("permitController", permitController);
 
   function permitController($scope, permitService) {
+    permitScope = $scope;
+
     $scope.permit = $scope.permit || {};
     $scope.permit.title = "permitController";
     $scope.permit.permits = {
       "row": {
         "id": null,
         "type": "row",
-        "locations": [],
+        "locations": { "type": "FeatureCollection", "features": [] },
         "parties": {
           "holder": {
             "id": null,

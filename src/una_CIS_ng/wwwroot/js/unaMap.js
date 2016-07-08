@@ -28,13 +28,13 @@ Una.Map = function (gm, mapElId) {
     var li = null;
     if (ul) {
       polylinePath.forEach(function (el) {
-        var lat = Number(Math.round(el.lat() + 'e7') + 'e-7');
         var lon = Number(Math.round(el.lng() + 'e7') + 'e-7');
-        li = createElement("li", "Lat:" + lat.toFixed(7) + " Lon:" + lon.toFixed(7));
+        var lat = Number(Math.round(el.lat() + 'e7') + 'e-7');
+        li = createElement("li", " Lon:" + lon.toFixed(7) + " Lat:" + lat.toFixed(7));
         ul.appendChild(li);
 
-        var latlng = { lat: parseFloat(lat.toFixed(7)), lng: parseFloat(lon.toFixed(7)) };
-        var addr = geocodeLatLng(latlng, ll);
+        var lnglat = { lng: parseFloat(lon.toFixed(7)), lat: parseFloat(lat.toFixed(7)) };
+        var addr = geocodeLngLat(lnglat, ll);
       });
     }
 
@@ -75,18 +75,18 @@ Una.Map = function (gm, mapElId) {
       { style: "currency", currency: curCode, minimumFractionDigits: 0, maximumFractionDigits: 0 });
   }
 
-  function geocodeLatLng(latlng, ll) {
+  function geocodeLngLat(lnglat, ll) {
     var result = "";
-    geocoder.geocode({ 'location': latlng }, function (results, status) {
+    geocoder.geocode({ 'location': lnglat }, function (results, status) {
       if (status === gm.GeocoderStatus.OK) {
         if (results.length > 0) {
           if (ll) {
-            var li = createElement("li", getClosestAddress(results, latlng).formatted_address);
+            var li = createElement("li", getClosestAddress(results, lnglat).formatted_address);
             //var li = createElement("li", results[0].formatted_address);
             ll.appendChild(li);
           } else {
             var marker = new gm.Marker({
-              position: latlng,
+              position: lnglat,
               map: map
             });
             infowindow.setContent(results[0].formatted_address);
@@ -103,7 +103,7 @@ Una.Map = function (gm, mapElId) {
     return result;
   }
 
-  function getClosestAddress(addressResults, latlng) {
+  function getClosestAddress(addressResults, lnglat) {
     if (!addressResults || !Array.isArray(addressResults)) {
       return null;
     }
@@ -119,8 +119,8 @@ Una.Map = function (gm, mapElId) {
     } else {
       // Get the closest
       const preferredResult = preferredResults.sort(function (a, b) {
-        const aDist = distance(a.geometry.location, latlng);
-        const bDist = distance(b.geometry.location, latlng);
+        const aDist = distance(a.geometry.location, lnglat);
+        const bDist = distance(b.geometry.location, lnglat);
         if (aDist > bDist) return 1;
         if (aDist < bDist) return -1;
         return 0;
@@ -131,10 +131,10 @@ Una.Map = function (gm, mapElId) {
   }
 
   // distance calc derived from www.geodatasource.com
-  function distance(latlon1, latlon2) {
-    const radlat1 = Math.PI * latlon1.lat / 180;
-    const radlat2 = Math.PI * latlon2.lat / 180;
-    const radtheta = Math.PI * (latlon1.lng - latlon2.lng) / 180;
+  function distance(lonlat1, lonlat2) {
+    const radlat1 = Math.PI * lonlat1.lat / 180;
+    const radlat2 = Math.PI * lonlat2.lat / 180;
+    const radtheta = Math.PI * (lonlat1.lng - lonlat2.lng) / 180;
     const dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
 
     // note: not interested in conversion to miles, Kms, Nms, etc.
@@ -144,7 +144,7 @@ Una.Map = function (gm, mapElId) {
   if (!!gm && !!gm.Map) {
     map = new gm.Map(mapEl,
     {
-      center: { lat: 6.520226, lng: 3.468163 }, // 6.520226, 3.468163
+      center: { lng: 3.468163, lat: 6.520226 },
       zoom: 9
     });
 
@@ -176,6 +176,20 @@ Una.Map = function (gm, mapElId) {
 
         const ratePerCp = getRate("RatePerCP");
         const cpTotal = Math.floor(1 * ratePerCp);
+
+        const infLc = document.getElementById("location");
+        if (infLc && permitScope) {
+          const polylineFeature = { "type": "Feature", "geometry": { "type": "LineString", "coordinates": [] }, "properties": {} };
+          for (let ix = 0; ix < plP.getLength() ; ix++) {
+            const pt = plP.getAt(ix);
+            const lon = Number(Math.round(pt.lng() + 'e7') + 'e-7');
+            const lat = Number(Math.round(pt.lat() + 'e7') + 'e-7');
+
+            polylineFeature.geometry.coordinates.push([lon, lat]);
+          }
+          permitScope.$apply(function () { permitScope.permit.permits.row.locations.features.push(polylineFeature); });
+        }
+
 
         const infRt = document.getElementById("infRt");
         if (infRt) {

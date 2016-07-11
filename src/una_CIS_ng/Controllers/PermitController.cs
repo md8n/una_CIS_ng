@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using una_CIS_ng.Core;
 using una_CIS_ng.Models;
 using una_CIS_ng.Repository;
+using una_CIS_ng.Services;
 
 namespace una_CIS_ng.Controllers
 {
@@ -98,6 +100,14 @@ namespace una_CIS_ng.Controllers
       {
         return BadRequest();
       }
+
+      var machineInfo = "mchn";
+      var shiftInfo = "sft";
+      var oDoc = GeneratePDF.CreatePDFPermitApplication("Right of Way", "Perm Holder");
+      var oWriter = GeneratePDF.CreatePdfWriter(oDoc, new FileStream("E:\\Temp\\Test.pdf", FileMode.Create));
+      oWriter.PageEvent = new PDFPageEvent(machineInfo, shiftInfo);
+      oDoc.Open();
+      oDoc.Close();
 
       var permit = new Permit();
       foreach (var jPermKid in jPerm.Children())

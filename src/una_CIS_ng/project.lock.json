@@ -18,6 +18,15 @@
           "AngularJS.Core": "1.5.6"
         }
       },
+      "iTextSharp-LGPL/4.1.6": {
+        "type": "package",
+        "compile": {
+          "lib/iTextSharp.dll": {}
+        },
+        "runtime": {
+          "lib/iTextSharp.dll": {}
+        }
+      },
       "Ix-Async/1.2.5": {
         "type": "package",
         "frameworkAssemblies": [
@@ -2600,6 +2609,16 @@
         "content/Scripts/angular-route.js",
         "content/Scripts/angular-route.min.js",
         "content/Scripts/angular-route.min.js.map"
+      ]
+    },
+    "iTextSharp-LGPL/4.1.6": {
+      "sha512": "35STyoGKJOX1oTUWHOzn8/I1NXQMbkxKZfBsYwj8ZjOICVEZIi88wfOekQbYeU6MK0VOoZrMMO1e7KQVjJSIxQ==",
+      "type": "package",
+      "path": "iTextSharp-LGPL/4.1.6",
+      "files": [
+        "iTextSharp-LGPL.4.1.6.nupkg.sha512",
+        "iTextSharp-LGPL.nuspec",
+        "lib/iTextSharp.dll"
       ]
     },
     "Ix-Async/1.2.5": {
@@ -7138,7 +7157,8 @@
       "Microsoft.VisualStudio.Web.BrowserLink.Loader >= 14.0.0-rc2-final",
       "Microsoft.VisualStudio.Web.CodeGeneration.Tools >= 1.0.0-preview1-final",
       "Microsoft.VisualStudio.Web.CodeGenerators.Mvc >= 1.0.0-preview1-final",
-      "MongoDB.Driver >= 2.2.4"
+      "MongoDB.Driver >= 2.2.4",
+      "iTextSharp-LGPL >= 4.1.6"
     ],
     ".NETFramework,Version=v4.6.1": []
   },

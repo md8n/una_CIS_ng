@@ -5,6 +5,7 @@
     "AngularJS.Core": "1.5.6",
     "AngularJS.Resource": "1.5.6",
     "AngularJS.Route": "1.5.6",
+    "iTextSharp-LGPL": "4.1.6",
     "Microsoft.ApplicationInsights.AspNetCore": "1.0.0-rc2-final",
     "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0-rc2-final",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0-rc2-final",

@@ -43,34 +43,38 @@
           <div class="well">
             <h3 id="PermitHolderDeclaration">Permit Holder</h3>
             <div class="form-group row">
-              <label class="col-sm-6 col-lg-5 text-right">The Permit Holder is a:</label>
-              <div class="btn-group col-sm-6 col-lg-7" role="group" aria-label="Permit Holding Entity Type">
-                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.holderType == 'Person'}">
-                  <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.holderType" value="Person" autocomplete="off" ng-required="true"> Person
-                </label>
-                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.holderType == 'Organisation'}">
-                  <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.holderType" value="Organisation" autocomplete="off" ng-required="true"> Organisation
-                </label>
+              <label class="col-xs-6 col-sm-5 col-md-4 col-lg-3 text-right">The Permit Holder is a:</label>
+              <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9">
+                <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity Type">
+                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.holderType == 'Person'}">
+                    <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.holderType" value="Person" autocomplete="off" ng-required="true"> Person
+                  </label>
+                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.holderType == 'Organisation'}">
+                    <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.holderType" value="Organisation" autocomplete="off" ng-required="true"> Organisation
+                  </label>
+                </div>
               </div>
             </div>
-            <div id="PermitApplicationHolder" class="form-group">
-              <label class="col-sm-6 col-lg-5 text-right">The Permit Holder is also the Infrastructure Owner:</label>
-              <div class="btn-group col-sm-6 col-lg-7" role="group" aria-label="Permit Holding Entity is Infrastructure Owner">
-                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.isInfrastructureOwner}">
-                  <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.holder.isInfrastructureOwner" ng-value="true" autocomplete="off" checked ng-required="true"> Yes
-                </label>
-                <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.parties.holder.isInfrastructureOwner}">
-                  <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.holder.isInfrastructureOwner" ng-value="false" autocomplete="off" ng-required="true"> No
-                </label>
+            <div id="PermitApplicationHolder" class="form-group row">
+              <label class="col-xs-6 col-sm-5 col-md-4 col-lg-3 text-right">The Permit Holder is also the Infrastructure Owner:</label>
+              <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9">
+                <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity is Infrastructure Owner">
+                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.isInfrastructureOwner}">
+                    <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.holder.isInfrastructureOwner" ng-value="true" autocomplete="off" checked ng-required="true"> Yes
+                  </label>
+                  <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.parties.holder.isInfrastructureOwner}">
+                    <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.holder.isInfrastructureOwner" ng-value="false" autocomplete="off" ng-required="true"> No
+                  </label>
+                </div>
               </div>
             </div>
             <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.holderType === 'Person'">
               <div class="col-sm-3">
-                <label for="rowHoldingContactNamePersonal" title="Personal names / First names">Personal name</label>
+                <label title="Personal names / First names">Personal name</label>
                 <input class="form-control" type="text" name="rowHoldingEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holder.personalName" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType === 'Person'">
               </div>
               <div class="col-sm-3">
-                <label for="rowHoldingContactNameSurname" title="Surname / Family name / Patronymic">Surname</label>
+                <label title="Surname / Family name / Patronymic">Surname</label>
                 <input class="form-control" type="text" name="rowHoldingEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holder.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType === 'Person'">
               </div>
             </div>
@@ -142,13 +146,15 @@
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Use Office Physical Address for Mailing Address?</label>
-                <div class="btn-group col-sm-8 col-lg-9" role="group" aria-label="Permit Holder Office Address Is Also Mailing Address">
-                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.addresses.physical.isMailing}">
-                    <input type="radio" ng-model="permit.permits.row.parties.holder.addresses.physical.isMailing" ng-value="true" autocomplete="off" checked> Yes
-                  </label>
-                  <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.parties.holder.addresses.physical.isMailing}">
-                    <input type="radio" ng-model="permit.permits.row.parties.holder.addresses.physical.isMailing" ng-value="false" autocomplete="off"> No
-                  </label>
+                <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9">
+                  <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holder Office Address Is Also Mailing Address">
+                    <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.addresses.physical.isMailing}">
+                      <input type="radio" ng-model="permit.permits.row.parties.holder.addresses.physical.isMailing" ng-value="true" autocomplete="off" checked> Yes
+                    </label>
+                    <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.parties.holder.addresses.physical.isMailing}">
+                      <input type="radio" ng-model="permit.permits.row.parties.holder.addresses.physical.isMailing" ng-value="false" autocomplete="off"> No
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>

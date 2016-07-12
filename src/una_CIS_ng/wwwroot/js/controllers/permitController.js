@@ -38,7 +38,7 @@
     $scope.permit.All = permitService.All().$promise.then(handlePermits);
     $scope.permit.Save = function () {
       var permit = $scope.permit.permits.row;
-      alert('trying to save: ' + JSON.stringify(permit));
+      //alert('trying to save: ' + JSON.stringify(permit));
       permitService.save(permit);
     };
 

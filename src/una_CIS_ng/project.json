@@ -39,7 +39,8 @@
       "version": "1.0.0-preview1-final",
       "type": "build"
     },
-    "MongoDB.Driver": "2.2.4"
+    "MongoDB.Driver": "2.2.4",
+    "Sendgrid": "7.0.5"
   },
 
   "tools": {

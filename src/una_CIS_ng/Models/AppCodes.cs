@@ -8,5 +8,7 @@
 
     public string MongoConnection { get; set; }
     public string MongoDbName { get; set; }
+
+    public string SendGridApiKey { get; set; }
   }
 }

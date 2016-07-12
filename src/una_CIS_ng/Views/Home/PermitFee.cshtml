@@ -1,0 +1,179 @@
+﻿@{
+  ViewData["Title"] = "Permit - Fee Estimator";
+}
+
+<p>Use this calculator to estimate the fees, charges and penalties related to your existing or proposed infrastructure.</p>
+<p>All of the information entered on this page, stays on this page.  Please note that it is a guide only.</p>
+<div class="container bs-docs-container" ng-controller="feeCalculatorController">
+  <div class="form-group row">
+    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Infrastructure state:</label>
+    <div class="btn-group col-xs-7 col-sm-8 col-md-9 col-lg-10" role="group" aria-label="Infrastructure State">
+      <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infState == 'New'}">
+        <input type="radio" name="infState" ng-model="calc.infState" value="New" autocomplete="off" ng-required="true"> New
+      </label>
+      <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infState == 'Existing'}">
+        <input type="radio" name="infState" ng-model="calc.infState" value="Existing" autocomplete="off" ng-required="true"> Existing
+      </label>
+      <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infState == 'Decommissioning'}">
+        <input type="radio" name="infState" ng-model="calc.infState" value="Decommissioning" autocomplete="off" ng-required="true"> Decommissioning
+      </label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Permit state:</label>
+    <div class="btn-group col-xs-7 col-sm-8 col-md-9 col-lg-10" role="group" aria-label="Infrastructure State">
+      <label class="btn btn-radio btn-primary" ng-class="{'active': calc.permState == 'New'}">
+        <input type="radio" name="permState" ng-model="calc.permState" value="New" autocomplete="off" ng-required="true"> Applying<br/>for New
+      </label>
+      <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'Temporary'}" ng-show="calc.infState != 'New'">
+        <input type="radio" name="permState" ng-model="calc.permState" value="Temporary" autocomplete="off" ng-required="true"> Applying<br />for Temporary
+      </label>
+      <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'Existing'}" ng-show="calc.infState != 'New'">
+        <input type="radio" name="permState" ng-model="calc.permState" value="Existing" autocomplete="off" ng-required="true"> Have<br />Existing
+      </label>
+      <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'Cannot'}" ng-show="calc.infState != 'New'">
+        <input type="radio" name="permState" ng-model="calc.permState" value="Cannot" autocomplete="off" ng-required="true"> Cannot Apply<br/>(non-conforming)
+      </label>
+    </div>
+    <p class="col-xs-push-5 col-sm-push-4 col-md-push-3 col-lg-push-2 col-xs-7 col-sm-8 col-md-9 col-lg-10">
+      <small>
+        Temporary Permits are only for existing conforming infrastructure, built before July 2004, and expire after one year. 
+        After which you will still have to apply for a Right-of-Way permit or a Construction Permit to Decommission your infrastructure.
+      </small>
+    </p>
+  </div>
+  <div class="form-group row">
+    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Type of Infrastructure:</label>
+    <div class="btn-group col-xs-7 col-sm-8 col-md-9 col-lg-10" role="group" aria-label="Infrastructure Type">
+      <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infType == 'TransTower'}">
+        <input type="radio" name="infType" ng-model="calc.infType" value="TransTower" autocomplete="off" ng-required="true"> Transmission<br />Tower / Mast
+      </label>
+      <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infType == 'OtherTower'}">
+        <input type="radio" name="infType" ng-model="calc.infType" value="OtherTower" autocomplete="off" ng-required="true"> Other<br />Tower / Mast
+      </label>
+      <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infType == 'Dish'}">
+        <input type="radio" name="infType" ng-model="calc.infType" value="Dish" autocomplete="off" ng-required="true"> Dish<br />&nbsp;
+      </label>
+      <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infType == 'Underground'}">
+        <input type="radio" name="infType" ng-model="calc.infType" value="Underground" autocomplete="off" ng-required="true"> Underground<br />&nbsp;
+      </label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Location of Infrastructure:</label>
+    <div class="btn-group col-xs-7 col-sm-8 col-md-9 col-lg-10" role="group" aria-label="Infrastructure Location">
+      <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infLoc == 'Business'}">
+        <input type="radio" name="infLoc" ng-model="calc.infLoc" value="Business" autocomplete="off" ng-required="true"> Business District
+      </label>
+      <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infLoc == 'HighDensity'}">
+        <input type="radio" name="infLoc" ng-model="calc.infLoc" value="HighDensity" autocomplete="off" ng-required="true"> High Density Zone
+      </label>
+      <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infLoc == 'Other'}">
+        <input type="radio" name="infLoc" ng-model="calc.infLoc" value="Other" autocomplete="off" ng-required="true"> Other
+      </label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Dimension:</label>
+    <div class="input-group col-xs-7 col-sm-8 col-md-9 col-lg-10">
+      <input name="dimension" id="dimension" ng-model="calc.dimension" type="number" />
+      <span ng-show="calc.infType === 'Dish' || calc.infType === 'Underground'">in metres</span>
+      <span ng-show="calc.infType === 'TransTower' || calc.infType === 'OtherTower'">in feet</span>
+    </div>
+  </div>
+  <div class="form-group row" ng-show="calc.infType === 'Underground'">
+    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Sections:</label>
+    <div class="input-group col-xs-7 col-sm-8 col-md-9 col-lg-10">
+      <input name="section" id="section" ng-model="calc.section" type="number" />
+    </div>
+  </div>
+  <h3>Permit Application Fees</h3>
+  <div class="table-responsive">
+    <table class="table table-striped table-condensed table-hover">
+      <thead>
+        <tr>
+          <th class="col-xs-7">Item</th>
+          <th class="col-xs-1 text-right">Unit</th>
+          <th class="col-xs-1 text-right">Rate</th>
+          <th class="col-xs-2">&nbsp;</th>
+          <th class="col-xs-1 text-right">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.applicationFilter">
+          <td>{{fee.name}}</td>
+          <td class="text-right">{{fee.unit == 1 ? fee.unit : (fee.measure == 'section' ? calc.section : calc.dimension)}}</td>
+          <td class="text-right">{{fee.rate}}</td>
+          <td>{{fee.measure != "" ? (" for every " + fee.divider + " " + fee.measure) : ""}}</td>
+          <td class="text-right">{{fee.unit == 1 ? fee.rate : ((fee.measure == 'section' ? calc.section : calc.dimension) / fee.divider * fee.rate)}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>First Renewal Fees</h3>
+  <div class="table-responsive">
+    <table class="table table-striped table-condensed table-hover">
+      <thead>
+        <tr>
+          <th class="col-xs-7">Item</th>
+          <th class="col-xs-1 text-right">Unit</th>
+          <th class="col-xs-1 text-right">Rate</th>
+          <th class="col-xs-2">&nbsp;</th>
+          <th class="col-xs-1 text-right">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.firstRenewalFilter">
+          <td>{{fee.name}}</td>
+          <td class="text-right">{{fee.unit == 1 ? fee.unit : (fee.measure == 'section' ? calc.section : calc.dimension)}}</td>
+          <td class="text-right">{{fee.rate}}</td>
+          <td>{{fee.measure != "" ? (" for every " + fee.divider + " " + fee.measure) : ""}}</td>
+          <td class="text-right">{{fee.unit == 1 ? fee.rate : ((fee.measure == 'section' ? calc.section : calc.dimension) / fee.divider * fee.rate)}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Renewal Fees</h3>
+  <div class="table-responsive">
+    <table class="table table-striped table-condensed table-hover">
+      <thead>
+        <tr>
+          <th class="col-xs-7">Item</th>
+          <th class="col-xs-1 text-right">Unit</th>
+          <th class="col-xs-1 text-right">Rate</th>
+          <th class="col-xs-2">&nbsp;</th>
+          <th class="col-xs-1 text-right">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.renewalFilter">
+          <td>{{fee.name}}</td>
+          <td class="text-right">{{fee.unit == 1 ? fee.unit : (fee.measure == 'section' ? calc.section : calc.dimension)}}</td>
+          <td class="text-right">{{fee.rate}}</td>
+          <td>{{fee.measure != "" ? (" for every " + fee.divider + " " + fee.measure) : ""}}</td>
+          <td class="text-right">{{fee.unit == 1 ? fee.rate : ((fee.measure == 'section' ? calc.section : calc.dimension) / fee.divider * fee.rate)}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <h3>Special Penalties</h3>
+  <p>Contact CIS if any of these apply to you</p>
+  <div class="table-responsive">
+    <table class="table table-striped table-condensed table-hover">
+      <thead>
+        <tr>
+          <th class="col-xs-8">Item</th>
+          <th class="col-xs-1 text-right">Rate</th>
+          <th class="col-xs-3">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.penaltyFilter">
+          <td>{{fee.name}}</td>
+          <td class="text-right">{{fee.rate}}</td>
+          <td>{{fee.measure != "" ? (" for every " + fee.divider + " " + fee.measure) : ""}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

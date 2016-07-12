@@ -55,6 +55,7 @@
           <li><a asp-controller="Home" asp-action="Map">Map</a></li>
           <li><a asp-controller="Home" asp-action="Permit">Permit</a></li>
           <li><a asp-controller="Home" asp-action="PermitInfo">Permit Info</a></li>
+          <li><a asp-controller="Home" asp-action="PermitFee">Fee Estimator</a></li>
           <li><a asp-controller="Home" asp-action="About">About</a></li>
           <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
         </ul>
@@ -82,6 +83,7 @@
     <script src="~/js/controllers/permitServiceFactory.js" asp-append-version="true"></script>
     <script src="~/js/controllers/geoDataController.js" asp-append-version="true"></script>
     <script src="~/js/controllers/permitController.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/feeCalculatorController.js" asp-append-version="true"></script>
     <script src="~/js/sidebar.js" asp-append-version="true" type="text/javascript"></script>
   </environment>
   <environment names="Staging,Production">
@@ -102,6 +104,7 @@
     <script src="~/js/controllers/permitServiceFactory.min.js" asp-append-version="true"></script>
     <script src="~/js/controllers/geoDataController.min.js" asp-append-version="true"></script>
     <script src="~/js/controllers/permitController.min.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/feeCalculatorController.min.js" asp-append-version="true"></script>
     <script src="~/js/sidebar.es5.js" asp-append-version="true" type="text/javascript"></script>
   </environment>
   @RenderSection("scripts", required: false)

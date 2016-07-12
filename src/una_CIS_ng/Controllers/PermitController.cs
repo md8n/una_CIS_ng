@@ -2,16 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver.GeoJsonObjectModel;
 using Newtonsoft.Json.Linq;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using una_CIS_ng.Core;
 using una_CIS_ng.Models;
 using una_CIS_ng.Repository;
 using una_CIS_ng.Services;
+using Attachment = SendGrid.Helpers.Mail.Attachment;
 
 namespace una_CIS_ng.Controllers
 {
@@ -20,10 +25,12 @@ namespace una_CIS_ng.Controllers
   public class PermitController : Controller
   {
     private readonly IPermitRepository _permitRepository;
+    private readonly AppCodes _appCodes;
 
-    public PermitController(IPermitRepository permitRepository)
+    public PermitController(IPermitRepository permitRepository, IOptions<AppCodes> optionsAccessor)
     {
       _permitRepository = permitRepository;
+      _appCodes = optionsAccessor.Value;
     }
 
     // GET: api/Permit/IsDbConnected
@@ -101,13 +108,33 @@ namespace una_CIS_ng.Controllers
         return BadRequest();
       }
 
-      var machineInfo = "mchn";
-      var shiftInfo = "sft";
+      var machineInfo = "test";
+      var shiftInfo = "file";
       var oDoc = GeneratePDF.CreatePDFPermitApplication("Right of Way", "Perm Holder");
       var oWriter = GeneratePDF.CreatePdfWriter(oDoc, new FileStream("E:\\Temp\\Test.pdf", FileMode.Create));
       oWriter.PageEvent = new PDFPageEvent(machineInfo, shiftInfo);
       oDoc.Open();
       oDoc.Close();
+
+      //var myMessage = new SendGridAPIClient();
+      var apiKey = _appCodes.SendGridApiKey;
+      dynamic sg = new SendGridAPIClient(apiKey);
+
+      var from = new Email("do_not_reply@cis.ng");
+      var subject = "Test message from CIS";
+      var to = new Email("obikenz@hotmail.com");
+      var cc = new Email("lee@md8n.com");
+      var content = new Content("text/plain", "test text");
+      var doco = new Attachment
+      {
+        Filename = "Test.pdf",
+        Type = "application/pdf",
+        Content = Convert.ToBase64String(System.IO.File.ReadAllBytes("E:\\Temp\\Test.pdf"))
+      };
+      var mail = new Mail(from, subject, to, content);
+      mail.Attachments = new List<Attachment> {doco};
+
+      dynamic response = sg.client.mail.send.post(requestBody: mail.Get());
 
       var permit = new Permit();
       foreach (var jPermKid in jPerm.Children())

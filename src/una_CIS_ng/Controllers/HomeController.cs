@@ -42,6 +42,13 @@ namespace una_CIS_ng.Controllers
       return View();
     }
 
+    public IActionResult PermitFee()
+    {
+      ViewData["Message"] = "Permit Fee Estimator";
+
+      return View();
+    }
+
     public IActionResult Map()
     {
       ViewData["Message"] = "Infrastructure Map";

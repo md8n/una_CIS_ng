@@ -56,6 +56,7 @@ namespace una_CIS_ng
         ac.GoogleApiBrowserKey = Configuration["GoogleMapReverseGeocodeBrowserKey"];
         ac.MongoConnection = Configuration.GetConnectionString("MongoConnection");
         ac.MongoDbName = Configuration["MongoDbName"];
+        ac.SendGridApiKey = Configuration["SendGridApiKey"];
       });
 
       services.AddMvc();

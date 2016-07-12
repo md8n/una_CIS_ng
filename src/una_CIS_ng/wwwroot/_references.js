@@ -1,5 +1,6 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="../gulpfile.js" />
+/// <reference path="js/controllers/feecalculatorcontroller.js" />
 /// <reference path="js/controllers/geodatacontroller.js" />
 /// <reference path="js/controllers/geodataservicefactory.js" />
 /// <reference path="js/controllers/permitcontroller.js" />

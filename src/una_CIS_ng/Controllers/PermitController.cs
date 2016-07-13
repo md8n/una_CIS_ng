@@ -2,13 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Parser.SyntaxTree;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver.GeoJsonObjectModel;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -125,29 +128,39 @@ namespace una_CIS_ng.Controllers
       var from = new Email("do_not_reply@cis.ng");
       var subject = "Test message from CIS";
       var to = new Email("obikenz@hotmail.com");
-      var content = new Content("text/plain", "test text");
+      var cc = new Email("lee@md8n.com");
+      var content = new Content("text/plain", jPerm.ToString(Formatting.Indented));
       var doco = new Attachment
       {
         Filename = "Test.pdf",
         Type = "application/pdf",
         Content = Convert.ToBase64String(oMem.ToArray())
       };
-      var mail = new Mail(from, subject, to, content)
+      var mail = new Mail(from, subject, cc, content)
       {
         Attachments = new List<Attachment> {doco}
       };
-      var cc = new Personalization
-      {
-        Ccs = new List<Email> {new Email("info@cis.ng")}
-      };
-      var bcc = new Personalization
-      {
-        Bccs = new List<Email> {new Email("obikenz@hotmail.com"), new Email("lee@md8n.com")}
-      };
-      mail.AddPersonalization(cc);
-      mail.AddPersonalization(bcc);
+      //var ccs = new Personalization
+      //{
+      //  Ccs = new List<Email> { new Email("info@cis.ng") },
+      //  Bccs = new List<Email> {new Email("obikenz@hotmail.com"), new Email("lee@md8n.com")}
+      //};
+      //mail.AddPersonalization(ccs);
+      //mail.AddPersonalization(bcc);
 
       dynamic response = sg.client.mail.send.post(requestBody: mail.Get());
+      var respCode = response.StatusCode as HttpStatusCode?;
+      if (!respCode.HasValue)
+      {
+        return BadRequest();
+      }
+      switch (respCode.Value)
+      {
+        case HttpStatusCode.Accepted:
+          break;
+        default:
+          return BadRequest(respCode.Value);
+      }
 
       var permit = new Permit();
       foreach (var jPermKid in jPerm.Children())

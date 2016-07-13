@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver.GeoJsonObjectModel;
 
 namespace una_CIS_ng.Models
 {
@@ -17,11 +18,11 @@ namespace una_CIS_ng.Models
 
     public double totalDistance { get; set; }
 
-    public object[] locations { get; set; }
+    public GeoJsonFeatureCollection<GeoJson2DGeographicCoordinates> locations { get; set; }
 
     public string[][] locationDescriptions { get; set; }
 
-    public object parties { get; set; }
+    public Party[] parties { get; set; }
 
     //[BsonElement("permit")]
     //public BsonDocument Permi { get; set; }

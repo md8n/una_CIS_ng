@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Driver.GeoJsonObjectModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NuGet.Protocol.Core.v3;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using una_CIS_ng.Core;
@@ -177,24 +179,78 @@ namespace una_CIS_ng.Controllers
         var jProp = jPermKid as JProperty;
         if (jProp != null)
         {
-          var jValue = jProp.Value.ToString();
+          var jValue = jProp.Value;
+          JArray jArray = null;
           if (jProp.Value.Type == JTokenType.Array)
           {
-
+            jArray = (JArray)jProp.Value;
           }
 
           switch (jProp.Name)
           {
             case "id":
-              permit.id = !string.IsNullOrWhiteSpace(jValue) ? new ObjectId(jValue) : new ObjectId();
+              permit.id = !string.IsNullOrWhiteSpace(jValue.ToString()) ? new ObjectId(jValue.ToString()) : new ObjectId();
               break;
             case "type":
-              permit.type = jValue;
+              permit.type = jValue.ToString();
+              break;
+            case "isSpecialZone":
+              permit.isSpecialZone = (bool)jValue;
+              break;
+            case "consType":
+              permit.consType = jValue.ToString();
+              break;
+            case "distances":
+              if (jArray == null)
+              {
+                break;
+              }
+              permit.distances = new double[jArray.Count];
+              var ix = 0;
+              foreach (var jToken in jArray)
+              {
+                permit.distances[ix++] = (double) jToken;
+              }
+              break;
+            case "totalDistance":
+              permit.totalDistance = (double)jValue;
               break;
             case "locations":
+              var geoJson = jValue.ToString(Formatting.Indented);
+              var geoDoc = BsonSerializer.Deserialize<GeoJsonFeatureCollection<GeoJson2DGeographicCoordinates>>(geoJson);
+              permit.locations = geoDoc;
+              break;
+            case "locationDescriptions":
+              if (jArray == null)
+              {
+                break;
+              }
+              permit.locationDescriptions = new string[jArray.Count][];
+              var il = 0;
+              foreach (var jlocDescArray in jArray)
+              {
+                permit.locationDescriptions[il] = new string[((JArray)jlocDescArray).Count];
+                var id = 0;
+                foreach (var jLocDesc in jlocDescArray)
+                {
+                  permit.locationDescriptions[il][id++] = jLocDesc.ToString();
+                }
+                il++;
+              }
               break;
             case "parties":
+              if (jValue == null)
+              {
+                break;
+              }
               break;
+
+              /* 
+    public object locations { get; set; }
+
+    public object parties { get; set; }  
+             
+             */
           }
         }
       }

@@ -47,11 +47,11 @@
               <label class="col-xs-6 col-sm-5 col-md-4 col-lg-3 text-right">The Permit Holder is a:</label>
               <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9">
                 <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity Type">
-                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.holderType == 'Person'}">
-                    <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.holderType" value="Person" autocomplete="off" ng-required="true"> Person
+                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.entityType == 'Person'}">
+                    <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.entityType" value="Person" autocomplete="off" ng-required="true"> Person
                   </label>
-                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.holderType == 'Organisation'}">
-                    <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.holderType" value="Organisation" autocomplete="off" ng-required="true"> Organisation
+                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.entityType == 'Organisation'}">
+                    <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.entityType" value="Organisation" autocomplete="off" ng-required="true"> Organisation
                   </label>
                 </div>
               </div>
@@ -69,35 +69,35 @@
                 </div>
               </div>
             </div>
-            <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.holderType === 'Person'">
+            <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.entityType === 'Person'">
               <div class="col-sm-3">
                 <label title="Personal names / First names">Personal name</label>
-                <input class="form-control" type="text" name="rowHoldingEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holder.personalName" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType === 'Person'">
+                <input class="form-control" type="text" name="rowHoldingEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holder.personalName" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType === 'Person'">
               </div>
               <div class="col-sm-3">
                 <label title="Surname / Family name / Patronymic">Surname</label>
-                <input class="form-control" type="text" name="rowHoldingEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holder.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType === 'Person'">
+                <input class="form-control" type="text" name="rowHoldingEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holder.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType === 'Person'">
               </div>
             </div>
-            <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.holderType === 'Organisation'">
+            <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.entityType === 'Organisation'">
               <label class="col-sm-4 col-lg-3 text-right">Organisation Name</label>
               <div class="col-sm-8 col-lg-9">
-                <input class="form-control" name="rowHoldingEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.holder.name" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType === 'Organisation'">
+                <input class="form-control" name="rowHoldingEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.holder.name" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType === 'Organisation'">
               </div>
             </div>
-            <div ng-show="permit.permits.row.parties.holder.holderType">
+            <div ng-show="permit.permits.row.parties.holder.entityType">
               <small>An email address is required. If you do not have an email address you may not be the Permit Holder.  The Permit Application will be emailed to this address.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Email</label>
                 <div class="col-sm-8 col-lg-9">
-                  <input class="form-control" name="rowHoldingEntityEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holder.email" maxlength="512" ng-required="permit.permits.row.parties.holder.holderType">
+                  <input class="form-control" name="rowHoldingEntityEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holder.email" maxlength="512" ng-required="permit.permits.row.parties.holder.entityType">
                 </div>
               </div>
-              <small ng-show="permit.permits.row.parties.holder.holderType === 'Person'">If the Permit Holder is a Person, then a Mobile Phone number is required.</small>
+              <small ng-show="permit.permits.row.parties.holder.entityType === 'Person'">If the Permit Holder is a Person, then a Mobile Phone number is required.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
                 <div class="col-sm-8 col-lg-9">
-                  <input class="form-control" name="rowHoldingEntityMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holder.mobile" maxlength="36" ng-required="permit.permits.row.parties.holder.holderType === 'Person'">
+                  <input class="form-control" name="rowHoldingEntityMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holder.mobile" maxlength="36" ng-required="permit.permits.row.parties.holder.entityType === 'Person'">
                 </div>
               </div>
               <div class="form-group">
@@ -107,7 +107,7 @@
                 </div>
               </div>
             </div>
-            <div class="well" ng-show="permit.permits.row.parties.holder.holderType">
+            <div class="well" ng-show="permit.permits.row.parties.holder.entityType">
               <h4>Office Physical Address</h4>
               <small>A Postal Box is NOT acceptable for the Office Physical Address fields.<br />If you do not have a physical address you may not be the Permit Holder.</small>
               <div class="form-group">
@@ -160,7 +160,7 @@
                 </div>
               </div>
             </div>
-            <div class="well" ng-show="permit.permits.row.parties.holder.holderType">
+            <div class="well" ng-show="permit.permits.row.parties.holder.entityType">
               <h4>Office Mailing Address</h4>
               <div ng-show="permit.permits.row.parties.holder.addresses.physical.isMailing">
                 <dl class="dl-horizontal">
@@ -211,39 +211,39 @@
               </div>
             </div>
           </div>
-          <div id="PermitApplicationHolderContact" class="well" ng-show="permit.permits.row.parties.holder.holderType">
+          <div id="PermitApplicationHolderContact" class="well" ng-show="permit.permits.row.parties.holder.entityType">
             <h3 id="RoWPermitHolderContact">Permit Holder Contact</h3>
             <small>A Permit Holder Contact is required if the Permit Holder is an Organisation or the Permit Holder is not based in Nigeria.</small>
-            <div ng-show="permit.permits.row.parties.holder.holderType === 'Person' && permit.permits.row.parties.holder.addresses.physical.country === 'Nigeria'">
+            <div ng-show="permit.permits.row.parties.holder.entityType === 'Person' && permit.permits.row.parties.holder.addresses.physical.country === 'Nigeria'">
               <dl class="dl-horizontal">
                 <dt>Permit Holder Contact:</dt>
                 <dd>Will be the Permit Holder</dd>
               </dl>
             </div>
-            <div ng-show="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+            <div ng-show="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
               <small>The Permit Holder Contact must be an individual, based in Nigeria, who is contactable by electronic means, especially via email and txt message (sms).</small><br />
               <div class="form-group">
                 <div class="col-sm-3">
                   <label title="Personal names / First names">Personal name</label>
-                  <input class="form-control" type="text" name="rowHoldingContactNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holderContact.personalName" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                  <input class="form-control" type="text" name="rowHoldingContactNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holderContact.personalName" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
                 <div class="col-sm-3">
                   <label title="Surname / Family name / Patronymic">Surname</label>
-                  <input class="form-control" type="text" name="rowHoldingContactNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holderContact.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                  <input class="form-control" type="text" name="rowHoldingContactNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holderContact.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
               <small>A copy of the Permit Application will be emailed to this address.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Email</label>
                 <div class="col-sm-8 col-lg-9">
-                  <input class="form-control col-sm-6" name="rowHoldingContactEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holderContact.email" maxlength="512" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                  <input class="form-control col-sm-6" name="rowHoldingContactEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holderContact.email" maxlength="512" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
               <small>All phone numbers provided must be Nigeria based, satellite service numbers are not acceptable.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
                 <div class="col-sm-8 col-lg-9">
-                  <input class="form-control" name="rowHoldingContactMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holderContact.mobile" maxlength="36" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                  <input class="form-control" name="rowHoldingContactMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holderContact.mobile" maxlength="36" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
               <div class="form-group">
@@ -273,19 +273,19 @@
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Number and Street / Lot Number">Number and Street</label>
                 <div class="col-sm-8 col-lg-9">
-                  <input class="form-control" name="rowHoldingContactMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.street" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                  <input class="form-control" name="rowHoldingContactMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.street" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Village / Town / Suburb / City">Suburb</label>
                 <div class="col-sm-8 col-lg-9">
-                  <input class="form-control" name="rowHoldingContactMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.suburb" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                  <input class="form-control" name="rowHoldingContactMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.suburb" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="State / Province / Territory / Prefecture">State</label>
                 <div class="col-sm-8 col-lg-9">
-                  <input class="form-control" name="rowHoldingContactMailingAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.state" maxlength="50" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                  <input class="form-control" name="rowHoldingContactMailingAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.state" maxlength="50" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
               <div class="form-group">
@@ -297,12 +297,12 @@
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Country</label>
                 <div class="col-sm-8 col-lg-9">
-                  <input class="form-control" name="rowHoldingContactMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.country" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+                  <input class="form-control" name="rowHoldingContactMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.country" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
             </div>
           </div>
-          <div id="PermitApplicationInfOwner" class="well" ng-show="permit.permits.row.parties.holder.holderType">
+          <div id="PermitApplicationInfOwner" class="well" ng-show="permit.permits.row.parties.holder.entityType">
             <h3 id="RoWPermitInfOwner">Infrastructure Owner</h3>
             <div ng-show="permit.permits.row.parties.holder.isInfrastructureOwner">
               <dl class="dl-horizontal">
@@ -315,29 +315,29 @@
                 <label class="col-xs-6 col-sm-5 col-md-4 col-lg-3 text-right">The Infrastructure Owner is a:</label>
                 <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9">
                   <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity Type">
-                    <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.infOwner.holderType == 'Person'}">
-                      <input type="radio" name="rowInfOwnerEntityType" ng-model="permit.permits.row.parties.infOwner.holderType" value="Person" autocomplete="off" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner"> Person
+                    <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.infOwner.entityType == 'Person'}">
+                      <input type="radio" name="rowInfOwnerEntityType" ng-model="permit.permits.row.parties.infOwner.entityType" value="Person" autocomplete="off" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner"> Person
                     </label>
-                    <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.infOwner.holderType == 'Organisation'}">
-                      <input type="radio" name="rowInfOwnerEntityType" ng-model="permit.permits.row.parties.infOwner.holderType" value="Organisation" autocomplete="off" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner"> Organisation
+                    <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.infOwner.entityType == 'Organisation'}">
+                      <input type="radio" name="rowInfOwnerEntityType" ng-model="permit.permits.row.parties.infOwner.entityType" value="Organisation" autocomplete="off" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner"> Organisation
                     </label>
                   </div>
                 </div>
               </div>
-              <div class="form-group animate-show" ng-show="permit.permits.row.parties.infOwner.holderType === 'Person'">
+              <div class="form-group animate-show" ng-show="permit.permits.row.parties.infOwner.entityType === 'Person'">
                 <div class="col-sm-3">
                   <label title="Personal names / First names">Personal name</label>
-                  <input class="form-control" type="text" name="rowInfOwnerEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.infOwner.personalName" maxlength="128" ng-required="permit.permits.row.parties.infOwner.holderType === 'Person'">
+                  <input class="form-control" type="text" name="rowInfOwnerEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.infOwner.personalName" maxlength="128" ng-required="permit.permits.row.parties.infOwner.entityType === 'Person'">
                 </div>
                 <div class="col-sm-3">
                   <label title="Surname / Family name / Patronymic">Surname</label>
-                  <input class="form-control" type="text" name="rowInfOwnerEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.infOwner.surname" maxlength="128" ng-required="permit.permits.row.parties.infOwner.holderType === 'Person'">
+                  <input class="form-control" type="text" name="rowInfOwnerEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.infOwner.surname" maxlength="128" ng-required="permit.permits.row.parties.infOwner.entityType === 'Person'">
                 </div>
               </div>
-              <div class="form-group animate-show" ng-show="permit.permits.row.parties.infOwner.holderType === 'Organisation'">
+              <div class="form-group animate-show" ng-show="permit.permits.row.parties.infOwner.entityType === 'Organisation'">
                 <label class="col-sm-4 col-lg-3 text-right">Organisation Name</label>
                 <div class="col-sm-8 col-lg-9">
-                  <input class="form-control" name="rowInfOwnerEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.infOwner.name" maxlength="128" ng-required="permit.permits.row.parties.infOwner.holderType === 'Organisation'">
+                  <input class="form-control" name="rowInfOwnerEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.infOwner.name" maxlength="128" ng-required="permit.permits.row.parties.infOwner.entityType === 'Organisation'">
                 </div>
               </div>
               <small>A copy of the Permit Application will be emailed to this address.</small>
@@ -527,9 +527,9 @@
         </li>
         <li>
           <a href="#PermitApplicationParties">Permit Parties</a>
-          <ul class="nav nav-stacked" ng-show="permit.permits.row.parties.holder.holderType">
+          <ul class="nav nav-stacked" ng-show="permit.permits.row.parties.holder.entityType">
             <li><a href="#PermitApplicationHolder">Permit Holder</a></li>
-            <li ng-show="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'"><a href="#PermitApplicationHolderContact">Holder Contact</a></li>
+            <li ng-show="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'"><a href="#PermitApplicationHolderContact">Holder Contact</a></li>
             <li ng-show="!permit.permits.row.parties.holder.isInfrastructureOwner"><a href="#PermitApplicationInfOwner">Infrastructure Owner</a></li>
           </ul>
         </li>

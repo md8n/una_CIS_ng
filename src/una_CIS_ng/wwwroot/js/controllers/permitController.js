@@ -44,6 +44,7 @@
     $scope.permit.calc.fees = [];
     $scope.permit.calc.fees.push({ "feeType": "application", "condition": "true", "name": "Application Form Fee", "unit": 1, "divider": 1, "measure": "", "rate": 50000, "total": 0 });
     $scope.permit.calc.fees.push({ "feeType": "application", "condition": "permitScope.permit.permits.row.consType == 'HorizontalDrilling'", "name": "Application Permit Fee - Underground Horizontal Drilling", "unit": 0, "divider": 1, "rate": 500, "measure": "metre", "total": 0 });
+    $scope.permit.calc.fees.push({ "feeType": "application", "condition": "permitScope.permit.permits.row.consType == 'HorizontalDrilling'", "name": "Application Permit Fee - Underground Horizontal Drilling Pits(x2)", "unit": 0, "divider": 1, "rate": 6000, "measure": "section", "total": 0 });
     $scope.permit.calc.fees.push({ "feeType": "application", "condition": "permitScope.permit.permits.row.consType == 'Trenching'", "name": "Application Permit Fee - Underground Trenching", "unit": 0, "divider": 1, "rate": 3000, "measure": "metre", "total": 0 });
     $scope.permit.calc.fees.push({ "feeType": "application", "condition": "true", "name": "Application Permit Fee - Remediation", "unit": 0, "divider": 1, "rate": 10000, "measure": "metre", "total": 0 });
     $scope.permit.calc.fees.push({ "feeType": "application", "condition": "permitScope.permit.permits.row.isSpecialZone", "name": "Application Permit Fee - Location in Business / High Density Zone", "unit": 1, "divider": 1, "measure": "", "rate": 50000, "total": 0 });

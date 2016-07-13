@@ -6,7 +6,7 @@
 
 <p>Use this calculator to estimate the fees, charges and penalties related to your existing or proposed infrastructure.</p>
 <p>All of the information entered on this page, stays on this page. Please note that it is a guide only.</p>
-<p>To use this calculator you must make a selection from each of the four options below and then also enter any required values.</p>
+<p>To use this calculator you must make a selection from each of the options below and then also enter any required values.</p>
 <div class="container bs-docs-container" ng-controller="feeCalculatorController">
   <div class="form-group row">
     <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Infrastructure state:</label>
@@ -69,6 +69,19 @@
         </label>
         <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infType == 'Underground'}">
           <input type="radio" name="infType" ng-model="calc.infType" value="Underground" autocomplete="off" ng-required="true"> Underground<br />&nbsp;
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row" ng-show="calc.infType == 'Underground'">
+    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Construction Method:</label>
+    <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
+      <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
+        <label class="btn btn-radio btn-primary" ng-class="{'active': calc.consType == 'Trenching'}">
+          <input type="radio" name="consType" ng-model="calc.consType" value="Trenching" autocomplete="off" ng-required="true"> Trenching
+        </label>
+        <label class="btn btn-radio btn-primary" ng-class="{'active': calc.consType == 'HorizontalDrilling'}">
+          <input type="radio" name="consType" ng-model="calc.consType" value="HorizontalDrilling" autocomplete="off" ng-required="true"> Horizontal Drilling
         </label>
       </div>
     </div>

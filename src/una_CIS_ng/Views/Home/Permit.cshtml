@@ -316,10 +316,10 @@
                 <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9">
                   <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity Type">
                     <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.infOwner.holderType == 'Person'}">
-                      <input type="radio" name="rowInfOwnerEntityType" ng-model="permit.permits.row.parties.infOwner.holderType" value="Person" autocomplete="off" ng-required="true"> Person
+                      <input type="radio" name="rowInfOwnerEntityType" ng-model="permit.permits.row.parties.infOwner.holderType" value="Person" autocomplete="off" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner"> Person
                     </label>
                     <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.infOwner.holderType == 'Organisation'}">
-                      <input type="radio" name="rowInfOwnerEntityType" ng-model="permit.permits.row.parties.infOwner.holderType" value="Organisation" autocomplete="off" ng-required="true"> Organisation
+                      <input type="radio" name="rowInfOwnerEntityType" ng-model="permit.permits.row.parties.infOwner.holderType" value="Organisation" autocomplete="off" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner"> Organisation
                     </label>
                   </div>
                 </div>
@@ -423,10 +423,23 @@
             <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
               <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Location">
                 <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.isSpecialZone}">
-                  <input type="radio" name="infLoc" ng-model="permit.permits.row.isSpecialZone" ng-value="true" autocomplete="off" ng-required="true"> Business District <br /> High Density Zone
+                  <input type="radio" name="infLoc" ng-model="permit.permits.row.isSpecialZone" ng-value="true" autocomplete="off" ng-required="true"> Business District <br/> High Density Zone
                 </label>
                 <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.isSpecialZone}">
-                  <input type="radio" name="infLoc" ng-model="permit.permits.row.isSpecialZone" ng-value="false" autocomplete="off" ng-required="true"> No Business or <br /> High Density
+                  <input type="radio" name="infLoc" ng-model="permit.permits.row.isSpecialZone" ng-value="false" autocomplete="off" ng-required="true"> No Business or <br/> High Density
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Construction Method:</label>
+            <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
+              <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
+                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.consType == 'Trenching'}">
+                  <input type="radio" name="consType" ng-model="permit.permits.row.consType" value="Trenching" autocomplete="off" ng-required="true"> Trenching
+                </label>
+                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.consType == 'HorizontalDrilling'}">
+                  <input type="radio" name="consType" ng-model="permit.permits.row.consType" value="HorizontalDrilling" autocomplete="off" ng-required="true"> Horizontal Drilling
                 </label>
               </div>
             </div>
@@ -437,20 +450,20 @@
             <div id="map" class="col-xs-12" style="height: 480px;"></div>
           </div>
           <h3 id="PermitApplicationLocationCalculation">Location Details</h3>
+          <input name="RatePerM" id="RatePerM" type="text" value="500" readonly="readonly" ng-show="false" />
+          <input name="RatePerCP" id="RatePerCP" type="text" value="10000" readonly="readonly" ng-show="false" />
           <div class="row">
-            <div class="col-xs-12 col-sm-4">
-              <input name="RatePerM" id="RatePerM" type="text" value="500" readonly="readonly" ng-show="false" />
-              <input name="RatePerCP" id="RatePerCP" type="text" value="10000" readonly="readonly" ng-show="false" />
-              <dl id="infRt" class="dl-horizontal"></dl>
+            <div class="col-xs-12 col-sm-5">
+              <div id="infRt" class="row"></div>
             </div>
-            <div class="col-xs-12 col-sm-8">
-              <dl id="infRtDesc" class="dl-horizontal"></dl>
+            <div class="col-xs-12 col-sm-7">
+              <div id="infRtDesc" class="row"></div>
             </div>
             @*<ul>
                 <li ng-repeat="gd in geoData.geoFeatures">{{gd.properties.id}}</li>
               </ul>*@
             @*<pre>{{geoData.geoFeatures | json}}</pre>*@
-            @*<pre id="location">{{permit.permits.row.locations | json}}</pre>*@
+            <pre id="location" ng-show="false">{{permit.permits.row | json}}</pre>
           </div>
           <div class="row">
             <div class="col-xs-12">
@@ -459,6 +472,34 @@
                 <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
               </dl>
             </div>
+          </div>
+        </div>
+        <div class="bs-docs-section">
+          <h2 id="PermitApplicationFeeEstimation">
+            <a class="anchorjs-link" href="#PermitApplicationFeeEstimation" aria-label="Anchor link for: permit application fee estimation">Permit Application Fees</a>
+          </h2>
+          <p>Note that this is an estimate only, the fees will be recalculated on the server.  Depending on your declarations additional fees / penalties may apply.</p>
+          <div class="table-responsive">
+            <table class="table table-striped table-condensed table-hover">
+              <thead>
+              <tr>
+                <th class="col-xs-7">Item</th>
+                <th class="col-xs-1 text-right">Unit</th>
+                <th class="col-xs-1 text-right">Rate</th>
+                <th class="col-xs-2">&nbsp;</th>
+                <th class="col-xs-1 text-right">Total</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr class="animate-show" ng-repeat="fee in permit.calc.fees | filter: permit.calc.applicationFilter">
+                  <td>{{fee.name}}</td>
+                  <td class="text-right">{{fee.unit == 1 ? fee.unit : (fee.measure == 'section' ? $parent.permit.permits.row.distances.length : $parent.permit.permits.row.totalDistance)}}</td>
+                  <td class="text-right">{{fee.rate}}</td>
+                  <td>{{fee.measure != "" ? (" for every " + fee.divider + " " + fee.measure) : ""}}</td>
+                  <td class="text-right">{{fee.unit == 1 ? fee.rate : ((fee.measure == 'section' ? $parent.permit.permits.row.distances.length : $parent.permit.permits.row.totalDistance) / fee.divider * fee.rate)}}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <div class="bs-docs-section">
@@ -498,6 +539,9 @@
             <li><a href="#PermitApplicationMap">Map</a></li>
             <li><a href="#PermitApplicationLocationCalculation">Details</a></li>
           </ul>
+        </li>
+        <li>
+          <a href="#PermitApplicationFeeEstimation">Fees Estimate</a>
         </li>
         <li>
           <a href="#PermitApplicationSubmit">Submit</a>

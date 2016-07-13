@@ -41,6 +41,32 @@ Una.Map = function (gm, mapElId) {
     return li;
   }
 
+  function appendPolylinePoints(ul, polylinePath) {
+    var li = null;
+    if (ul) {
+      polylinePath.forEach(function (el) {
+        const lon = Number(Math.round(el.lng() + 'e7') + 'e-7');
+        const lat = Number(Math.round(el.lat() + 'e7') + 'e-7');
+        li = createElement("li", " Lon:" + lon.toFixed(7) + " Lat:" + lat.toFixed(7));
+        ul.appendChild(li);
+      });
+    }
+
+    return li;
+  }
+
+  function appendPolylineDesc(ll, polylinePath) {
+    if (ll) {
+      polylinePath.forEach(function (el) {
+        const lon = Number(Math.round(el.lng() + 'e7') + 'e-7');
+        const lat = Number(Math.round(el.lat() + 'e7') + 'e-7');
+
+        const lnglat = { lng: parseFloat(lon.toFixed(7)), lat: parseFloat(lat.toFixed(7)) };
+        var addr = geocodeLngLat(lnglat, ll);
+      });
+    }
+  }
+
   function appendDlDd(dl, dd) {
     var ddEl = null;
     if (dl) {
@@ -60,6 +86,19 @@ Una.Map = function (gm, mapElId) {
     }
 
     return ddEl;
+  }
+
+  function appendHeading(dv, hd, hStyle) {
+    var hdEl = null;
+    if (!hStyle) {
+      hStyle = "h5";
+    }
+    if (dv) {
+      hdEl = createElement(hStyle, hd);
+      dv.appendChild(hdEl);
+    }
+
+    return hdEl;
   }
 
   function createElement(tag, body) {
@@ -188,6 +227,11 @@ Una.Map = function (gm, mapElId) {
             polylineFeature.geometry.coordinates.push([lon, lat]);
           }
           permitScope.$apply(function () { permitScope.permit.permits.row.locations.features.push(polylineFeature); });
+          permitScope.$apply(function () { permitScope.permit.permits.row.distances.push(dist); });
+          permitScope.$apply(function() {
+            permitScope.permit.permits.row.totalDistance = permitScope.permit.permits.row.distances.reduce(function (a, b) { return a + b; });
+          });
+          permitScope.$apply();
         }
 
         const infRt = document.getElementById("infRt");
@@ -196,20 +240,22 @@ Una.Map = function (gm, mapElId) {
           infRtDesc = infRt;
         }
         if (infRt) {
-          const rtDd = appendDlPair(infRt, "Route of your infrastructure", "");
-          const rtUl = rtDd.appendChild(document.createElement("ul"));
-          const rtLd = appendDlPair(infRtDesc, "Location of your infrastructure", "");
-          const rtLl = rtLd.appendChild(document.createElement("ul"));
-          appendPolylinePath(rtUl, plP, rtLl);
-
-          appendDlPair(infRt, "Total Distance", distStr + " m");
+          const rtDd = appendHeading(infRt, "Route of your infrastructure");
+          const rtUl = infRt.appendChild(document.createElement("ul"));
+          appendPolylinePoints(rtUl, plP);
+          const rtDl = document.createElement("li");
+          rtDl.text = "Distance: " + distStr + " m";
           if (dist > 1000) {
-            appendDlDd(infRt, distkm + " km");
+            appendDlDd(rtDl, distkm + " km");
           }
 
-          appendDlPair(infRt, "Right-of-Way fee", formatNairaStr(rowTotal));
-          appendDlPair(infRt, "Construction Permit fee", formatNairaStr(cpTotal));
-          appendDlPair(infRt, "Total fee", formatNairaStr(rowTotal + cpTotal));
+          const rtLd = appendHeading(infRtDesc, "Location of your infrastructure");
+          const rtLl = infRtDesc.appendChild(document.createElement("ul"));
+          appendPolylineDesc(rtLl, plP);
+
+          //appendDlPair(infRt, "Right-of-Way fee", formatNairaStr(rowTotal));
+          //appendDlPair(infRt, "Construction Permit fee", formatNairaStr(cpTotal));
+          //appendDlPair(infRt, "Total fee", formatNairaStr(rowTotal + cpTotal));
         } else {
           var plList = "";
           plP.forEach(function (el) {

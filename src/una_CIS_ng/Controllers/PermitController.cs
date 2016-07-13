@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Parser.SyntaxTree;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using MongoDB.Driver.GeoJsonObjectModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SendGrid;
@@ -128,38 +125,50 @@ namespace una_CIS_ng.Controllers
       var from = new Email("do_not_reply@cis.ng");
       var subject = "Test message from CIS";
       var to = new Email("obikenz@hotmail.com");
-      var cc = new Email("lee@md8n.com");
-      var content = new Content("text/plain", jPerm.ToString(Formatting.Indented));
+      Email[] cc = {to, new Email("lee@md8n.com"), new Email("info@cis.ng"), new Email("chukwudi.okpara@cis.ng"), new Email("meteorist@live.com") };
       var doco = new Attachment
       {
         Filename = "Test.pdf",
         Type = "application/pdf",
         Content = Convert.ToBase64String(oMem.ToArray())
       };
-      var mail = new Mail(from, subject, cc, content)
-      {
-        Attachments = new List<Attachment> {doco}
-      };
-      //var ccs = new Personalization
-      //{
-      //  Ccs = new List<Email> { new Email("info@cis.ng") },
-      //  Bccs = new List<Email> {new Email("obikenz@hotmail.com"), new Email("lee@md8n.com")}
-      //};
-      //mail.AddPersonalization(ccs);
-      //mail.AddPersonalization(bcc);
 
-      dynamic response = sg.client.mail.send.post(requestBody: mail.Get());
-      var respCode = response.StatusCode as HttpStatusCode?;
-      if (!respCode.HasValue)
+      List<Email> failedRecipients = new List<Email>();
+      foreach (var email in cc)
       {
-        return BadRequest();
+        Content content;
+
+        if (email.Address == to.Address && email.Name == to.Name)
+        {
+          content = new Content("text/plain", "Dear Applicant,\r\nThis is the data you submitted via the UNA website.\r\nRegards\r\nUNA Support Team\r\n" + jPerm.ToString(Formatting.Indented));
+        }
+        else
+        {
+          content = new Content("text/plain", "This is the data the applicant submitted via the UNA website.\r\nRegards\r\nUNA Support Team\r\n" + jPerm.ToString(Formatting.Indented));
+        }
+        var mail = new Mail(from, subject, email, content)
+        {
+          Attachments = new List<Attachment> { doco }
+        };
+        dynamic response = sg.client.mail.send.post(requestBody: mail.Get());
+        var respCode = response.StatusCode as HttpStatusCode?;
+        if (!respCode.HasValue)
+        {
+          failedRecipients.Add(email);
+        }
+        switch (respCode.Value)
+        {
+          case HttpStatusCode.Accepted:
+            break;
+          default:
+            failedRecipients.Add(email);
+            break;
+        }
       }
-      switch (respCode.Value)
+
+      if (failedRecipients.Any())
       {
-        case HttpStatusCode.Accepted:
-          break;
-        default:
-          return BadRequest(respCode.Value);
+        return BadRequest(failedRecipients.Select(f => f.Address).ToArray());
       }
 
       var permit = new Permit();

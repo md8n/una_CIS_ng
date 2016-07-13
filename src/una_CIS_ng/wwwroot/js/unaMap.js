@@ -9,6 +9,7 @@ Una.Map = function (gm, mapElId) {
   var geocoder = null;
   var infowindow = null;
   var drawingManager = null;
+  var locDesc = [];
   const lgCode = "en-NG";
   const curCode = "NGN";
 
@@ -120,7 +121,10 @@ Una.Map = function (gm, mapElId) {
       if (status === gm.GeocoderStatus.OK) {
         if (results.length > 0) {
           if (ll) {
-            var li = createElement("li", getClosestAddress(results, lnglat).formatted_address);
+            result = getClosestAddress(results, lnglat).formatted_address;
+            locDesc.push(result);
+
+            var li = createElement("li", result);
             //var li = createElement("li", results[0].formatted_address);
             ll.appendChild(li);
           } else {
@@ -210,11 +214,14 @@ Una.Map = function (gm, mapElId) {
         const distStr = dist.toLocaleString(lgCode, { maximumFractionDigits: 0 });
         const distkm = (dist / 1000).toLocaleString(lgCode, { maximumFractionDigits: 3 });
 
-        const ratePerM = getRate("RatePerM");
-        const rowTotal = Math.floor(dist * ratePerM);
+        //const ratePerM = getRate("RatePerM");
+        //const rowTotal = Math.floor(dist * ratePerM);
 
-        const ratePerCp = getRate("RatePerCP");
-        const cpTotal = Math.floor(1 * ratePerCp);
+        //const ratePerCp = getRate("RatePerCP");
+        //const cpTotal = Math.floor(1 * ratePerCp);
+
+        // Reset the location descriptions
+        locDesc = [];
 
         const infLc = document.getElementById("location");
         if (infLc && permitScope) {
@@ -227,6 +234,7 @@ Una.Map = function (gm, mapElId) {
             polylineFeature.geometry.coordinates.push([lon, lat]);
           }
           permitScope.$apply(function () { permitScope.permit.permits.row.locations.features.push(polylineFeature); });
+          permitScope.$apply(function () { permitScope.permit.permits.row.locationDescriptions.push(locDesc); });
           permitScope.$apply(function () { permitScope.permit.permits.row.distances.push(dist); });
           permitScope.$apply(function() {
             permitScope.permit.permits.row.totalDistance = permitScope.permit.permits.row.distances.reduce(function (a, b) { return a + b; });

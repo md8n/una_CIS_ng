@@ -29,6 +29,7 @@
         "distances": [],
         "totalDistance": 0,
         "locations": { "type": "FeatureCollection", "features": [] },
+        "locationDescriptions": [],
         "parties": {
           "holder": {
             "id": null,

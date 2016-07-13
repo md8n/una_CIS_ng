@@ -85,17 +85,18 @@
               </div>
             </div>
             <div ng-show="permit.permits.row.parties.holder.holderType">
-              <small>At least one of Email or Mobile Phone must be provided.</small>
+              <small>An email address is required. If you do not have an email address you may not be the Permit Holder.  The Permit Application will be emailed to this address.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Email</label>
                 <div class="col-sm-8 col-lg-9">
-                  <input class="form-control" name="rowHoldingEntityEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holder.email" maxlength="512">
+                  <input class="form-control" name="rowHoldingEntityEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holder.email" maxlength="512" ng-required="permit.permits.row.parties.holder.holderType">
                 </div>
               </div>
+              <small ng-show="permit.permits.row.parties.holder.holderType === 'Person'">If the Permit Holder is a Person, then a Mobile Phone number is required.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
                 <div class="col-sm-8 col-lg-9">
-                  <input class="form-control" name="rowHoldingEntityMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holder.mobile" maxlength="36">
+                  <input class="form-control" name="rowHoldingEntityMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holder.mobile" maxlength="36" ng-required="permit.permits.row.parties.holder.holderType === 'Person'">
                 </div>
               </div>
               <div class="form-group">
@@ -230,6 +231,7 @@
                   <input class="form-control" type="text" name="rowHoldingContactNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holderContact.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
+              <small>A copy of the Permit Application will be emailed to this address.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Email</label>
                 <div class="col-sm-8 col-lg-9">
@@ -299,6 +301,113 @@
               </div>
             </div>
           </div>
+          <div id="PermitApplicationInfOwner" class="well" ng-show="permit.permits.row.parties.holder.holderType">
+            <h3 id="RoWPermitInfOwner">Infrastructure Owner</h3>
+            <div ng-show="permit.permits.row.parties.holder.isInfrastructureOwner">
+              <dl class="dl-horizontal">
+                <dt>Infrastructure Owner:</dt>
+                <dd>Will be the Permit Holder</dd>
+              </dl>
+            </div>
+            <div ng-show="!permit.permits.row.parties.holder.isInfrastructureOwner">
+              <div class="form-group row">
+                <label class="col-xs-6 col-sm-5 col-md-4 col-lg-3 text-right">The Infrastructure Owner is a:</label>
+                <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9">
+                  <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity Type">
+                    <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.infOwner.holderType == 'Person'}">
+                      <input type="radio" name="rowInfOwnerEntityType" ng-model="permit.permits.row.parties.infOwner.holderType" value="Person" autocomplete="off" ng-required="true"> Person
+                    </label>
+                    <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.infOwner.holderType == 'Organisation'}">
+                      <input type="radio" name="rowInfOwnerEntityType" ng-model="permit.permits.row.parties.infOwner.holderType" value="Organisation" autocomplete="off" ng-required="true"> Organisation
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group animate-show" ng-show="permit.permits.row.parties.infOwner.holderType === 'Person'">
+                <div class="col-sm-3">
+                  <label title="Personal names / First names">Personal name</label>
+                  <input class="form-control" type="text" name="rowInfOwnerEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.infOwner.personalName" maxlength="128" ng-required="permit.permits.row.parties.infOwner.holderType === 'Person'">
+                </div>
+                <div class="col-sm-3">
+                  <label title="Surname / Family name / Patronymic">Surname</label>
+                  <input class="form-control" type="text" name="rowInfOwnerEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.infOwner.surname" maxlength="128" ng-required="permit.permits.row.parties.infOwner.holderType === 'Person'">
+                </div>
+              </div>
+              <div class="form-group animate-show" ng-show="permit.permits.row.parties.infOwner.holderType === 'Organisation'">
+                <label class="col-sm-4 col-lg-3 text-right">Organisation Name</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowInfOwnerEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.infOwner.name" maxlength="128" ng-required="permit.permits.row.parties.infOwner.holderType === 'Organisation'">
+                </div>
+              </div>
+              <small>A copy of the Permit Application will be emailed to this address.</small>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Email</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control col-sm-6" name="rowInfOwnerEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.infOwner.email" maxlength="512">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowInfOwnerMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.infOwner.mobile" maxlength="36">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Office Phone</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowInfOwnerOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.infOwner.officePhone" maxlength="36">
+                </div>
+              </div>
+              <h4>Infrastructure Owner Primary Mailing Address</h4>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Mailing Address Type</label>
+                <div class="btn-group col-sm-8 col-lg-9" data-toggle="buttons" role="group" aria-label="Infrastructure Owner Mailing Address">
+                  <label class="btn btn-primary active">
+                    <input type="radio" name="rowInfOwnerMailingAddressPostal" id="rowInfOwnerMailingAddressPostalTrue" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.isPostal" value="true" autocomplete="off" checked> Postal
+                  </label>
+                  <label class="btn btn-primary">
+                    <input type="radio" name="rowInfOwnerMailingAddressPostal" id="rowInfOwnerMailingAddressPostalFalse" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.isPostal" value="false" autocomplete="off"> Street
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowInfOwnerMailingAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.unit" maxlength="50">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="Number and Street / Lot Number">Number and Street</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowInfOwnerMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.street" maxlength="128" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="Village / Town / Suburb / City">Suburb</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowInfOwnerMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.suburb" maxlength="128" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="State / Province / Territory / Prefecture">State</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowInfOwnerMailingAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.state" maxlength="50" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right" title="Post Code / Zip Code">Post Code</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowInfOwnerMailingAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.postcode" maxlength="12">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-4 col-lg-3 text-right">Country</label>
+                <div class="col-sm-8 col-lg-9">
+                  <input class="form-control" name="rowInfOwnerMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.country" maxlength="128" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="bs-docs-section">
           <h2 id="PermitApplicationLocation">
@@ -314,14 +423,12 @@
         <div class="bs-docs-section">
           <h3 id="PermitApplicationLocationCalculation">Location Details</h3>
           <div class="panel-body" ng-controller="geoDataController">
+            <input name="RatePerM" id="RatePerM" type="text" value="500" readonly="readonly" ng-show="false" />
+            <input name="RatePerCP" id="RatePerCP" type="text" value="10000" readonly="readonly" ng-show="false" />
             <dl id="infRt" class="dl-horizontal">
-              <dt>Rate per m</dt>
-              <dd><input name="RatePerM" id="RatePerM" type="text" value="500" readonly="readonly" /></dd>
-              <dt>Rate per Construction Permit</dt>
-              <dd><input name="RatePerCP" id="RatePerCP" type="text" value="10000" readonly="readonly" /></dd>
             </dl>
             <dl class="dl-horizontal">
-              <dt>GeoData is:</dt>
+              <dt>GeoData Service is:</dt>
               <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
             </dl>
             @*<ul>
@@ -359,6 +466,7 @@
           <ul class="nav nav-stacked" ng-show="permit.permits.row.parties.holder.holderType">
             <li><a href="#PermitApplicationHolder">Permit Holder</a></li>
             <li ng-show="permit.permits.row.parties.holder.holderType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'"><a href="#PermitApplicationHolderContact">Holder Contact</a></li>
+            <li ng-show="!permit.permits.row.parties.holder.isInfrastructureOwner"><a href="#PermitApplicationInfOwner">Infrastructure Owner</a></li>
           </ul>
         </li>
         <li>

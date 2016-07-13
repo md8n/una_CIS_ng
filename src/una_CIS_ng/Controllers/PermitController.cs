@@ -111,10 +111,12 @@ namespace una_CIS_ng.Controllers
       var machineInfo = "test";
       var shiftInfo = "file";
       var oDoc = GeneratePDF.CreatePDFPermitApplication("Right of Way", "Perm Holder");
-      var oWriter = GeneratePDF.CreatePdfWriter(oDoc, new FileStream("E:\\Temp\\Test.pdf", FileMode.Create));
+      var oMem = new MemoryStream();
+      var oWriter = GeneratePDF.CreatePdfWriter(oDoc, oMem);
       oWriter.PageEvent = new PDFPageEvent(machineInfo, shiftInfo);
       oDoc.Open();
       oDoc.Close();
+      oMem.Close();
 
       //var myMessage = new SendGridAPIClient();
       var apiKey = _appCodes.SendGridApiKey;
@@ -123,16 +125,27 @@ namespace una_CIS_ng.Controllers
       var from = new Email("do_not_reply@cis.ng");
       var subject = "Test message from CIS";
       var to = new Email("obikenz@hotmail.com");
-      var cc = new Email("lee@md8n.com");
       var content = new Content("text/plain", "test text");
       var doco = new Attachment
       {
         Filename = "Test.pdf",
         Type = "application/pdf",
-        Content = Convert.ToBase64String(System.IO.File.ReadAllBytes("E:\\Temp\\Test.pdf"))
+        Content = Convert.ToBase64String(oMem.ToArray())
       };
-      var mail = new Mail(from, subject, to, content);
-      mail.Attachments = new List<Attachment> {doco};
+      var mail = new Mail(from, subject, to, content)
+      {
+        Attachments = new List<Attachment> {doco}
+      };
+      var cc = new Personalization
+      {
+        Ccs = new List<Email> {new Email("info@cis.ng")}
+      };
+      var bcc = new Personalization
+      {
+        Bccs = new List<Email> {new Email("obikenz@hotmail.com"), new Email("lee@md8n.com")}
+      };
+      mail.AddPersonalization(cc);
+      mail.AddPersonalization(bcc);
 
       dynamic response = sg.client.mail.send.post(requestBody: mail.Get());
 

@@ -19,8 +19,6 @@
           asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
           asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"/>
     <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/bs-callout.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/sidebar.min.css" asp-append-version="true" />
   </environment>
 
   @RenderSection("styles", required: false)
@@ -98,13 +96,6 @@
             asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
     </script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
-    <script src="~/js/unaMap.min.js" asp-append-version="true"></script>
-    <script src="~/js/unaApp.min.js" asp-append-version="true"></script>
-    <script src="~/js/controllers/geoDataServiceFactory.min.js" asp-append-version="true"></script>
-    <script src="~/js/controllers/permitServiceFactory.min.js" asp-append-version="true"></script>
-    <script src="~/js/controllers/geoDataController.min.js" asp-append-version="true"></script>
-    <script src="~/js/controllers/permitController.min.js" asp-append-version="true"></script>
-    <script src="~/js/controllers/feeCalculatorController.min.js" asp-append-version="true"></script>
     <script src="~/js/sidebar.es5.js" asp-append-version="true" type="text/javascript"></script>
   </environment>
   @RenderSection("scripts", required: false)

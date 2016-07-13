@@ -1,10 +1,12 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace una_CIS_ng.Models
 {
+  [BsonIgnoreExtraElements]
   public class Party
   {
-    public ObjectId id { get; set; }
+    public ObjectId? id { get; set; }
 
     public string type { get; set; }
 
@@ -23,7 +25,8 @@ namespace una_CIS_ng.Models
 
     public string officePhone { get; set; }
 
-    public object[] addresses { get; set; }
+    [BsonIgnoreIfNull]
+    public Address[] address { get; set; }
 
     public bool isInfrastructureOwner { get; set; }
   }

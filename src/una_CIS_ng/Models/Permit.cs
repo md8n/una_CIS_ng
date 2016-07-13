@@ -4,6 +4,7 @@ using MongoDB.Driver.GeoJsonObjectModel;
 
 namespace una_CIS_ng.Models
 {
+  [BsonIgnoreExtraElements]
   public class Permit
   {
     public ObjectId id { get; set; }

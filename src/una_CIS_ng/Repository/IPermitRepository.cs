@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GeoJsonObjectModel;
+using una_CIS_ng.Models;
 
 namespace una_CIS_ng.Repository
 {
@@ -18,13 +19,13 @@ namespace una_CIS_ng.Repository
     /// Get all Permit records
     /// </summary>
     /// <returns></returns>
-    Task<List<BsonDocument>> GetAllPermitAsync();
+    Task<List<Permit>> GetAllPermitAsync();
 
     /// <summary>
     /// Get all Permit records that intersect a bounding box
     /// </summary>
     /// <returns></returns>
-    Task<IAsyncCursor<BsonDocument>> GetBoundedPermitAsync<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox)
+    Task<IAsyncCursor<Permit>> GetBoundedPermitAsync<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox)
       where TCoordinates : GeoJsonCoordinates;
 
     /// <summary>
@@ -32,14 +33,14 @@ namespace una_CIS_ng.Repository
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<BsonDocument> GetAsync(ObjectId id);
+    Task<Permit> GetAsync(ObjectId id);
 
     /// <summary>
     /// Add or Update a Permit record
     /// </summary>
     /// <param name="permit"></param>
     /// <returns>The Id of the new/updated Permit record, or ObjectId.Empty if the add/update failed.</returns>
-    Task<ObjectId> AddOrUpdateAsync(BsonDocument permit);
+    Task<ObjectId> AddOrUpdateAsync(Permit permit);
 
     /// <summary>
     /// Delete the Permit record

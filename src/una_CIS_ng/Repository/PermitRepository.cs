@@ -32,57 +32,55 @@ namespace una_CIS_ng.Repository
       return _database != null;
     }
 
-    public async Task<List<BsonDocument>> GetAllPermitAsync()
+    public async Task<List<Permit>> GetAllPermitAsync()
     {
       var gdColl = Collection();
       var docList = await gdColl.Find(_ => true).ToListAsync();
       return docList;
     }
 
-    public async Task<IAsyncCursor<BsonDocument>> GetBoundedPermitAsync<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox) where TCoordinates : GeoJsonCoordinates
+    public async Task<IAsyncCursor<Permit>> GetBoundedPermitAsync<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox) where TCoordinates : GeoJsonCoordinates
     {
       return await Collection().FindAsync(x => true);
     }
 
-    public async Task<BsonDocument> GetAsync(ObjectId id)
+    public async Task<Permit> GetAsync(ObjectId id)
     {
-      return new BsonDocument();
-      //var geoDataTask = await Collection()
-      //  .FindAsync(x => x.Id.Equals(id));
-      //var list = await geoDataTask.ToListAsync();
-      //var geoData = list.FirstOrDefault();
+      var permitTask = await Collection()
+        .FindAsync(x => x.id.Equals(id));
+      var list = await permitTask.ToListAsync();
+      var permit = list.FirstOrDefault();
 
-      //return geoData;
+      return permit;
     }
 
-    public async Task<ObjectId> AddOrUpdateAsync(BsonDocument permit)
+    public async Task<ObjectId> AddOrUpdateAsync(Permit permit)
     {
       var upOpt = new UpdateOptions {IsUpsert = true};
-      //var replaceResult = await Collection()
-      //  .ReplaceOneAsync(x => x.Id.Equals(permit.Id), permit, upOpt);
+      var replaceResult = await Collection()
+        .ReplaceOneAsync(x => x.id.Equals(permit.id), permit, upOpt);
 
-      //if (replaceResult.IsAcknowledged)
-      //{
-      //  return (ObjectId)replaceResult.UpsertedId;
-      //}
+      if (replaceResult.IsAcknowledged)
+      {
+        return (ObjectId)replaceResult.UpsertedId;
+      }
 
       return ObjectId.Empty;
     }
 
     public async Task<bool> DeleteAsync(ObjectId id)
     {
-      return false;
-      //var deleteResult = await Collection()
-      //  .DeleteOneAsync(x => ((GeoData)x).Id.Equals(id));
+      var deleteResult = await Collection()
+        .DeleteOneAsync(x => ((Permit)x).id.Equals(id));
 
-      //return deleteResult.IsAcknowledged;
+      return deleteResult.IsAcknowledged;
     }
     #endregion
 
-    private IMongoCollection<BsonDocument> Collection()
+    private IMongoCollection<Permit> Collection()
     {
       return Connect()
-        .GetCollection<BsonDocument>(CollectionName);
+        .GetCollection<Permit>(CollectionName);
     }
 
     private IMongoDatabase Connect()

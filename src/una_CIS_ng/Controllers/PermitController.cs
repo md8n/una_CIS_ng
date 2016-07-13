@@ -11,7 +11,6 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver.GeoJsonObjectModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NuGet.Protocol.Core.v3;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using una_CIS_ng.Core;
@@ -50,10 +49,10 @@ namespace una_CIS_ng.Controllers
 
       var allPermits = (
         from perm in permList
-        select perm.AsBsonDocument into permit
+        select perm into permit
         where permit != null
-        select BsonSerializer.Deserialize<Permit>(permit) into prm
-        select new Dictionary<string, string> { { "Id", "\"" + prm.id + "\"" }, { "Permit", prm.ToJson() } }
+        select BsonSerializer.Deserialize<Permit>(permit.ToBsonDocument()) into prm
+        select new Dictionary<string, string> { { "id", "\"" + prm.id + "\"" }, { "Permit", prm.ToJson() } }
         ).ToList();
 
       var geoDataJson = new JsonStringResult(allPermits);
@@ -108,6 +107,113 @@ namespace una_CIS_ng.Controllers
       if (jPerm == null)
       {
         return BadRequest();
+      }
+
+      var permit = new Permit();
+      foreach (var jPermKid in jPerm.Children())
+      {
+        var jProp = jPermKid as JProperty;
+        if (jProp != null)
+        {
+          var jValue = jProp.Value;
+          JArray jArray = null;
+          if (jProp.Value.Type == JTokenType.Array)
+          {
+            jArray = (JArray)jProp.Value;
+          }
+
+          switch (jProp.Name)
+          {
+            case "id":
+              permit.id = !string.IsNullOrWhiteSpace(jValue.ToString()) ? new ObjectId(jValue.ToString()) : ObjectId.GenerateNewId();
+              break;
+            case "type":
+              permit.type = jValue.ToString();
+              break;
+            case "isSpecialZone":
+              permit.isSpecialZone = (bool)jValue;
+              break;
+            case "consType":
+              permit.consType = jValue.ToString();
+              break;
+            case "distances":
+              if (jArray == null)
+              {
+                break;
+              }
+              permit.distances = new double[jArray.Count];
+              var ix = 0;
+              foreach (var jToken in jArray)
+              {
+                permit.distances[ix++] = (double)jToken;
+              }
+              break;
+            case "totalDistance":
+              permit.totalDistance = (double)jValue;
+              break;
+            case "locations":
+              var geoJson = jValue.ToString(Formatting.Indented);
+              var geoDoc = BsonSerializer.Deserialize<GeoJsonFeatureCollection<GeoJson2DGeographicCoordinates>>(geoJson);
+              permit.locations = geoDoc;
+              break;
+            case "locationDescriptions":
+              if (jArray == null)
+              {
+                break;
+              }
+              permit.locationDescriptions = new string[jArray.Count][];
+              var il = 0;
+              foreach (var jlocDescArray in jArray)
+              {
+                permit.locationDescriptions[il] = new string[((JArray)jlocDescArray).Count];
+                var id = 0;
+                foreach (var jLocDesc in jlocDescArray)
+                {
+                  permit.locationDescriptions[il][id++] = jLocDesc.ToString();
+                }
+                il++;
+              }
+              break;
+            case "parties":
+              var parties = new List<Party>();
+              foreach (var jPrty in jValue.Children().OfType<JProperty>())
+              {
+                var jPrtyVal = jPrty.Value;
+                var jPrtyJson = jPrtyVal.ToString(Formatting.Indented);
+                var party = BsonSerializer.Deserialize<Party>(jPrtyJson);
+                if (party.id == null || party.id == ObjectId.Empty)
+                {
+                  party.id = ObjectId.GenerateNewId();
+                }
+                var addresses = new List<Address>();
+
+                foreach (var jp in jPrtyVal.Children().OfType<JProperty>().Where(jp => jp.Name == "addresses"))
+                {
+                  var newAddr = jp.Value
+                    .OfType<JProperty>()
+                    .Select(jpAddr => jpAddr.Value.ToString(Formatting.Indented))
+                    .Select(jAddrJson => BsonSerializer.Deserialize<Address>(jAddrJson))
+                    .ToList();
+
+                  foreach (var addr in newAddr)
+                  {
+                    if (addr.id == null || addr.id == ObjectId.Empty)
+                    {
+                      addr.id = ObjectId.GenerateNewId();
+                    }
+                  }
+
+                  addresses.AddRange(newAddr);
+                }
+
+                party.address = addresses.ToArray();
+                parties.Add(party);
+              }
+
+              permit.parties = parties.ToArray();
+              break;
+          }
+        }
       }
 
       var machineInfo = "test";
@@ -173,95 +279,12 @@ namespace una_CIS_ng.Controllers
         return BadRequest(failedRecipients.Select(f => f.Address).ToArray());
       }
 
-      var permit = new Permit();
-      foreach (var jPermKid in jPerm.Children())
+
+      var objId = await _permitRepository.AddOrUpdateAsync(permit);
+      if (objId == ObjectId.Empty)
       {
-        var jProp = jPermKid as JProperty;
-        if (jProp != null)
-        {
-          var jValue = jProp.Value;
-          JArray jArray = null;
-          if (jProp.Value.Type == JTokenType.Array)
-          {
-            jArray = (JArray)jProp.Value;
-          }
-
-          switch (jProp.Name)
-          {
-            case "id":
-              permit.id = !string.IsNullOrWhiteSpace(jValue.ToString()) ? new ObjectId(jValue.ToString()) : new ObjectId();
-              break;
-            case "type":
-              permit.type = jValue.ToString();
-              break;
-            case "isSpecialZone":
-              permit.isSpecialZone = (bool)jValue;
-              break;
-            case "consType":
-              permit.consType = jValue.ToString();
-              break;
-            case "distances":
-              if (jArray == null)
-              {
-                break;
-              }
-              permit.distances = new double[jArray.Count];
-              var ix = 0;
-              foreach (var jToken in jArray)
-              {
-                permit.distances[ix++] = (double) jToken;
-              }
-              break;
-            case "totalDistance":
-              permit.totalDistance = (double)jValue;
-              break;
-            case "locations":
-              var geoJson = jValue.ToString(Formatting.Indented);
-              var geoDoc = BsonSerializer.Deserialize<GeoJsonFeatureCollection<GeoJson2DGeographicCoordinates>>(geoJson);
-              permit.locations = geoDoc;
-              break;
-            case "locationDescriptions":
-              if (jArray == null)
-              {
-                break;
-              }
-              permit.locationDescriptions = new string[jArray.Count][];
-              var il = 0;
-              foreach (var jlocDescArray in jArray)
-              {
-                permit.locationDescriptions[il] = new string[((JArray)jlocDescArray).Count];
-                var id = 0;
-                foreach (var jLocDesc in jlocDescArray)
-                {
-                  permit.locationDescriptions[il][id++] = jLocDesc.ToString();
-                }
-                il++;
-              }
-              break;
-            case "parties":
-              if (jValue == null)
-              {
-                break;
-              }
-              break;
-
-              /* 
-    public object locations { get; set; }
-
-    public object parties { get; set; }  
-             
-             */
-          }
-        }
+        return NoContent();
       }
-
-
-      var objId = new Guid();
-      //var objId = await _permitRepository.AddOrUpdateAsync(permit.Permi.ToBsonDocument());
-      //if (objId == ObjectId.Empty)
-      //{
-      //  return NoContent();
-      //}
 
       return Ok(objId);
     }

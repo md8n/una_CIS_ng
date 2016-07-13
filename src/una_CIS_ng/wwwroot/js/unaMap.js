@@ -190,12 +190,15 @@ Una.Map = function (gm, mapElId) {
           permitScope.$apply(function () { permitScope.permit.permits.row.locations.features.push(polylineFeature); });
         }
 
-
         const infRt = document.getElementById("infRt");
+        var infRtDesc = document.getElementById("infRtDesc");
+        if (!infRtDesc) {
+          infRtDesc = infRt;
+        }
         if (infRt) {
           const rtDd = appendDlPair(infRt, "Route of your infrastructure", "");
           const rtUl = rtDd.appendChild(document.createElement("ul"));
-          const rtLd = appendDlPair(infRt, "Location of your infrastructure", "");
+          const rtLd = appendDlPair(infRtDesc, "Location of your infrastructure", "");
           const rtLl = rtLd.appendChild(document.createElement("ul"));
           appendPolylinePath(rtUl, plP, rtLl);
 

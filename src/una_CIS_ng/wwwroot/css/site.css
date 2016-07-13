@@ -42,6 +42,11 @@ textarea {
   pointer-events : none;
 }
 
+/* Get dl horizontal lists to wrap the text in the dt elements */
+dl.dl-horizontal dt {
+  white-space: normal;
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
   /* Hide captions */

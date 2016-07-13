@@ -24,6 +24,7 @@
       "row": {
         "id": null,
         "type": "row",
+        "isSpecialZone": true,
         "locations": { "type": "FeatureCollection", "features": [] },
         "parties": {
           "holder": {

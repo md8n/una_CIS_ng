@@ -34,6 +34,7 @@
             <small>Some other agencies may require you to obtain relevant permits / authorisation also - LASIMRA and its authorised agencies are not responsible for this.</small>
           </div>
           <p>Please see <a href="./PermitInfo">Permit Info</a> for more information about obtaining Permits and keeping them.</p>
+          <p>If you make a mistake then you will need to reload this entire page to erase all of your data and start again.</p>
         </div>
         <div class="bs-docs-section">
           <h2 id="PermitApplicationParties">
@@ -415,27 +416,49 @@
           </h2>
           <p>Drawing on the map, show the route required for this Right-of-Way permit.</p>
           <p>The GPS coordinates, and total distance in meters (rounded down to the nearest meter) will be calculated for you.</p>
-          <p>The route must have no breaks.</p>
+          <p>If the route is non-contiguous (has breaks or gaps) then you will be issued with individual Right-of-Way Permits for each section.</p>
+          <p>If you make a mistake then you will need to reload this entire page to erase all of your data and start again.</p>
+          <div class="form-group row">
+            <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Location Includes:</label>
+            <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
+              <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Location">
+                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.isSpecialZone}">
+                  <input type="radio" name="infLoc" ng-model="permit.permits.row.isSpecialZone" ng-value="true" autocomplete="off" ng-required="true"> Business District <br /> High Density Zone
+                </label>
+                <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.isSpecialZone}">
+                  <input type="radio" name="infLoc" ng-model="permit.permits.row.isSpecialZone" ng-value="false" autocomplete="off" ng-required="true"> No Business or <br /> High Density
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
         <div id="PermitApplicationMap" ng-controller="geoDataController">
-          <div id="map" style="height: 480px; width: 100%"></div>
-        </div>
-        <div class="bs-docs-section">
+          <div class="row">
+            <div id="map" class="col-xs-12" style="height: 480px;"></div>
+          </div>
           <h3 id="PermitApplicationLocationCalculation">Location Details</h3>
-          <div class="panel-body" ng-controller="geoDataController">
-            <input name="RatePerM" id="RatePerM" type="text" value="500" readonly="readonly" ng-show="false" />
-            <input name="RatePerCP" id="RatePerCP" type="text" value="10000" readonly="readonly" ng-show="false" />
-            <dl id="infRt" class="dl-horizontal">
-            </dl>
-            <dl class="dl-horizontal">
-              <dt>GeoData Service is:</dt>
-              <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
-            </dl>
+          <div class="row">
+            <div class="col-xs-12 col-sm-4">
+              <input name="RatePerM" id="RatePerM" type="text" value="500" readonly="readonly" ng-show="false" />
+              <input name="RatePerCP" id="RatePerCP" type="text" value="10000" readonly="readonly" ng-show="false" />
+              <dl id="infRt" class="dl-horizontal"></dl>
+            </div>
+            <div class="col-xs-12 col-sm-8">
+              <dl id="infRtDesc" class="dl-horizontal"></dl>
+            </div>
             @*<ul>
                 <li ng-repeat="gd in geoData.geoFeatures">{{gd.properties.id}}</li>
               </ul>*@
             @*<pre>{{geoData.geoFeatures | json}}</pre>*@
             @*<pre id="location">{{permit.permits.row.locations | json}}</pre>*@
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <dl class="dl-horizontal">
+                <dt>GeoData Service is:</dt>
+                <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
+              </dl>
+            </div>
           </div>
         </div>
         <div class="bs-docs-section">

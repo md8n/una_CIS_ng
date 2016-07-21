@@ -34,6 +34,7 @@
         "locations": { "type": "FeatureCollection", "features": [] },
         "locationRoutes": [],
         "locationDescriptions": [],
+        "locationPolylines": [],
         "parties": {
           "holder": {
             "id": null,

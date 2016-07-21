@@ -106,6 +106,7 @@ Una.Map = function (gm, mapElId) {
           const polylineFeature = { "type": "Feature", "geometry": { "type": "LineString", "coordinates": [] }, "properties": {} };
           var lonLats = [];
           permitScope.$apply(function () { permitScope.permit.permits.row.locationDescriptions.push([]); });
+          permitScope.$apply(function () { permitScope.permit.permits.row.locationPolylines.push(pl); });
           var locDescCount = permitScope.permit.permits.row.locationDescriptions.length;
           for (var ix = 0; ix < plP.getLength() ; ix++) {
             const pt = plP.getAt(ix);

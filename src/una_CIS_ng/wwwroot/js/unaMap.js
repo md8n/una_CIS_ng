@@ -229,7 +229,7 @@ Una.Map = function (gm, mapElId) {
         const infLc = document.getElementById("location");
         if (infLc && permitScope) {
           const polylineFeature = { "type": "Feature", "geometry": { "type": "LineString", "coordinates": [] }, "properties": {} };
-          for (var ix = 0; ix < plP.getLength() ; ix++) {
+          for (var ix = 0; ix < plP.getLength(); ix++) {
             const pt = plP.getAt(ix);
             const lon = Number(Math.round(pt.lng() + 'e7') + 'e-7');
             const lat = Number(Math.round(pt.lat() + 'e7') + 'e-7');

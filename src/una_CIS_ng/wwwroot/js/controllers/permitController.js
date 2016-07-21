@@ -9,7 +9,7 @@
     $scope.permit.geoFeatures = [];
     if (Una.gMap) {
       $scope.permit.geoFeatures = response.map(function (obj) { return obj.Permit; });
-      $scope.permit.geoFeatures.forEach(function (permit) { Una.gMap.data.addGeoJson(permit) });
+      $scope.permit.geoFeatures.forEach(function (permit) { Una.gMap.data.addGeoJson(permit); });
     }
     //alert("Loaded GeoData Successfully");
   };

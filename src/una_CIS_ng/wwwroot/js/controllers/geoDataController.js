@@ -47,15 +47,15 @@
         // Clear the Infrastructure route and location details (added by unaMap.js)
         const infRt = document.getElementById("infRt");
         if (infRt) {
-          let fc = infRt.lastChild;
-          while (fc) {
-            infRt.removeChild(fc);
-            fc = infRt.lastChild;
+          var lc = infRt.lastChild;
+          while (lc) {
+            infRt.removeChild(lc);
+            lc = infRt.lastChild;
           }
         }
         const infRtDesc = document.getElementById("infRtDesc");
         if (infRtDesc) {
-          let fc = infRtDesc.lastChild;
+          var fc = infRtDesc.lastChild;
           while (fc) {
             infRtDesc.removeChild(fc);
             fc = infRtDesc.lastChild;

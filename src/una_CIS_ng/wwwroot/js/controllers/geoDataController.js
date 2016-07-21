@@ -3,7 +3,7 @@
 
   angular
     .module("unaApp") // defined in unaApp.js
-    .controller("geoDataController", geoDataController);
+    .controller("geoDataController", ["$scope", "geoDataService", geoDataController]);
 
   function geoDataController($scope, geoDataService) {
     const handleGeoData = function (response) {
@@ -18,13 +18,9 @@
     };
 
     const resetMap = function () {
-      if (!!Una.dm) {
-        //alert(JSON.stringify($scope.permit.permits.row.locations));
+      var gm = google.maps;
 
-        var gm = google.maps;
-
-        // Clear the drawingmanager
-        Una.dm.setMap(null);
+      if (!Una.dm) {
         Una.dm = new gm.drawing.DrawingManager({
           drawingMode: null, // google.maps.drawing.OverlayType.POLYLINE,
           drawingControl: true,
@@ -38,6 +34,12 @@
             editable: true
           }
         });
+      }
+      if (!!Una.dm) {
+        //alert(JSON.stringify($scope.permit.permits.row.locations));
+
+        // Clear the drawingmanager
+        Una.dm.setMap(null);
         Una.dm.setMap(Una.gMap);
 
         // Clear the data (this impacts the fee calculation)
@@ -46,6 +48,36 @@
         $scope.permit.permits.row.locations.features.length = 0;
         $scope.permit.permits.row.locationRoutes.length = 0;
         $scope.permit.permits.row.locationDescriptions.length = 0;
+
+        gm.event.addListener(Una.dm,
+          "polylinecomplete",
+          function (pl) {
+            const plP = pl.getPath();
+            const dist = Math.floor(gm.geometry.spherical.computeLength(plP));
+
+            const infLc = document.getElementById("location");
+            if (infLc && permitScope) {
+              const polylineFeature = { "type": "Feature", "geometry": { "type": "LineString", "coordinates": [] }, "properties": {} };
+              var lonLats = [];
+              $scope.permit.permits.row.locationDescriptions.push([]);
+              var locDescCount = permitScope.permit.permits.row.locationDescriptions.length;
+              for (var ix = 0; ix < plP.getLength() ; ix++) {
+                const pt = plP.getAt(ix);
+                const lon = Number(Math.round(pt.lng() + 'e7') + 'e-7');
+                const lat = Number(Math.round(pt.lat() + 'e7') + 'e-7');
+
+                lonLats.push([lon, lat]);
+                polylineFeature.geometry.coordinates.push([lon, lat]);
+
+                geocode({ lng: lon, lat: lat }, locDescCount - 1);
+              }
+
+              $scope.permit.permits.row.locations.features.push(polylineFeature);
+              $scope.permit.permits.row.locationRoutes.push(lonLats);
+              $scope.permit.permits.row.distances.push(dist);
+              $scope.permit.permits.row.totalDistance = $scope.permit.permits.row.distances.reduce(function (a, b) { return a + b; });
+            }
+          });
       }
     }
 

@@ -87,6 +87,9 @@
 
     //$scope.permit.All = permitService.All().$promise.then(handlePermits);
     $scope.permit.Save = function () {
+      // The polylines have circular references in them so they have to be detached first before saving
+      $scope.permit.permits.row.locationPolylines.length = 0;
+
       var permit = $scope.permit.permits.row;
       //alert('trying to save: ' + JSON.stringify(permit));
       permitService.save(permit);

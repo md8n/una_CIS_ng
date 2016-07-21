@@ -8,6 +8,7 @@
 /// <reference path="js/controllers/permitcontroller.js" />
 /// <reference path="js/controllers/permitservicefactory.js" />
 /// <reference path="js/geoData.js" />
+/// <reference path="js/polyfillarray.js" />
 /// <reference path="js/sidebar.es5.js" />
 /// <reference path="js/sidebar.js" />
 /// <reference path="js/site.js" />

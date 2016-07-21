@@ -54,7 +54,8 @@
     $scope.permit.calc.fees.push(new feeDefinition("application", "true", "Application Permit Fee - First Annual Location Fee", 1, 1, "", 50000));
 
     $scope.permit.calc.fees.push(new feeDefinition("penalty", "permitScope.permit.permits.row.consType", "Penalty - Un-permitted underground infrastructure - Declared", 0, 1, "metre", 20000));
-    //$scope.permit.calc.fees.push(new feeDefinition("penalty", "permitScope.permit.permits.row.infDisc == 'Declared'", "Penalty - Un-permitted underground infrastructure - Declared", 0, 1, "metre", 20000));
+    $scope.permit.calc.fees.push(new feeDefinition("penaltyUndeclared", "permitScope.permit.permits.row.consType", "Penalty - Un-permitted underground infrastructure - Audited", 0, 1, "metre", 50000));
+    //$scope.permit.calc.fees.push(new feeDefinition("penalty", "permitScope.permit.permits.row.infDisc == 'Declared'", "Penalty - Un-permitted underground infrastructure - Audited", 0, 1, "metre", 20000));
     //$scope.permit.calc.fees.push(new feeDefinition("penalty", "permitScope.permit.permits.row.infDisc == 'Discovered'", "Penalty - Un-permitted underground infrastructure - Audited", 0, 1, "metre", 50000));
 
     $scope.permit.calc.fees.push(new feeDefinition("penaltyExtended", "(permitScope.permit.calc.infState == 'Existing' || permitScope.permit.calc.infState == 'Decommissioning')", "Penalty - Failure to rectify after notice period has expired and action has been ordered", 1, 1, "", "full cost"));
@@ -64,6 +65,23 @@
       const calc = $scope.calc;
       return (element.feeType === "application" || element.feeType === "penalty") && eval(element.condition);
     };
+
+    $scope.permit.calc.undeclaredFilter = function (element) {
+      const calc = $scope.calc;
+      return (element.feeType === "application" || element.feeType === "penaltyUndeclared") && eval(element.condition);
+    };
+
+    $scope.permit.calc.total = function (elements, filter, dimension, section) {
+      var els = filter ? elements.filter(filter) : elements;
+
+      if (els.length === 0) {
+        return 0;
+      }
+
+      return els
+        .map(function (el) { return el.total(dimension, section); })
+        .reduce((a, b) => (a + b));
+    }
 
     //$scope.permit.All = permitService.All().$promise.then(handlePermits);
     $scope.permit.Save = function () {

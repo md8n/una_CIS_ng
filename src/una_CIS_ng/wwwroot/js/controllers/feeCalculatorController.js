@@ -47,6 +47,18 @@
       return (element.feeType === "application" || element.feeType === "penalty") && eval(element.condition);
     };
 
+    $scope.calc.total = function (elements, filter, dimension, section) {
+      var els = filter ? elements.filter(filter) : elements;
+
+      if (els.length === 0) {
+        return 0;
+      }
+
+      return els
+        .map(function (el) { return el.total(dimension, section); })
+        .reduce((a, b) => (a +b));
+    }
+
     $scope.calc.firstRenewalFilter = function (element) {
       const calc = $scope.calc;
       return element.feeType === "firstAnnual" && eval(element.condition);

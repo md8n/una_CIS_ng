@@ -4,18 +4,21 @@
   "use strict";
 
   var handlePermits = function (response) {
+    // Una.gMap is the google maps object returned by Map.cshtml and Permit.cshtml
+    $scope.permit = $scope.permit || {};
+    $scope.permit.geoFeatures = [];
     if (Una.gMap) {
-      const geoFeatures = response.map(function (obj) { return obj.Permit; });
-      geoFeatures.forEach(function (permit) { Una.gMap.data.addGeoJson(permit) });
+      $scope.permit.geoFeatures = response.map(function (obj) { return obj.Permit; });
+      $scope.permit.geoFeatures.forEach(function (permit) { Una.gMap.data.addGeoJson(permit) });
     }
     //alert("Loaded GeoData Successfully");
   };
 
   angular
     .module("unaApp") // defined in unaApp.js
-    .controller("permitController", permitController);
+    .controller("permitController", ["$scope", "permitService", "feeDefinition", permitController]);
 
-  function permitController($scope, permitService) {
+  function permitController($scope, permitService, feeDefinition) {
     permitScope = $scope;
 
     $scope.permit = $scope.permit || {};
@@ -42,24 +45,27 @@
 
     $scope.permit.calc = $scope.permit.calc || {};
     $scope.permit.calc.fees = [];
-    $scope.permit.calc.fees.push({ "feeType": "application", "condition": "true", "name": "Application Form Fee", "unit": 1, "divider": 1, "measure": "", "rate": 50000, "total": 0 });
-    $scope.permit.calc.fees.push({ "feeType": "application", "condition": "permitScope.permit.permits.row.consType == 'HorizontalDrilling'", "name": "Application Permit Fee - Underground Horizontal Drilling", "unit": 0, "divider": 1, "rate": 500, "measure": "metre", "total": 0 });
-    $scope.permit.calc.fees.push({ "feeType": "application", "condition": "permitScope.permit.permits.row.consType == 'HorizontalDrilling'", "name": "Application Permit Fee - Underground Horizontal Drilling Pits(x2)", "unit": 0, "divider": 1, "rate": 6000, "measure": "section", "total": 0 });
-    $scope.permit.calc.fees.push({ "feeType": "application", "condition": "permitScope.permit.permits.row.consType == 'Trenching'", "name": "Application Permit Fee - Underground Trenching", "unit": 0, "divider": 1, "rate": 3000, "measure": "metre", "total": 0 });
-    $scope.permit.calc.fees.push({ "feeType": "application", "condition": "true", "name": "Application Permit Fee - Remediation", "unit": 0, "divider": 1, "rate": 10000, "measure": "metre", "total": 0 });
-    $scope.permit.calc.fees.push({ "feeType": "application", "condition": "permitScope.permit.permits.row.isSpecialZone", "name": "Application Permit Fee - Location in Business / High Density Zone", "unit": 1, "divider": 1, "measure": "", "rate": 50000, "total": 0 });
-    $scope.permit.calc.fees.push({ "feeType": "application", "condition": "true", "name": "Application Permit Fee - First Annual Location Fee", "unit": 1, "divider": 1, "measure": "", "rate": 50000, "total": 0 });
-    $scope.permit.calc.fees.push({ "feeType": "penalty", "condition": "true", "name": "Penalty - Un-permitted underground infrastructure - Failure to obtain Right-of-Way Permit", "unit": 0, "divider": 1, "measure": "section", "rate": 20000, "total": 0 });
-    $scope.permit.calc.fees.push({ "feeType": "penaltyExtended", "condition": "(permitScope.permit.calc.infState == 'Existing' || permitScope.permit.calc.infState == 'Decommissioning')", "name": "Penalty - Failure to rectify after notice period has expired and action has been ordered", "unit": 1, "divider": 1, "measure": "", "rate": "full cost", "total": 0 });
-    $scope.permit.calc.fees.push({ "feeType": "penaltyExtended", "condition": "(permitScope.permit.calc.infState == 'Existing' || permitScope.permit.calc.infState == 'Decommissioning')", "name": "Penalty - Any contravention or omission without a specific penalty listed above", "unit": 0, "divider": 1, "measure": "day", "rate": 50000, "total": 0 });
+    $scope.permit.calc.fees.push(new feeDefinition("application", "true", "Application Form Fee", 1, 1, "", 50000));
+    $scope.permit.calc.fees.push(new feeDefinition("application", "permitScope.permit.permits.row.consType == 'HorizontalDrilling'", "Application Permit Fee - Underground Horizontal Drilling", 0, 1, "metre", 500));
+    $scope.permit.calc.fees.push(new feeDefinition("application", "permitScope.permit.permits.row.consType == 'HorizontalDrilling'", "Application Permit Fee - Underground Horizontal Drilling Pits (x2)", 0, 1, "section", 6000));
+    $scope.permit.calc.fees.push(new feeDefinition("application", "permitScope.permit.permits.row.consType == 'Trenching'", "Application Permit Fee - Underground Trenching", 0, 1, "metre", 3000));
+    $scope.permit.calc.fees.push(new feeDefinition("application", "true", "Application Permit Fee - Remediation", 0, 1, "metre", 10000));
+    $scope.permit.calc.fees.push(new feeDefinition("application", "permitScope.permit.permits.row.isSpecialZone", "Application Permit Fee - Location in Business / High Density Zone", 1, 1, "", 50000));
+    $scope.permit.calc.fees.push(new feeDefinition("application", "true", "Application Permit Fee - First Annual Location Fee", 1, 1, "", 50000));
+
+    $scope.permit.calc.fees.push(new feeDefinition("penalty", "permitScope.permit.permits.row.consType", "Penalty - Un-permitted underground infrastructure - Declared", 0, 1, "metre", 20000));
+    //$scope.permit.calc.fees.push(new feeDefinition("penalty", "permitScope.permit.permits.row.infDisc == 'Declared'", "Penalty - Un-permitted underground infrastructure - Declared", 0, 1, "metre", 20000));
+    //$scope.permit.calc.fees.push(new feeDefinition("penalty", "permitScope.permit.permits.row.infDisc == 'Discovered'", "Penalty - Un-permitted underground infrastructure - Audited", 0, 1, "metre", 50000));
+
+    $scope.permit.calc.fees.push(new feeDefinition("penaltyExtended", "(permitScope.permit.calc.infState == 'Existing' || permitScope.permit.calc.infState == 'Decommissioning')", "Penalty - Failure to rectify after notice period has expired and action has been ordered", 1, 1, "", "full cost"));
+    $scope.permit.calc.fees.push(new feeDefinition("penaltyExtended", "(permitScope.permit.calc.infState == 'Existing' || permitScope.permit.calc.infState == 'Decommissioning')", "Penalty - Any contravention or omission without a specific penalty listed above", 0, 1, "day", 50000));
 
     $scope.permit.calc.applicationFilter = function (element) {
       const calc = $scope.calc;
       return (element.feeType === "application" || element.feeType === "penalty") && eval(element.condition);
     };
 
-    //$scope.apiData = geoDataService.APIData;
-    $scope.permit.All = permitService.All().$promise.then(handlePermits);
+    //$scope.permit.All = permitService.All().$promise.then(handlePermits);
     $scope.permit.Save = function () {
       var permit = $scope.permit.permits.row;
       //alert('trying to save: ' + JSON.stringify(permit));
@@ -72,14 +78,14 @@
 
     //function activate() { }
 
-    $scope.permit.copyAddress = function(srcAddr, dstAddrType) {
-      var dstAddr = { "type": dstAddrType };
-      if (typeof srcAddr === "undefined" || srcAddr === null) {
-        return dstAddr;
-      };
-      return dstAddr;
-    };
+    //$scope.permit.copyAddress = function(srcAddr, dstAddrType) {
+    //  var dstAddr = { "type": dstAddrType };
+    //  if (typeof srcAddr === "undefined" || srcAddr === null) {
+    //    return dstAddr;
+    //  };
+    //  return dstAddr;
+    //};
   }
 
-  permitController.$inject = ["$scope", "permitService"];
+  permitController.$inject = ["$scope", "permitService", "feeDefinition"];
 })(angular);

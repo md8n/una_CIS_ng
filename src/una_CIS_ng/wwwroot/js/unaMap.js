@@ -202,6 +202,9 @@ Una.Map = function (gm, mapElId) {
         drawingModes: [
           gm.drawing.OverlayType.POLYLINE
         ]
+      },
+      polyLineOptions: {
+        editable: true
       }
     });
     drawingManager.setMap(map);
@@ -233,10 +236,11 @@ Una.Map = function (gm, mapElId) {
 
             polylineFeature.geometry.coordinates.push([lon, lat]);
           }
+
           permitScope.$apply(function () { permitScope.permit.permits.row.locations.features.push(polylineFeature); });
           permitScope.$apply(function () { permitScope.permit.permits.row.locationDescriptions.push(locDesc); });
           permitScope.$apply(function () { permitScope.permit.permits.row.distances.push(dist); });
-          permitScope.$apply(function() {
+          permitScope.$apply(function () {
             permitScope.permit.permits.row.totalDistance = permitScope.permit.permits.row.distances.reduce(function (a, b) { return a + b; });
           });
           permitScope.$apply();

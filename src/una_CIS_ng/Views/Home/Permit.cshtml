@@ -1,11 +1,8 @@
 ﻿@{
   ViewData["Title"] = "Permit - Right-of-Way";
-  var geoCodeKey = ViewData["GoogleAPIKey"];
   var mapKey = ViewData["GoogleAPIBrowserKey"];
   var mapInitUrl = "https://maps.googleapis.com/maps/api/js?key=" + mapKey + "&libraries=drawing,geometry&callback=initMap";
   //var mapInitUrl = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=" + @mapKey;
-
-  var mapUrl = ViewData["Map:Url"];
 }
 
 <div class="container bs-docs-container" ng-controller="permitController">
@@ -28,7 +25,7 @@
             <li>The relevant fees, charges and penalties must be paid.</li>
           </ul>
           <div class="bs-callout-sm bs-callout-info">
-            <small>If you are putting in new infrastructure then a Construction Permit is also required. This is not available at present.</small>
+            <small>If you are putting in new infrastructure then a Construction Permit is also required. This is not available electronically at present.</small>
           </div>
           <div class="bs-callout-sm bs-callout-warning">
             <small>Some other agencies may require you to obtain relevant permits / authorisation also - LASIMRA and its authorised agencies are not responsible for this.</small>
@@ -40,7 +37,6 @@
           <h2 id="PermitApplicationParties">
             <a class="anchorjs-link" href="#PermitApplicationParties" aria-label="Anchor link for: permit application parties">Parties to the Permit</a>
           </h2>
-          @*<pre>{{permit | json}}</pre>*@
           <div class="well">
             <h3 id="PermitHolderDeclaration">Permit Holder</h3>
             <div class="form-group row">
@@ -85,12 +81,12 @@
                 <input class="form-control" name="rowHoldingEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.holder.name" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType === 'Organisation'">
               </div>
             </div>
-            <div ng-show="permit.permits.row.parties.holder.entityType">
+            <div ng-show="!!permit.permits.row.parties.holder.entityType">
               <small>An email address is required. If you do not have an email address you may not be the Permit Holder.  The Permit Application will be emailed to this address.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Email</label>
                 <div class="col-sm-8 col-lg-9">
-                  <input class="form-control" name="rowHoldingEntityEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holder.email" maxlength="512" ng-required="permit.permits.row.parties.holder.entityType">
+                  <input class="form-control" name="rowHoldingEntityEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holder.email" maxlength="512" ng-required="!!permit.permits.row.parties.holder.entityType">
                 </div>
               </div>
               <small ng-show="permit.permits.row.parties.holder.entityType === 'Person'">If the Permit Holder is a Person, then a Mobile Phone number is required.</small>
@@ -107,7 +103,7 @@
                 </div>
               </div>
             </div>
-            <div class="well" ng-show="permit.permits.row.parties.holder.entityType">
+            <div class="well" ng-show="!!permit.permits.row.parties.holder.entityType">
               <h4>Office Physical Address</h4>
               <small>A Postal Box is NOT acceptable for the Office Physical Address fields.<br />If you do not have a physical address you may not be the Permit Holder.</small>
               <div class="form-group">
@@ -160,7 +156,7 @@
                 </div>
               </div>
             </div>
-            <div class="well" ng-show="permit.permits.row.parties.holder.entityType">
+            <div class="well" ng-show="!!permit.permits.row.parties.holder.entityType">
               <h4>Office Mailing Address</h4>
               <div ng-show="permit.permits.row.parties.holder.addresses.physical.isMailing">
                 <dl class="dl-horizontal">
@@ -211,7 +207,7 @@
               </div>
             </div>
           </div>
-          <div id="PermitApplicationHolderContact" class="well" ng-show="permit.permits.row.parties.holder.entityType">
+          <div id="PermitApplicationHolderContact" class="well" ng-show="!!permit.permits.row.parties.holder.entityType">
             <h3 id="RoWPermitHolderContact">Permit Holder Contact</h3>
             <small>A Permit Holder Contact is required if the Permit Holder is an Organisation or the Permit Holder is not based in Nigeria.</small>
             <div ng-show="permit.permits.row.parties.holder.entityType === 'Person' && permit.permits.row.parties.holder.addresses.physical.country === 'Nigeria'">
@@ -302,7 +298,7 @@
               </div>
             </div>
           </div>
-          <div id="PermitApplicationInfOwner" class="well" ng-show="permit.permits.row.parties.holder.entityType">
+          <div id="PermitApplicationInfOwner" class="well" ng-show="!!permit.permits.row.parties.holder.entityType">
             <h3 id="RoWPermitInfOwner">Infrastructure Owner</h3>
             <div ng-show="permit.permits.row.parties.holder.isInfrastructureOwner">
               <dl class="dl-horizontal">
@@ -459,17 +455,22 @@
             <div class="col-xs-12 col-sm-7">
               <div id="infRtDesc" class="row"></div>
             </div>
-            @*<ul>
-                <li ng-repeat="gd in geoData.geoFeatures">{{gd.properties.id}}</li>
-              </ul>*@
-            @*<pre>{{geoData.geoFeatures | json}}</pre>*@
+            <!-- This hidden field is present to force recalculation of the various fees below -->
             <pre id="location" ng-show="false">{{permit.permits.row | json}}</pre>
           </div>
           <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-6">
               <dl class="dl-horizontal">
                 <dt>GeoData Service is:</dt>
                 <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
+              </dl>
+            </div>
+            <div class="col-xs-6">
+              <dl class="dl-horizontal">
+                <dt>Clear map data</dt>
+                <dd>
+                   <input class="btn" id="ResetMap" type="button" value="Reset Map" ng-click="geoData.ResetMap()"/> 
+                </dd>
               </dl>
             </div>
           </div>
@@ -493,10 +494,10 @@
               <tbody>
                 <tr class="animate-show" ng-repeat="fee in permit.calc.fees | filter: permit.calc.applicationFilter">
                   <td>{{fee.name}}</td>
-                  <td class="text-right">{{fee.unit == 1 ? fee.unit : (fee.measure == 'section' ? $parent.permit.permits.row.distances.length : $parent.permit.permits.row.totalDistance)}}</td>
+                  <td class="text-right">{{fee.units($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length)}}</td>
                   <td class="text-right">{{fee.rate}}</td>
-                  <td>{{fee.measure != "" ? (" for every " + fee.divider + " " + fee.measure) : ""}}</td>
-                  <td class="text-right">{{fee.unit == 1 ? fee.rate : ((fee.measure == 'section' ? $parent.permit.permits.row.distances.length : $parent.permit.permits.row.totalDistance) / fee.divider * fee.rate)}}</td>
+                  <td>{{fee.rateDesc()}}</td>
+                  <td class="text-right">{{fee.total($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length)}}</td>
                 </tr>
               </tbody>
             </table>
@@ -527,7 +528,7 @@
         </li>
         <li>
           <a href="#PermitApplicationParties">Permit Parties</a>
-          <ul class="nav nav-stacked" ng-show="permit.permits.row.parties.holder.entityType">
+          <ul class="nav nav-stacked" ng-show="!!permit.permits.row.parties.holder.entityType">
             <li><a href="#PermitApplicationHolder">Permit Holder</a></li>
             <li ng-show="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'"><a href="#PermitApplicationHolderContact">Holder Contact</a></li>
             <li ng-show="!permit.permits.row.parties.holder.isInfrastructureOwner"><a href="#PermitApplicationInfOwner">Infrastructure Owner</a></li>
@@ -707,6 +708,8 @@
     function initMap() {
       const unaMap = Una.Map(google.maps, "map");
       Una.gMap = unaMap.map;
+      Una.dm = unaMap.drawingManager;
+      //alert("Una loaded:" + !!Una + " map loaded:" + !!Una.gMap + " DrawingManager loaded:" + !!Una.dm);
     }
   </script>
 }

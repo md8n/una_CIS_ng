@@ -21,9 +21,11 @@
       if (!!Una.dm) {
         //alert(JSON.stringify($scope.permit.permits.row.locations));
 
+        var gm = google.maps;
+
         // Clear the drawingmanager
         Una.dm.setMap(null);
-        Una.dm = new google.maps.drawing.DrawingManager({
+        Una.dm = new gm.drawing.DrawingManager({
           drawingMode: null, // google.maps.drawing.OverlayType.POLYLINE,
           drawingControl: true,
           drawingControlOptions: {
@@ -42,25 +44,8 @@
         $scope.permit.permits.row.distances.length = 0;
         $scope.permit.permits.row.totalDistance = 0;
         $scope.permit.permits.row.locations.features.length = 0;
+        $scope.permit.permits.row.locationRoutes.length = 0;
         $scope.permit.permits.row.locationDescriptions.length = 0;
-
-        // Clear the Infrastructure route and location details (added by unaMap.js)
-        const infRt = document.getElementById("infRt");
-        if (infRt) {
-          var lc = infRt.lastChild;
-          while (lc) {
-            infRt.removeChild(lc);
-            lc = infRt.lastChild;
-          }
-        }
-        const infRtDesc = document.getElementById("infRtDesc");
-        if (infRtDesc) {
-          var fc = infRtDesc.lastChild;
-          while (fc) {
-            infRtDesc.removeChild(fc);
-            fc = infRtDesc.lastChild;
-          }
-        }
       }
     }
 

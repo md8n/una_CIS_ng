@@ -32,6 +32,7 @@
         "distances": [],
         "totalDistance": 0,
         "locations": { "type": "FeatureCollection", "features": [] },
+        "locationRoutes": [],
         "locationDescriptions": [],
         "parties": {
           "holder": {

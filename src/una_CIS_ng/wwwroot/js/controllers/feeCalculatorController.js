@@ -38,9 +38,9 @@
     $scope.calc.fees.push(new feeDefinition("penalty", "calc.infState != 'New' && calc.permState != 'Existing' && calc.infType == 'Underground' && calc.infDisc == 'Declared'", "Penalty - Un-permitted underground infrastructure - Declared", 0, 1,"metre", 20000));
     $scope.calc.fees.push(new feeDefinition("penalty", "calc.infState != 'New' && calc.permState != 'Existing' && calc.infType == 'Underground' && calc.infDisc == 'Discovered'", "Penalty - Un-permitted underground infrastructure - Audited", 0, 1, "metre", 50000));
     $scope.calc.fees.push(new feeDefinition("penalty", "calc.infState == 'Decommissioning' && (calc.permState != 'Existing' && calc.permState != 'Cannot')", "Penalty - Unused Infrastructure - Failure to notify and / or to decommission within thirty (30) days", 1, 1, "", 25000));
-    $scope.calc.fees.push(new feeDefinition("penaltyExtended", "(calc.infState == 'Existing' || calc.infState == 'Decommissioning') && calc.permState == 'Cannot' && calc.infType != 'Underground'", "Annual Settlement Fee - Existing Non-Conforming Antenna", 1, 1, "annual", "50000 - 250000"));
+    $scope.calc.fees.push(new feeDefinition("penaltyExtended", "(calc.infState == 'Existing' || calc.infState == 'Decommissioning') && calc.permState == 'Cannot' && calc.infType != 'Underground'", "Annual Settlement Fee - Existing Non-Conforming Antenna", 1, 1, "annual", "N 50,000 - N 250,000"));
     $scope.calc.fees.push(new feeDefinition("penaltyExtended", "(calc.infState == 'Existing' || calc.infState == 'Decommissioning')", "Penalty - Failure to rectify after notice period has expired and action has been ordered", 1, 1, "", "full cost"));
-    $scope.calc.fees.push(new feeDefinition("penaltyExtended", "(calc.infState == 'Existing' || calc.infState == 'Decommissioning')", "Penalty - Any contravention or omission without a specific penalty listed above", 0, 1, "day", 50000));
+    $scope.calc.fees.push(new feeDefinition("penaltyExtended", "(calc.infState == 'Existing' || calc.infState == 'Decommissioning')", "Penalty - Any contravention or omission without a specific penalty listed above", 0, 1, "day", "N 50,000"));
 
     $scope.calc.applicationFilter = function (element) {
       const calc = $scope.calc;

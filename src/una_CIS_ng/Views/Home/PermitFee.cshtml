@@ -149,15 +149,15 @@
         <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.applicationFilter">
           <td>{{fee.name}}</td>
           <td class="text-right">{{fee.units(calc.dimension, calc.section)}}</td>
-          <td class="text-right">{{fee.rate}}</td>
+          <td class="text-right">{{fee.rate | currency: "N ": 0}}</td>
           <td>{{fee.rateDesc()}}</td>
-          <td class="text-right">{{fee.total(calc.dimension, calc.section)}}</td>
+          <td class="text-right" ng-init="$parent.appFeeTotal = $parent.appFeeTotal + fee.total(calc.dimension, calc.section)">{{fee.total(calc.dimension, calc.section) | currency: "N ": 0}}</td>
         </tr>
       </tbody>
       <tfoot>
         <tr class="animate-show">
           <td class="text-right" colspan="4">Permit Application Fee Total</td>
-          <td class="text-right">NaN</td>
+          <td class="text-right">{{appFeeTotal | currency: "N ": 0}}</td>
         </tr>
       </tfoot>
     </table>
@@ -178,15 +178,15 @@
         <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.firstRenewalFilter">
           <td>{{fee.name}}</td>
           <td class="text-right">{{fee.units(calc.dimension, calc.section)}}</td>
-          <td class="text-right">{{fee.rate}}</td>
+          <td class="text-right">{{fee.rate | currency: "N ": 0}}</td>
           <td>{{fee.rateDesc()}}</td>
-          <td class="text-right">{{fee.total(calc.dimension, calc.section)}}</td>
+          <td class="text-right" ng-init="$parent.firstRenewTotal = $parent.firstRenewTotal + fee.total(calc.dimension, calc.section)">{{fee.total(calc.dimension, calc.section) | currency: "N ": 0}}</td>
         </tr>
       </tbody>
       <tfoot>
         <tr class="animate-show">
           <td class="text-right" colspan="4">First Renewal Fee Total</td>
-          <td class="text-right">NaN</td>
+          <td class="text-right">{{firstRenewTotal | currency: "N ": 0}}</td>
         </tr>
       </tfoot>
     </table>
@@ -207,15 +207,15 @@
         <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.renewalFilter">
           <td>{{fee.name}}</td>
           <td class="text-right">{{fee.units(calc.dimension, calc.section)}}</td>
-          <td class="text-right">{{fee.rate}}</td>
+          <td class="text-right">{{fee.rate | currency: "N ": 0}}</td>
           <td>{{fee.rateDesc()}}</td>
-          <td class="text-right">{{fee.total(calc.dimension, calc.section)}}</td>
+          <td class="text-right" ng-init="$parent.renewTotal = $parent.renewTotal + fee.total(calc.dimension, calc.section)">{{fee.total(calc.dimension, calc.section) | currency: "N ": 0}}</td>
         </tr>
       </tbody>
       <tfoot>
         <tr class="animate-show">
           <td class="text-right" colspan="4">Renewal Fee Total</td>
-          <td class="text-right">NaN</td>
+          <td class="text-right">{{renewTotal | currency: "N ": 0}}</td>
         </tr>
       </tfoot>
     </table>

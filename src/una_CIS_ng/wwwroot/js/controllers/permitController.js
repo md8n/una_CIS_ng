@@ -71,7 +71,7 @@
       return (element.feeType === "application" || element.feeType === "penaltyUndeclared") && eval(element.condition);
     };
 
-    $scope.permit.calc.total = function (elements, filter, dimension, section) {
+    $scope.permit.calc.total = function(elements, filter, dimension, section) {
       var els = filter ? elements.filter(filter) : elements;
 
       if (els.length === 0) {
@@ -79,9 +79,9 @@
       }
 
       return els
-        .map(function (el) { return el.total(dimension, section); })
-        .reduce((a, b) => (a + b));
-    }
+        .map(function(el) { return el.total(dimension, section); })
+        .reduce(function (a, b) { return a + b; });
+    };
 
     //$scope.permit.All = permitService.All().$promise.then(handlePermits);
     $scope.permit.Save = function () {

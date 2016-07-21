@@ -495,20 +495,20 @@
               <tr class="animate-show" ng-repeat="fee in permit.calc.fees | filter: permit.calc.applicationFilter">
                 <td>{{fee.name}}</td>
                 <td class="text-right">{{fee.units($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length)}}</td>
-                <td class="text-right">{{fee.rate | currency: "N ": 0}}</td>
+                <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
                 <td>{{fee.rateDesc()}}</td>
-                <td class="text-right">{{fee.total($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length) | currency: "N ": 0}}</td>
+                <td class="text-right">{{fee.total($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length) | currency: "N&nbsp;": 0}}</td>
               </tr>
               </tbody>
               <tfoot>
               <tr class="animate-show">
                 <td class="text-right" colspan="4"><strong>Application Fee Total</strong></td>
-                <td class="text-right"><strong>{{permit.calc.total(permit.calc.fees, permit.calc.applicationFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length) | currency: "N ": 0 }}</strong></td>
+                <td class="text-right"><strong>{{permit.calc.total(permit.calc.fees, permit.calc.applicationFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length) | currency: "N&nbsp;": 0 }}</strong></td>
               </tr>
               </tfoot>
             </table>
           </div>
-          <p>If you had not declared your infrastructure the fee would be: <strong>{{permit.calc.total(permit.calc.fees, permit.calc.undeclaredFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length) | currency: "N ": 0 }}</strong></p>
+          <p>If you had not declared your infrastructure the fee would be: <strong>{{permit.calc.total(permit.calc.fees, permit.calc.undeclaredFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length) | currency: "N&nbsp;": 0 }}</strong></p>
         </div>
         <div class="bs-docs-section">
           <h2 id="PermitApplicationSubmit">

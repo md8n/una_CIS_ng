@@ -14,7 +14,9 @@
     feeCalculatorScope = $scope;
 
     $scope.calc = $scope.calc || {};
-    $scope.calc.fees = [];
+    $scope.calc.dimension = 0;
+    $scope.calc.section = 1;
+    $scope.calc.fees =[];
     //feeType, condition, name, unit, divider, measure, rate
     $scope.calc.fees.push(new feeDefinition("application", "calc.permState == 'New' || calc.permState == 'Temporary' || calc.permState == 'cannot'", "Application Form Fee", 1, 1, "", 50000));
     $scope.calc.fees.push(new feeDefinition("application", "(calc.infState == 'New' || calc.infState == 'Decommissioning') && (calc.infType == 'TransTower' || calc.infType == 'OtherTower' || calc.infType == 'Dish')", "Construction Permit Fee - Tower / Mast / Dish", 1, 1, "", 20000));
@@ -56,7 +58,7 @@
 
       return els
         .map(function (el) { return el.total(dimension, section); })
-        .reduce((a, b) => (a +b));
+        .reduce(function (a, b) { return a + b; });
     }
 
     $scope.calc.firstRenewalFilter = function (element) {

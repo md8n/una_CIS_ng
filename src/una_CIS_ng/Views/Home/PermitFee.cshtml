@@ -8,7 +8,7 @@
 <p>All of the information entered on this page, stays on this page. Please note that it is a guide only.</p>
 <p>To use this calculator you must make a selection from each of the options below and then also enter any required values.</p>
 <div class="container bs-docs-container" ng-controller="feeCalculatorController">
-  <div class="form-group row">
+  <div class="form-group row" ng-class="{'bg-danger': !calc.infState}">
     <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Infrastructure state:</label>
     <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure State">
@@ -24,7 +24,7 @@
       </div>
     </div>
   </div>
-  <div class="form-group row">
+  <div class="form-group row" ng-class="{'bg-danger': !calc.permState}">
     <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Permit state:</label>
     <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure State">
@@ -54,7 +54,7 @@
       </ul>
     </div>
   </div>
-  <div class="form-group row">
+  <div class="form-group row" ng-class="{'bg-danger': !calc.infType}">
     <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Type of Infrastructure:</label>
     <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
@@ -73,7 +73,7 @@
       </div>
     </div>
   </div>
-  <div class="form-group row" ng-show="calc.infState != 'New' && calc.permState != 'Existing' && calc.infType == 'Underground'">
+  <div class="form-group row" ng-class="{'bg-danger': !calc.infDisc}" ng-show="calc.infState != 'New' && calc.permState != 'Existing' && calc.infType == 'Underground'">
     <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Un-permitted Infrastructure Discovery:</label>
     <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
@@ -86,7 +86,7 @@
       </div>
     </div>
   </div>
-  <div class="form-group row" ng-show="calc.infType == 'Underground'">
+  <div class="form-group row" ng-class="{'bg-danger': !calc.consType}" ng-show="calc.infType == 'Underground'">
     <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Construction Method:</label>
     <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
@@ -99,7 +99,7 @@
       </div>
     </div>
   </div>
-  <div class="form-group row">
+  <div class="form-group row" ng-class="{'bg-danger': !calc.infLoc}">
     <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Location of Infrastructure:</label>
     <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Location">
@@ -115,7 +115,7 @@
       </div>
     </div>
   </div>
-  <div class="form-group row">
+  <div class="form-group row" ng-class="{'bg-danger': calc.dimension < 1}">
     <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Dimension:</label>
     <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
       <div class="input-group">
@@ -125,7 +125,7 @@
       </div>
     </div>
   </div>
-  <div class="form-group row" ng-show="calc.infType === 'Underground'">
+  <div class="form-group row" ng-class="{'bg-danger': calc.section < 1}" ng-show="calc.infType === 'Underground'">
     <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Sections:</label>
     <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
       <div class="input-group">
@@ -149,15 +149,15 @@
         <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.applicationFilter">
           <td>{{fee.name}}</td>
           <td class="text-right">{{fee.units(calc.dimension, calc.section)}}</td>
-          <td class="text-right">{{fee.rate | currency: "N ": 0}}</td>
+          <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
           <td>{{fee.rateDesc()}}</td>
-          <td class="text-right">{{fee.total(calc.dimension, calc.section) | currency: "N ": 0}}</td>
+          <td class="text-right">{{fee.total(calc.dimension, calc.section) | currency: "N&nbsp;": 0}}</td>
         </tr>
       </tbody>
       <tfoot>
         <tr class="animate-show">
           <td class="text-right" colspan="4"><strong>Permit Application Fee Total</strong></td>
-          <td class="text-right"><strong>{{calc.total(calc.fees, calc.applicationFilter, calc.dimension, calc.section) | currency: "N ": 0 }}</strong></td>
+          <td class="text-right"><strong>{{calc.total(calc.fees, calc.applicationFilter, calc.dimension, calc.section) | currency: "N&nbsp;": 0 }}</strong></td>
         </tr>
       </tfoot>
     </table>
@@ -178,15 +178,15 @@
         <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.firstRenewalFilter">
           <td>{{fee.name}}</td>
           <td class="text-right">{{fee.units(calc.dimension, calc.section)}}</td>
-          <td class="text-right">{{fee.rate | currency: "N ": 0}}</td>
+          <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
           <td>{{fee.rateDesc()}}</td>
-          <td class="text-right">{{fee.total(calc.dimension, calc.section) | currency: "N ": 0}}</td>
+          <td class="text-right">{{fee.total(calc.dimension, calc.section) | currency: "N&nbsp;": 0}}</td>
         </tr>
       </tbody>
       <tfoot>
         <tr class="animate-show">
           <td class="text-right" colspan="4"><strong>First Renewal Fee Total</strong></td>
-          <td class="text-right"><strong>{{calc.total(calc.fees, calc.firstRenewalFilter, calc.dimension, calc.section) | currency: "N ": 0 }}</strong></td>
+          <td class="text-right"><strong>{{calc.total(calc.fees, calc.firstRenewalFilter, calc.dimension, calc.section) | currency: "N&nbsp;": 0 }}</strong></td>
         </tr>
       </tfoot>
     </table>
@@ -207,15 +207,15 @@
         <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.renewalFilter">
           <td>{{fee.name}}</td>
           <td class="text-right">{{fee.units(calc.dimension, calc.section)}}</td>
-          <td class="text-right">{{fee.rate | currency: "N ": 0}}</td>
+          <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
           <td>{{fee.rateDesc()}}</td>
-          <td class="text-right">{{fee.total(calc.dimension, calc.section) | currency: "N ": 0}}</td>
+          <td class="text-right">{{fee.total(calc.dimension, calc.section) | currency: "N&nbsp;": 0}}</td>
         </tr>
       </tbody>
       <tfoot>
         <tr class="animate-show">
           <td class="text-right" colspan="4"><strong>Renewal Fee Total</strong></td>
-          <td class="text-right"><strong>{{calc.total(calc.fees, calc.renewalFilter, calc.dimension, calc.section) | currency: "N ": 0 }}</strong></td>
+          <td class="text-right"><strong>{{calc.total(calc.fees, calc.renewalFilter, calc.dimension, calc.section) | currency: "N&nbsp;": 0 }}</strong></td>
         </tr>
       </tfoot>
     </table>

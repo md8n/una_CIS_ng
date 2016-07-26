@@ -48,9 +48,12 @@ Temporary Items
 /src/una_CIS_ng/bin
 /src/una_CIS_ng/node_modules
 /src/una_CIS_ng/obj
-/src/una_CIS_ng/wwwroot/lib
+/src/una_CIS_ng/wwwroot/lib/*
 /src/una_CIS_ng/wwwroot/css/*.min.css
 /src/una_CIS_ng/wwwroot/js/*.es5.js
 /src/una_CIS_ng/wwwroot/js/*.min.js
 *.suo
 /.vs/restore.dg
+/bower_components/angular
+/bower_components/angular-bootstrap
+/node_modules/angular-ui-bootstrap

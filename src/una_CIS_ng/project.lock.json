@@ -3,6 +3,9 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.6.1": {
+      "Angular.UI.Bootstrap/1.3.3": {
+        "type": "package"
+      },
       "AngularJS.Core/1.5.6": {
         "type": "package"
       },
@@ -2615,6 +2618,20 @@
     }
   },
   "libraries": {
+    "Angular.UI.Bootstrap/1.3.3": {
+      "sha512": "1fHocH0Tp5jn6mHAv0YOLHS3p83i2xYbiS+2TB//U+Qta7DHnWu6WyqoYETUMyaIhq9Uok5se8s//Oc3te6qOw==",
+      "type": "package",
+      "path": "Angular.UI.Bootstrap/1.3.3",
+      "files": [
+        "Angular.UI.Bootstrap.1.3.3.nupkg.sha512",
+        "Angular.UI.Bootstrap.nuspec",
+        "content/Content/ui-bootstrap-csp.css",
+        "content/Scripts/angular-ui/ui-bootstrap-tpls.js",
+        "content/Scripts/angular-ui/ui-bootstrap-tpls.min.js",
+        "content/Scripts/angular-ui/ui-bootstrap.js",
+        "content/Scripts/angular-ui/ui-bootstrap.min.js"
+      ]
+    },
     "AngularJS.Core/1.5.6": {
       "sha512": "3hS3NyPd9U71MU127d4ZKmF8gFcDJZuauJ6N7KYZnxGvcBZ7pf1r9luGIQpf7U7/v0bhjY4bLIRP73Pr0CQefA==",
       "type": "package",
@@ -7207,6 +7224,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
+      "Angular.UI.Bootstrap >= 1.3.3",
       "AngularJS.Core >= 1.5.6",
       "AngularJS.Resource >= 1.5.6",
       "AngularJS.Route >= 1.5.6",

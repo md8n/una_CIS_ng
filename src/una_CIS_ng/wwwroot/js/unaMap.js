@@ -27,7 +27,7 @@ Una.Map = function (gm, mapElId) {
           window.alert('No results found');
         }
       } else {
-        window.alert('Geocoder failed due to: ' + status);
+        window.alert('Sorry, there was an issue converting the Lon Lat values to an address.  The Geocoder failed due to: ' + status);
       }
     });
   }

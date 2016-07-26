@@ -233,7 +233,7 @@ namespace una_CIS_ng.Controllers
       var from = new Email("do_not_reply@cis.ng");
       var subject = "Test message from CIS";
       var to = new Email("obikenz@hotmail.com");
-      Email[] cc = {to, new Email("lee@md8n.com"), new Email("info@cis.ng"), new Email("chukwudi.okpara@cis.ng"), new Email("meteorist@live.com") };
+      Email[] cc = {to, new Email("lee@md8n.com"), new Email("meteorist@live.com"), new Email("info@cis.ng"), new Email("chukwudi.okpara@cis.ng") };
       var doco = new Attachment
       {
         Filename = "Test.pdf",
@@ -241,36 +241,42 @@ namespace una_CIS_ng.Controllers
         Content = Convert.ToBase64String(oMem.ToArray())
       };
 
-      List<Email> failedRecipients = new List<Email>();
+      var failedRecipients = new List<Email>();
       foreach (var email in cc)
       {
-        Content content;
-
-        if (email.Address == to.Address && email.Name == to.Name)
+        try
         {
-          content = new Content("text/plain", "Dear Applicant,\r\nThis is the data you submitted via the UNA website.\r\nRegards\r\nUNA Support Team\r\n" + jPerm.ToString(Formatting.Indented));
+          Content content;
+          if (email.Address == to.Address && email.Name == to.Name)
+          {
+            content = new Content("text/html", "<p>Dear Applicant,</p><p>This is the data you submitted via the UNA website.</p><p>Regards</p><p>UNA Support Team</p><pre>" + jPerm.ToString(Formatting.Indented) + "</pre>");
+          }
+          else
+          {
+            content = new Content("text/html", "<p>This is the data the applicant submitted via the UNA website.</p><p>Regards</p><p>UNA Support Team</p><pre>" + jPerm.ToString(Formatting.Indented) + "</pre>");
+          }
+          var mail = new Mail(from, subject, email, content)
+          {
+            Attachments = new List<Attachment> { doco }
+          };
+          dynamic response = sg.client.mail.send.post(requestBody: mail.Get());
+          var respCode = response.StatusCode as HttpStatusCode?;
+          if (!respCode.HasValue)
+          {
+            failedRecipients.Add(email);
+          }
+          switch (respCode.Value)
+          {
+            case HttpStatusCode.Accepted:
+              break;
+            default:
+              failedRecipients.Add(email);
+              break;
+          }
         }
-        else
-        {
-          content = new Content("text/plain", "This is the data the applicant submitted via the UNA website.\r\nRegards\r\nUNA Support Team\r\n" + jPerm.ToString(Formatting.Indented));
-        }
-        var mail = new Mail(from, subject, email, content)
-        {
-          Attachments = new List<Attachment> { doco }
-        };
-        dynamic response = sg.client.mail.send.post(requestBody: mail.Get());
-        var respCode = response.StatusCode as HttpStatusCode?;
-        if (!respCode.HasValue)
+        catch (Exception)
         {
           failedRecipients.Add(email);
-        }
-        switch (respCode.Value)
-        {
-          case HttpStatusCode.Accepted:
-            break;
-          default:
-            failedRecipients.Add(email);
-            break;
         }
       }
 
@@ -278,7 +284,6 @@ namespace una_CIS_ng.Controllers
       {
         return BadRequest(failedRecipients.Select(f => f.Address).ToArray());
       }
-
 
       var objId = await _permitRepository.AddOrUpdateAsync(permit);
       if (objId == ObjectId.Empty)

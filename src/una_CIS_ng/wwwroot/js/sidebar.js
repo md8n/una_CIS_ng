@@ -1,6 +1,7 @@
 ﻿var $body = $(document.body);
 var navHeight = $(".navbar").outerHeight(true) + 10;
 
+var sb = document.getElementById("sidebar");
 $("#sidebar").affix({
   offset: {
     top: function () {

@@ -4,12 +4,12 @@
     angular.module("unaApp", [
         // Angular modules 
         //"ngRoute",
-        "ngResource"//,
+        "ngResource",
 
         // Custom modules 
         //"geoDataService"
 
         // 3rd Party Modules
-        
+        "ui.bootstrap"
     ]);
 })(angular);

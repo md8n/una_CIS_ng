@@ -41,7 +41,8 @@
             "type": "holder",
             "addresses": { "physical": { "id": null, "type": "physical", "isMailing": true } }
           }
-        }
+        },
+        "isPreview": false
       }
     };
 
@@ -90,9 +91,14 @@
       // The polylines have circular references in them so they have to be detached first before saving
       $scope.permit.permits.row.locationPolylines.length = 0;
 
+      $scope.submitResult = "Submitting";
+
       var permit = $scope.permit.permits.row;
+
       //alert('trying to save: ' + JSON.stringify(permit));
-      permitService.save(permit);
+      permitService.save(permit, function() {
+        $scope.submitResult = "Submitted";
+      });
     };
 
     $scope.permit.IsDbConnected = permitService.IsDbConnected();

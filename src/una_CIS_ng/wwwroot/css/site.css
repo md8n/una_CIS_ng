@@ -54,3 +54,10 @@ dl.dl-horizontal dt {
     display: none
   }
 }
+
+@media print {
+  /* Fix for print preview of maps in Chrome browser */
+  img {
+    max-width: none !important;
+  }
+}

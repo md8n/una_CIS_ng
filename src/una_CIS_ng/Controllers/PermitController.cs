@@ -100,20 +100,116 @@ namespace una_CIS_ng.Controllers
     {
       if (!ModelState.IsValid)
       {
-        return BadRequest();
+        return BadRequest("Permit application data was invalid");
       }
 
       var jPerm = value as JObject;
       if (jPerm == null)
       {
-        return BadRequest();
+        return BadRequest("Permit application data was of the wrong type");
       }
 
+      var permit = ExtractPermit(jPerm);
+
+      // Save the permit
+      var objId = await _permitRepository.AddOrUpdateAsync(permit);
+      if (objId == ObjectId.Empty)
+      {
+        return BadRequest("Could not save permit application");
+      }
+      permit.id = objId;
+
+      var oMem = BuildPermitPDF(permit);
+
+      var apiKey = _appCodes.SendGridApiKey;
+      dynamic sg = new SendGridAPIClient(apiKey);
+
+      var from = new Email("do_not_reply@cis.ng");
+      var subject = "Test message from CIS";
+      var to = new Email("obikenz@hotmail.com");
+      Email[] cc = {to, new Email("lee@md8n.com"), new Email("meteorist@live.com"), new Email("info@cis.ng"), new Email("chukwudi.okpara@cis.ng") };
+      var doco = new Attachment
+      {
+        Filename = "Test.pdf",
+        Type = "application/pdf",
+        Content = Convert.ToBase64String(oMem.ToArray())
+      };
+
+      var failedRecipients = new List<Email>();
+      foreach (var email in cc)
+      {
+        try
+        {
+          Content content;
+          if (email.Address == to.Address && email.Name == to.Name)
+          {
+            content = new Content("text/html", "<p>Dear Applicant,</p><p>This is the data you submitted via the UNA website.</p><p>Regards</p><p>UNA Support Team</p><pre>" + jPerm.ToString(Formatting.Indented) + "</pre>");
+          }
+          else
+          {
+            content = new Content("text/html", "<p>This is the data the applicant submitted via the UNA website.</p><p>Regards</p><p>UNA Support Team</p><pre>" + jPerm.ToString(Formatting.Indented) + "</pre>");
+          }
+          var mail = new Mail(from, subject, email, content)
+          {
+            Attachments = new List<Attachment> { doco }
+          };
+          dynamic response = sg.client.mail.send.post(requestBody: mail.Get());
+          var respCode = response.StatusCode as HttpStatusCode?;
+          if (!respCode.HasValue)
+          {
+            failedRecipients.Add(email);
+          }
+          switch (respCode.Value)
+          {
+            case HttpStatusCode.Accepted:
+              break;
+            default:
+              failedRecipients.Add(email);
+              break;
+          }
+        }
+        catch (Exception)
+        {
+          failedRecipients.Add(email);
+        }
+      }
+
+      if (failedRecipients.Any())
+      {
+        var errorResult = "There were some issues sending emails to the intended recipients";
+        return BadRequest(); // + failedRecipients.Select(f => f.Address));
+      }
+
+      return Ok(objId);
+    }
+
+    private static MemoryStream BuildPermitPDF(Permit permit)
+    {
+      var machineInfo = "test";
+      var shiftInfo = "file";
+      var oDoc = GeneratePDF.CreatePDFPermitApplication("Right of Way", "Perm Holder");
+      var oMem = new MemoryStream();
+      var oWriter = GeneratePDF.CreatePdfWriter(oDoc, oMem);
+      oWriter.PageEvent = new PDFPageEvent(machineInfo, shiftInfo);
+      oDoc.Open();
+      oDoc.Close();
+      oMem.Close();
+      return oMem;
+    }
+
+    private static Permit ExtractPermit(JObject jPerm)
+    {
       var permit = new Permit();
+
       foreach (var jPermKid in jPerm.Children())
       {
         var jProp = jPermKid as JProperty;
-        if (jProp != null)
+        if (jProp == null)
+        {
+          continue;
+        }
+
+        try
         {
           var jValue = jProp.Value;
           JArray jArray = null;
@@ -125,7 +221,9 @@ namespace una_CIS_ng.Controllers
           switch (jProp.Name)
           {
             case "id":
-              permit.id = !string.IsNullOrWhiteSpace(jValue.ToString()) ? new ObjectId(jValue.ToString()) : ObjectId.GenerateNewId();
+              permit.id = !string.IsNullOrWhiteSpace(jValue.ToString())
+                ? new ObjectId(jValue.ToString())
+                : ObjectId.GenerateNewId();
               break;
             case "type":
               permit.type = jValue.ToString();
@@ -214,84 +312,12 @@ namespace una_CIS_ng.Controllers
               break;
           }
         }
-      }
-
-      var machineInfo = "test";
-      var shiftInfo = "file";
-      var oDoc = GeneratePDF.CreatePDFPermitApplication("Right of Way", "Perm Holder");
-      var oMem = new MemoryStream();
-      var oWriter = GeneratePDF.CreatePdfWriter(oDoc, oMem);
-      oWriter.PageEvent = new PDFPageEvent(machineInfo, shiftInfo);
-      oDoc.Open();
-      oDoc.Close();
-      oMem.Close();
-
-      //var myMessage = new SendGridAPIClient();
-      var apiKey = _appCodes.SendGridApiKey;
-      dynamic sg = new SendGridAPIClient(apiKey);
-
-      var from = new Email("do_not_reply@cis.ng");
-      var subject = "Test message from CIS";
-      var to = new Email("obikenz@hotmail.com");
-      Email[] cc = {to, new Email("lee@md8n.com"), new Email("meteorist@live.com"), new Email("info@cis.ng"), new Email("chukwudi.okpara@cis.ng") };
-      var doco = new Attachment
-      {
-        Filename = "Test.pdf",
-        Type = "application/pdf",
-        Content = Convert.ToBase64String(oMem.ToArray())
-      };
-
-      var failedRecipients = new List<Email>();
-      foreach (var email in cc)
-      {
-        try
+        catch (Exception ex)
         {
-          Content content;
-          if (email.Address == to.Address && email.Name == to.Name)
-          {
-            content = new Content("text/html", "<p>Dear Applicant,</p><p>This is the data you submitted via the UNA website.</p><p>Regards</p><p>UNA Support Team</p><pre>" + jPerm.ToString(Formatting.Indented) + "</pre>");
-          }
-          else
-          {
-            content = new Content("text/html", "<p>This is the data the applicant submitted via the UNA website.</p><p>Regards</p><p>UNA Support Team</p><pre>" + jPerm.ToString(Formatting.Indented) + "</pre>");
-          }
-          var mail = new Mail(from, subject, email, content)
-          {
-            Attachments = new List<Attachment> { doco }
-          };
-          dynamic response = sg.client.mail.send.post(requestBody: mail.Get());
-          var respCode = response.StatusCode as HttpStatusCode?;
-          if (!respCode.HasValue)
-          {
-            failedRecipients.Add(email);
-          }
-          switch (respCode.Value)
-          {
-            case HttpStatusCode.Accepted:
-              break;
-            default:
-              failedRecipients.Add(email);
-              break;
-          }
-        }
-        catch (Exception)
-        {
-          failedRecipients.Add(email);
         }
       }
 
-      if (failedRecipients.Any())
-      {
-        return BadRequest(failedRecipients.Select(f => f.Address).ToArray());
-      }
-
-      var objId = await _permitRepository.AddOrUpdateAsync(permit);
-      if (objId == ObjectId.Empty)
-      {
-        return NoContent();
-      }
-
-      return Ok(objId);
+      return permit;
     }
 
     // DELETE: api/Permit/5

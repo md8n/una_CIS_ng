@@ -18,18 +18,26 @@ Una.Map = function (gm, mapElId) {
   ];
 
   function geocode(lnglat, destArrayIndex) {
+    var mStatus = gm.GeocoderStatus.OK;
+
     geocoder.geocode({ 'location': lnglat }, function (results, status) {
+      mStatus = status;
       if (status === gm.GeocoderStatus.OK) {
         if (results.length > 0) {
           const result = getClosestAddress(results, lnglat).formatted_address;
           permitScope.$apply(function () { permitScope.permit.permits.row.locationDescriptions[destArrayIndex].push(result); });
         } else {
-          window.alert('No results found');
+          window.alert('Warning: No location results were returned by the Geocoder.  This is just a notice, you may still submit your application.');
         }
       } else {
-        window.alert('Sorry, there was an issue converting the Lon Lat values to an address.  The Geocoder failed due to: ' + status);
+        if (status !== gm.GeocoderStatus.OVER_QUERY_LIMIT) {
+          window
+            .alert('Warning: The Geocoder had problems getting a location result.  This is just a notice, you may still submit your application.  The Geocoder failed due to: ' + status);
+        }
       }
     });
+
+    return mStatus;
   }
 
   function getClosestAddress(addressResults, lnglat) {
@@ -116,7 +124,13 @@ Una.Map = function (gm, mapElId) {
             lonLats.push([lon, lat]);
             polylineFeature.geometry.coordinates.push([lon, lat]);
 
-            geocode({ lng: lon, lat: lat }, locDescCount - 1);
+            setTimeout(function (lon, lat, locDescCount) {
+              var mStatus = geocode({ lng: lon, lat: lat }, locDescCount - 1);
+              if (mStatus == gm.GeocoderStatus.OVER_QUERY_LIMIT) {
+                alert('Warning: The Geocoder had problems getting a particular location result.  This is just a notice, you may still submit your application.');
+              }
+            },
+              200 * ix, lon, lat, locDescCount);
           }
 
           permitScope.$apply(function () { permitScope.permit.permits.row.locations.features.push(polylineFeature); });

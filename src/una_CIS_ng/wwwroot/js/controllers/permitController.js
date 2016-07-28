@@ -96,8 +96,14 @@
       var permit = $scope.permit.permits.row;
 
       //alert('trying to save: ' + JSON.stringify(permit));
-      permitService.save(permit, function() {
+      permitService.save(permit, function (data) {
+        // On success the data returned should have the objId of the permit
         $scope.submitResult = "Submitted";
+        $scope.permit.permits.row.isPreview = false;
+      }, function(error) {
+        // Error has occurred
+        $scope.submitResult = "Submission Issues, please check your data and retry";
+        $scope.permit.permits.row.isPreview = false;
       });
     };
 

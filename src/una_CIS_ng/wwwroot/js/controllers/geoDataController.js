@@ -61,7 +61,7 @@
               var lonLats = [];
               $scope.permit.permits.row.locationDescriptions.push([]);
               var locDescCount = permitScope.permit.permits.row.locationDescriptions.length;
-              for (var ix = 0; ix < plP.getLength(); ix++) {
+              for (var ix = 0; ix < plP.getLength() ; ix++) {
                 const pt = plP.getAt(ix);
                 const lon = Number(Math.round(pt.lng() + 'e7') + 'e-7');
                 const lat = Number(Math.round(pt.lat() + 'e7') + 'e-7');
@@ -69,7 +69,13 @@
                 lonLats.push([lon, lat]);
                 polylineFeature.geometry.coordinates.push([lon, lat]);
 
-                geocode({ lng: lon, lat: lat }, locDescCount - 1);
+                setTimeout(function (lon, lat, locDescCount) {
+                    var mStatus = geocode({ lng: lon, lat: lat }, locDescCount - 1);
+                    if (mStatus == gm.GeocoderStatus.OVER_QUERY_LIMIT) {
+                      alert('Warning: The Geocoder had problems getting a particular location result.  This is just a notice, you may still submit your application.');
+                    }
+                  },
+                  200 * ix, lon, lat, locDescCount);
               }
 
               $scope.permit.permits.row.locations.features.push(polylineFeature);

@@ -653,23 +653,6 @@
           <div class="row">
             <div id="map" class="col-xs-12" style="height: 480px;"></div>
           </div>
-          <h3 id="PermitApplicationLocationCalculation">Location Details</h3>
-          <div class="row" ng-show="!!permit.permits.row.locationRoutes && permit.permits.row.locationRoutes.length > 0">
-            <div class="col-xs-5" ng-repeat="locationRoute in permit.permits.row.locationRoutes">
-              <strong>Route of Your Infrastructure</strong>
-              <ul ng-repeat="lonLat in locationRoute">
-                <li>{{"Lon:" + lonLat[0].toFixed(7) + " Lat:" + lonLat[1].toFixed(7)}}</li>
-              </ul>
-            </div>
-            <div class="col-xs-7" ng-repeat="locationDescs in permit.permits.row.locationDescriptions">
-              <strong>Location of Your Infrastructure</strong>
-              <ul ng-repeat="locDesc in locationDescs">
-                <li>{{locDesc}}</li>
-              </ul>
-            </div>
-            <!-- This hidden field is present to force recalculation of the various fees below -->
-            <pre id="location" ng-show="false">{{permit.permits.row | json}}</pre>
-          </div>
           <div class="row" ng-hide="permit.permits.row.isPreview">
             <div class="col-xs-6">
               <dl class="dl-horizontal">
@@ -685,6 +668,27 @@
                 </dd>
               </dl>
             </div>
+          </div>
+          <h3 id="PermitApplicationLocationCalculation">Location Details</h3>
+          <div class="row" ng-show="!!permit.permits.row.locationRoutes && permit.permits.row.locationRoutes.length > 0">
+            <div class="col-xs-5">
+              <div ng-repeat="locationRoute in permit.permits.row.locationRoutes">
+                <strong>Route of Your Infrastructure</strong>
+                <ul ng-repeat="lonLat in locationRoute">
+                  <li>{{"Lon:" + lonLat[0].toFixed(7) + " Lat:" + lonLat[1].toFixed(7)}}</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-xs-7">
+              <div ng-repeat="locationDescs in permit.permits.row.locationDescriptions">
+                <strong>Location of Your Infrastructure</strong>
+                <ul ng-repeat="locDesc in locationDescs">
+                  <li>{{locDesc}}</li>
+                </ul>
+              </div>
+            </div>
+            <!-- This hidden field is present to force recalculation of the various fees below -->
+            <pre id="location" ng-show="false">{{permit.permits.row | json}}</pre>
           </div>
         </div>
         <div class="bs-docs-section" ng-show="!!permit.permits.row.locationRoutes && permit.permits.row.locationRoutes.length > 0">

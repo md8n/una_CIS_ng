@@ -9,8 +9,8 @@
 <p>To use this calculator you must make a selection from each of the options below and then also enter any required values.</p>
 <div class="container bs-docs-container" ng-controller="feeCalculatorController">
   <div class="form-group row" ng-class="{'bg-danger': !calc.infState}">
-    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Infrastructure state:</label>
-    <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
+    <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Infrastructure state:</label>
+    <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure State">
         <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infState == 'New'}">
           <input type="radio" name="infState" ng-model="calc.infState" value="New" autocomplete="off" ng-required="true"> New
@@ -25,8 +25,8 @@
     </div>
   </div>
   <div class="form-group row" ng-class="{'bg-danger': !calc.permState}">
-    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Permit state:</label>
-    <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
+    <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Permit state:</label>
+    <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure State">
         <label class="btn btn-radio btn-primary" ng-class="{'active': calc.permState == 'New'}">
           <input type="radio" name="permState" ng-model="calc.permState" value="New" autocomplete="off" ng-required="true"> Applying<br />for New
@@ -55,8 +55,8 @@
     </div>
   </div>
   <div class="form-group row" ng-class="{'bg-danger': !calc.infType}">
-    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Type of Infrastructure:</label>
-    <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
+    <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Type of Infrastructure:</label>
+    <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
         <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infType == 'TransTower'}">
           <input type="radio" name="infType" ng-model="calc.infType" value="TransTower" autocomplete="off" ng-required="true"> Transmission<br />Tower / Mast
@@ -74,8 +74,8 @@
     </div>
   </div>
   <div class="form-group row" ng-class="{'bg-danger': !calc.infDisc}" ng-show="calc.infState != 'New' && calc.permState != 'Existing' && calc.infType == 'Underground'">
-    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Un-permitted Infrastructure Discovery:</label>
-    <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
+    <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Un-permitted Infrastructure Discovery:</label>
+    <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
         <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infDisc == 'Declared'}">
           <input type="radio" name="consType" ng-model="calc.infDisc" value="Declared" autocomplete="off" ng-required="true"> Declared by Owner
@@ -87,8 +87,8 @@
     </div>
   </div>
   <div class="form-group row" ng-class="{'bg-danger': !calc.consType}" ng-show="calc.infType == 'Underground'">
-    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Construction Method:</label>
-    <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
+    <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Construction Method:</label>
+    <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
         <label class="btn btn-radio btn-primary" ng-class="{'active': calc.consType == 'Trenching'}">
           <input type="radio" name="consType" ng-model="calc.consType" value="Trenching" autocomplete="off" ng-required="true"> Trenching
@@ -100,8 +100,8 @@
     </div>
   </div>
   <div class="form-group row" ng-class="{'bg-danger': !calc.infLoc}">
-    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Location of Infrastructure:</label>
-    <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
+    <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Location of Infrastructure:</label>
+    <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Location">
         <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infLoc == 'Business'}">
           <input type="radio" name="infLoc" ng-model="calc.infLoc" value="Business" autocomplete="off" ng-required="true"> Business District
@@ -116,8 +116,8 @@
     </div>
   </div>
   <div class="form-group row" ng-class="{'bg-danger': calc.dimension < 1}">
-    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Dimension:</label>
-    <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
+    <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Dimension:</label>
+    <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="input-group">
         <input name="dimension" id="dimension" ng-model="calc.dimension" type="number" />
         <span ng-show="calc.infType === 'Dish' || calc.infType === 'Underground'">in metres</span>
@@ -126,8 +126,8 @@
     </div>
   </div>
   <div class="form-group row" ng-class="{'bg-danger': calc.section < 1}" ng-show="calc.infType === 'Underground'">
-    <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Sections:</label>
-    <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
+    <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Sections:</label>
+    <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="input-group">
         <input name="section" id="section" ng-model="calc.section" type="number" />
       </div>

@@ -42,7 +42,7 @@
           <div class="well well-sm">
             <h3 id="PermitHolderDeclaration">Permit Holder</h3>
             <div class="form-group row">
-              <label class="col-xs-6 col-sm-5 col-md-4 col-lg-3 text-right">The Permit Holder is a:</label>
+              <label class="col-xs-5 col-sm-5 col-md-4 col-lg-3 text-right">The Permit Holder is a:</label>
               <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9">
                 <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity Type">
                   <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.entityType == 'Person'}">
@@ -55,7 +55,7 @@
               </div>
             </div>
             <div id="PermitApplicationHolder" class="form-group row">
-              <label class="col-xs-6 col-sm-5 col-md-4 col-lg-3 text-right">The Permit Holder is also the Infrastructure Owner:</label>
+              <label class="col-xs-5 col-sm-5 col-md-4 col-lg-3 text-right">The Permit Holder is also the Infrastructure Owner:</label>
               <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9">
                 <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity is Infrastructure Owner">
                   <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.isInfrastructureOwner}">
@@ -145,8 +145,8 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Use Office Physical Address for Mailing Address?</label>
-                <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9">
+                <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Use Office Physical Address for Mailing Address?</label>
+                <div class="col-xs-6 col-sm-6 col-lg-9">
                   <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holder Office Address Is Also Mailing Address">
                     <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.addresses.physical.isMailing}">
                       <input type="radio" ng-model="permit.permits.row.parties.holder.addresses.physical.isMailing" ng-value="true" autocomplete="off" checked> Yes
@@ -617,8 +617,8 @@
             </ol>
           </div>
           <div class="form-group row">
-            <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Location Includes:</label>
-            <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10" ng-hide="permit.permits.row.isPreview">
+            <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Location Includes:</label>
+            <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10" ng-hide="permit.permits.row.isPreview">
               <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Location">
                 <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.isSpecialZone}">
                   <input type="radio" name="infLoc" ng-model="permit.permits.row.isSpecialZone" ng-value="true" autocomplete="off" ng-required="true"> Business District <br /> High Density Zone
@@ -633,8 +633,8 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-xs-5 col-sm-4 col-md-3 col-lg-2 text-right">Construction Method:</label>
-            <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10" ng-hide="permit.permits.row.isPreview">
+            <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Construction Method:</label>
+            <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10" ng-hide="permit.permits.row.isPreview">
               <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
                 <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.consType == 'Trenching'}">
                   <input type="radio" name="consType" ng-model="permit.permits.row.consType" value="Trenching" autocomplete="off" ng-required="true"> Trenching
@@ -651,7 +651,7 @@
         </div>
         <div id="PermitApplicationMap" ng-controller="geoDataController">
           <div class="row">
-            <div id="map" class="col-xs-12" style="height: 480px;"></div>
+            <div id="map" class="col-xs-12"></div>
           </div>
           <div class="row" ng-hide="permit.permits.row.isPreview">
             <div class="col-xs-6">
@@ -762,7 +762,7 @@
         </div>
       </form>
     </div>
-    <nav class="col-md-3 col-lg-2 hidden-sm hidden-print" id="rightSideNav">
+    <nav class="col-md-3 col-lg-2 hidden-xs hidden-sm hidden-print" id="rightSideNav">
       <ul class="nav nav-stacked affix-top" id="sidebar">
         <li ng-hide="permit.permits.row.isPreview">
           <a href="#PermitApplicationInstructions">Instructions</a>

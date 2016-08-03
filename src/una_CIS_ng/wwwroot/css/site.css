@@ -47,6 +47,55 @@ dl.dl-horizontal dt {
   white-space: normal;
 }
 
+#map, iframe {
+  height: 480px;
+  width: 100%;
+}
+
+/* Special reduced sizes for very small screens */
+@media (max-width: 767px) {
+  body, .btn {
+    padding: 3px;
+    font-size: 10px;
+  }
+  .container {
+    padding-right: 3px;
+    padding-left: 3px;
+  }
+  .row {
+    margin-right: -3px;
+    margin-left: -3px;
+  }
+  .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+    padding-right: 3px;
+    padding-left: 3px;
+  }
+  h1, .h1 {
+    font-size: 26px;
+  }
+  h2, .h2 {
+    font-size: 21px;
+  }
+  h3, .h3 {
+    font-size: 17px;
+  }
+  h4, .h4 {
+    font-size: 13px;
+  }
+  ol, ul, menu, dir {
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 20px;
+  }
+  #map, iframe {
+    height: 280px;
+    width: 100%;
+  }
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
   /* Hide captions */

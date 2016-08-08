@@ -735,20 +735,25 @@
           <h2 id="PermitApplicationSubmit">
             <a class="anchorjs-link" href="#PermitApplicationSubmit" aria-label="Anchor link for: permit application submit">Preview and Submit Application</a>
           </h2>
-          <p ng-hide="permit.permits.row.isPreview">Enter all required information above before attempting to Preview and Submit your application.</p>
+          <div class="col-xs-12 row" ng-hide="permit.permits.row.isPreview" title="You need three green lights before the Preview button will be available">
+            <span class="label" ng-class="{'label-success': !!permit.permits.row.parties.holder.entityType, 'label-warning': !permit.permits.row.parties.holder.entityType}">Permit Holder Declared </span>
+            <span class="label" ng-class="{'label-success': permit.permits.row.totalDistance > 0, 'label-warning': permit.permits.row.totalDistance <= 0}">Route Declared </span>
+            <span class="label" ng-class="{'label-success': !permit.permits.row.isPreview, 'label-warning': permit.permits.row.isPreview}">Ready to Preview </span>
+          </div>
+          <p ng-hide="permit.permits.row.isPreview" title="You need three green lights before the Preview button will be available">Enter all required information above before attempting to Preview and Submit your application.</p>
           <p ng-hide="permit.permits.row.isPreview">Note that contact details will be checked as part of the approval process.</p>
           <div class="form-group btn-group col-xs-12 row" aria-label="Print Preview and Submit">
-            <div class="col-xs-3">
-              <label class="btn btn-radio btn-info" ng-class="{'active': !permit.permits.row.isPreview}" ng-disabled="!!permit.permits.row.parties.infOwner.entityType || permit.permits.row.totalDistance === 0 || permit.permits.row.isPreview">
+            <div class="col-xs-3" title="You need three green lights before the Preview button will be available">
+              <label class="btn btn-radio btn-info" ng-class="{'active': !permit.permits.row.isPreview}" ng-disabled="!(!!permit.permits.row.parties.holder.entityType) || permit.permits.row.totalDistance === 0 || permit.permits.row.isPreview">
                 <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="true" autocomplete="off">Preview >>
               </label>
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-3" title="Correct any problems before attempting to Submit">
               <label class="btn btn-radio btn-warning" ng-class="{'active': permit.permits.row.isPreview}" ng-disabled="!permit.permits.row.isPreview">
-                <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="false" autocomplete="off" title="Correct any problems before attempting to Submit"><< Correct
+                <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="false" autocomplete="off"><< Correct
               </label>
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-3" title="You must Preview first before the Submit button will be available">
               <button class="btn btn-primary" id="rowPartiesSave" type="submit" ng-disabled="!permit.permits.row.isPreview">Submit >></button>
             </div>
             <div class="col-xs-3">

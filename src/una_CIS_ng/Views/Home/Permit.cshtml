@@ -651,19 +651,27 @@
         </div>
       <div id="PermitApplicationMap" ng-controller="geoDataController">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-xs-12 afterMap">
             <div id="map" ng-class="{'isPreview': permit.permits.row.isPreview}"></div>
           </div>
         </div>
         <div class="row" ng-hide="permit.permits.row.isPreview">
-          <div class="col-xs-6">
+          <div class="col-xs-3">
             <dl class="dl-horizontal">
               <dt>GeoData Service is:</dt>
               <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
             </dl>
           </div>
-          <div class="col-xs-6">
-            <dl class="dl-horizontal">
+          <div class="col-xs-3">
+            <dl class="dl-horizontal" title="Zoom the map to fit your infrastructure">
+              <dt>Zoom to<br/>infrastructure</dt>
+              <dd>
+                <input class="btn" id="FitMap" type="button" value="Fit Map" ng-click="geoData.FitMap()" ng-disabled="permit.permits.row.totalDistance <= 0" />
+              </dd>
+            </dl>
+          </div>
+          <div class="col-xs-3">
+            <dl class="dl-horizontal" title="Clear all of the infrastructure data you've drawn">
               <dt>Clear map data</dt>
               <dd>
                 <input class="btn" id="ResetMap" type="button" value="Reset Map" ng-click="geoData.ResetMap()"/>
@@ -751,12 +759,12 @@
           <div class="form-group btn-group col-xs-12 row" aria-label="Print Preview and Submit">
             <div class="col-xs-3" title="You need three green lights before the Preview button will be available">
               <label class="btn btn-radio btn-info" ng-class="{'active': !permit.permits.row.isPreview}" ng-disabled="!(!!permit.permits.row.parties.holder.entityType) || permit.permits.row.totalDistance === 0 || permit.permits.row.isPreview">
-                <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="true" autocomplete="off">Preview >>
+                <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="true" ng-click="geoData.FitMap()" autocomplete="off">Preview >>
               </label>
             </div>
             <div class="col-xs-3" title="Correct any problems before attempting to Submit">
               <label class="btn btn-radio btn-warning" ng-class="{'active': permit.permits.row.isPreview}" ng-disabled="!permit.permits.row.isPreview">
-                <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="false" autocomplete="off"><< Correct
+                <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="false" ng-click="geoData.FitMap()" autocomplete="off"><< Correct
               </label>
             </div>
             <div class="col-xs-3" title="You must Preview first before the Submit button will be available">

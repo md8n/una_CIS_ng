@@ -57,6 +57,10 @@ dl.dl-horizontal dt {
     width: 511pt;
   }
 
+  .afterMap {
+    padding-bottom: 15px;
+  }
+
 /* Special reduced sizes for very small screens */
 @media (max-width: 767px) {
   body, .btn {

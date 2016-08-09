@@ -12,7 +12,7 @@
     var dm = null;
     var dmRebuilt = false;
 
-    function unaMap (mapElId) {
+    function unaMap(mapElId) {
       gm = google.maps;
       geocoder = new gm.Geocoder;
 
@@ -30,13 +30,13 @@
     };
 
     // Set up the callback for Google Maps API
-    $scope.initMap = function() {
+    $scope.initMap = function () {
       const uMap = unaMap("map");
       //Una.gMap = unaMap.map;
       //Una.dm = unaMap.drawingManager;
       //alert("Una loaded:" + !!Una + " map loaded:" + !!Una.gMap + " DrawingManager loaded:" + !!Una.dm);
     };
-    const initMap = function() {
+    const initMap = function () {
       $scope.initMap();
     }
     window.initMap = initMap;
@@ -117,7 +117,13 @@
       $scope.geoData.geoFeatures = [];
       if (!!map) {
         $scope.geoData.geoFeatures = response.map(function (obj) { return obj.Feature; });
-        $scope.geoData.geoFeatures.forEach(function (feature) { map.data.addGeoJson(feature) });
+        var bbox = [200, 100, -200, -100];
+        $scope.geoData.geoFeatures.forEach(function (feature) {
+          map.data.addGeoJson(feature);
+          bbox = setBboxBbox(bbox, feature.bbox);
+        });
+
+        map.fitBounds(createLatLngBounds(bbox));
       }
       //alert("Loaded GeoData Successfully");
     };
@@ -144,7 +150,50 @@
       dmRebuilt = true;
     }
 
-    function addEventListener () {
+    function setBboxBbox(bbox, bboxNew) {
+      if (bboxNew[0] < bbox[0]) {
+        bbox[0] = bboxNew[0];
+      }
+      if (bboxNew[1] < bbox[1]) {
+        bbox[1] = bboxNew[1];
+      }
+      if (bboxNew[2] > bbox[2]) {
+        bbox[2] = bboxNew[2];
+      }
+      if (bboxNew[3] > bbox[3]) {
+        bbox[3] = bboxNew[3];
+      }
+
+      return bbox;
+    }
+
+    function setBbox(bbox, lon, lat) {
+      if (lon < bbox[0]) {
+        bbox[0] = lon;
+      }
+      if (lat < bbox[1]) {
+        bbox[1] = lat;
+      }
+      if (lon > bbox[2]) {
+        bbox[2] = lon;
+      }
+      if (lat > bbox[3]) {
+        bbox[3] = lat;
+      }
+
+      return bbox;
+    }
+
+    function createLatLngBounds(bbox) {
+      return {
+        west: bbox[0],
+        south: bbox[1],
+        east: bbox[2],
+        north: bbox[3]
+      };
+    }
+
+    function addEventListener() {
       if (dmRebuilt) {
         gm.event.addListener(dm,
           "polylinecomplete",
@@ -174,47 +223,19 @@
                 polylineFeature.geometry.coordinates.push([lon, lat]);
 
                 // Set this feature's bbox
-                if (lon < polylineFeature.bbox[0]) {
-                  polylineFeature.bbox[0] = lon;
-                }
-                if (lat < polylineFeature.bbox[1]) {
-                  polylineFeature.bbox[1] = lat;
-                }
-                if (lon > polylineFeature.bbox[2]) {
-                  polylineFeature.bbox[2] = lon;
-                }
-                if (lat > polylineFeature.bbox[3]) {
-                  polylineFeature.bbox[3] = lat;
-                }
+                polylineFeature.bbox = setBbox(polylineFeature.bbox, lon, lat);
 
                 // Set the bbox for the entire featurecollection
-                if (lon < pspr.locations.bbox[0]) {
-                  pspr.locations.bbox[0] = lon;
-                }
-                if (lat < pspr.locations.bbox[1]) {
-                  pspr.locations.bbox[1] = lat;
-                }
-                if (lon > pspr.locations.bbox[2]) {
-                  pspr.locations.bbox[2] = lon;
-                }
-                if (lat > pspr.locations.bbox[3]) {
-                  pspr.locations.bbox[3] = lat;
-                }
+                pspr.locations.bbox = setBbox(pspr.locations.bbox, lon, lat);
 
-                var latLngBounds = {
-                  west: pspr.locations.bbox[0],
-                  south: pspr.locations.bbox[1],
-                  east: pspr.locations.bbox[2],
-                  north: pspr.locations.bbox[3]
-                };
-                //map.fitBounds(latLngBounds);
+                //map.fitBounds(createLatLngBounds(pspr.locations.bbox));
 
                 setTimeout(function (lon, lat, locDescCount) {
-                    var mStatus = geocode({ lng: lon, lat: lat }, locDescCount - 1);
-                    if (mStatus == gm.GeocoderStatus.OVER_QUERY_LIMIT) {
-                      alert('Warning: The Geocoder had problems getting a particular location result.  This is just a notice, you may still submit your application.');
-                    }
-                  },
+                  var mStatus = geocode({ lng: lon, lat: lat }, locDescCount - 1);
+                  if (mStatus == gm.GeocoderStatus.OVER_QUERY_LIMIT) {
+                    alert('Warning: The Geocoder had problems getting a particular location result.  This is just a notice, you may still submit your application.');
+                  }
+                },
                   200 * ix, lon, lat, locDescCount);
               }
 
@@ -231,7 +252,7 @@
       }
     }
 
-    function resetMap () {
+    function resetMap() {
       rebuildDrawingManager();
 
       if (typeof (dm) === "undefined" || dm === null) {
@@ -259,13 +280,19 @@
       addEventListener();
     }
 
+    function fitMap() {
+      if (!!map) {
+        map.fitBounds(createLatLngBounds(permitScope.permit.permits.row.locations.bbox));
+      }
+    }
+
     $scope.geoData = $scope.geoData || {};
     $scope.geoData.title = "geoDataController";
     //$scope.apiData = geoDataService.APIData;
     $scope.geoData.All = geoDataService.All().$promise.then(handleGeoData);
     $scope.geoData.IsDbConnected = geoDataService.IsDbConnected();
     $scope.geoData.ResetMap = resetMap;
-    //$scope.geoData.AddEventListener = addEventListener;
+    $scope.geoData.FitMap = fitMap;
 
     //activate();
 

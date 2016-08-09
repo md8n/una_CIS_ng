@@ -119,9 +119,9 @@
 
               pspr.locations.features.push(polylineFeature);
               pspr.locationRoutes.push(lonLats);
-              pspr.locationPolylines.push(pl);
+              permitScope.map.locationPolylines.push(pl);
               pspr.distances.push(dist);
-              pspr.totalDistance = pspr.distances.reduce(function(a, b) { return a + b; });
+              pspr.totalDistance = pspr.distances.reduce(function (a, b) { return a + b; });
             }
           });
       }
@@ -146,8 +146,8 @@
         $scope.permit.permits.row.locationDescriptions.length = 0;
 
         // detach the polylines from the map first, then throw them all away
-        $scope.permit.permits.row.locationPolylines.forEach(function (el) { el.setMap(null); });
-        $scope.permit.permits.row.locationPolylines.length = 0;
+        $scope.map.locationPolylines.forEach(function (el) { el.setMap(null); });
+        $scope.map.locationPolylines.length = 0;
 
         addEventListener();
       }

@@ -35,7 +35,6 @@
         "locations": { "type": "FeatureCollection", "bbox": [200, 100, -200, -100], "features": [] },
         "locationRoutes": [],
         "locationDescriptions": [],
-        "locationPolylines": [],
         "parties": {
           "holder": {
             "id": null,
@@ -46,36 +45,39 @@
         "isPreview": false
       }
     };
+    // locationPolylines must be held with the map to work effectively
+    permitScope.map = permitScope.map || {};
+    permitScope.map.locationPolylines = [];
 
-    permitScope.calc = permitScope.calc || {};
-    permitScope.calc.fees = [];
-    permitScope.calc.fees.push(new feeDefinition("application", "true", "Application Form Fee", 1, 1, "", 50000));
-    permitScope.calc.fees.push(new feeDefinition("application", "permitScope.permit.permits.row.consType == 'HorizontalDrilling'", "Application Permit Fee - Underground Horizontal Drilling", 0, 1, "metre", 500));
-    permitScope.calc.fees.push(new feeDefinition("application", "permitScope.permit.permits.row.consType == 'HorizontalDrilling'", "Application Permit Fee - Underground Horizontal Drilling Pits (x2)", 0, 1, "section", 6000));
-    permitScope.calc.fees.push(new feeDefinition("application", "permitScope.permit.permits.row.consType == 'Trenching'", "Application Permit Fee - Underground Trenching", 0, 1, "metre", 3000));
-    permitScope.calc.fees.push(new feeDefinition("application", "true", "Application Permit Fee - Remediation", 0, 1, "metre", 10000));
-    permitScope.calc.fees.push(new feeDefinition("application", "permitScope.permit.permits.row.isSpecialZone", "Application Permit Fee - Location in Business / High Density Zone", 1, 1, "", 50000));
-    permitScope.calc.fees.push(new feeDefinition("application", "true", "Application Permit Fee - First Annual Location Fee", 1, 1, "", 50000));
+    permitScope.permit.calc = permitScope.permit.calc || {};
+    permitScope.permit.calc.fees = [];
+    permitScope.permit.calc.fees.push(new feeDefinition("application", "true", "Application Form Fee", 1, 1, "", 50000));
+    permitScope.permit.calc.fees.push(new feeDefinition("application", "permitScope.permit.permits.row.consType == 'HorizontalDrilling'", "Application Permit Fee - Underground Horizontal Drilling", 0, 1, "metre", 500));
+    permitScope.permit.calc.fees.push(new feeDefinition("application", "permitScope.permit.permits.row.consType == 'HorizontalDrilling'", "Application Permit Fee - Underground Horizontal Drilling Pits (x2)", 0, 1, "section", 6000));
+    permitScope.permit.calc.fees.push(new feeDefinition("application", "permitScope.permit.permits.row.consType == 'Trenching'", "Application Permit Fee - Underground Trenching", 0, 1, "metre", 3000));
+    permitScope.permit.calc.fees.push(new feeDefinition("application", "true", "Application Permit Fee - Remediation", 0, 1, "metre", 10000));
+    permitScope.permit.calc.fees.push(new feeDefinition("application", "permitScope.permit.permits.row.isSpecialZone", "Application Permit Fee - Location in Business / High Density Zone", 1, 1, "", 50000));
+    permitScope.permit.calc.fees.push(new feeDefinition("application", "true", "Application Permit Fee - First Annual Location Fee", 1, 1, "", 50000));
 
-    permitScope.calc.fees.push(new feeDefinition("penalty", "permitScope.permit.permits.row.consType", "Penalty - Un-permitted underground infrastructure - Declared", 0, 1, "metre", 20000));
-    permitScope.calc.fees.push(new feeDefinition("penaltyUndeclared", "permitScope.permit.permits.row.consType", "Penalty - Un-permitted underground infrastructure - Audited", 0, 1, "metre", 50000));
-    //permitScope.calc.fees.push(new feeDefinition("penalty", "permitScope.permit.permits.row.infDisc == 'Declared'", "Penalty - Un-permitted underground infrastructure - Audited", 0, 1, "metre", 20000));
-    //permitScope.calc.fees.push(new feeDefinition("penalty", "permitScope.permit.permits.row.infDisc == 'Discovered'", "Penalty - Un-permitted underground infrastructure - Audited", 0, 1, "metre", 50000));
+    permitScope.permit.calc.fees.push(new feeDefinition("penalty", "permitScope.permit.permits.row.consType", "Penalty - Un-permitted underground infrastructure - Declared", 0, 1, "metre", 20000));
+    permitScope.permit.calc.fees.push(new feeDefinition("penaltyUndeclared", "permitScope.permit.permits.row.consType", "Penalty - Un-permitted underground infrastructure - Audited", 0, 1, "metre", 50000));
+    //permitScope.permit.calc.fees.push(new feeDefinition("penalty", "permitScope.permit.permits.row.infDisc == 'Declared'", "Penalty - Un-permitted underground infrastructure - Audited", 0, 1, "metre", 20000));
+    //permitScope.permit.calc.fees.push(new feeDefinition("penalty", "permitScope.permit.permits.row.infDisc == 'Discovered'", "Penalty - Un-permitted underground infrastructure - Audited", 0, 1, "metre", 50000));
 
-    permitScope.calc.fees.push(new feeDefinition("penaltyExtended", "(permitScope.calc.infState == 'Existing' || permitScope.calc.infState == 'Decommissioning')", "Penalty - Failure to rectify after notice period has expired and action has been ordered", 1, 1, "", "full cost"));
-    permitScope.calc.fees.push(new feeDefinition("penaltyExtended", "(permitScope.calc.infState == 'Existing' || permitScope.calc.infState == 'Decommissioning')", "Penalty - Any contravention or omission without a specific penalty listed above", 0, 1, "day", 50000));
+    permitScope.permit.calc.fees.push(new feeDefinition("penaltyExtended", "(permitScope.calc.infState == 'Existing' || permitScope.calc.infState == 'Decommissioning')", "Penalty - Failure to rectify after notice period has expired and action has been ordered", 1, 1, "", "full cost"));
+    permitScope.permit.calc.fees.push(new feeDefinition("penaltyExtended", "(permitScope.calc.infState == 'Existing' || permitScope.calc.infState == 'Decommissioning')", "Penalty - Any contravention or omission without a specific penalty listed above", 0, 1, "day", 50000));
 
-    permitScope.calc.applicationFilter = function (element) {
-      const calc = $scope.calc;
+    permitScope.permit.calc.applicationFilter = function (element) {
+      const calc = $scope.permit.calc;
       return (element.feeType === "application" || element.feeType === "penalty") && eval(element.condition);
     };
 
-    permitScope.calc.undeclaredFilter = function (element) {
-      const calc = $scope.calc;
+    permitScope.permit.calc.undeclaredFilter = function (element) {
+      const calc = $scope.permit.calc;
       return (element.feeType === "application" || element.feeType === "penaltyUndeclared") && eval(element.condition);
     };
 
-    permitScope.calc.total = function (elements, filter, dimension, section) {
+    permitScope.permit.calc.total = function (elements, filter, dimension, section) {
       var els = filter ? elements.filter(filter) : elements;
 
       if (els.length === 0) {
@@ -88,23 +90,20 @@
     };
 
     //permitScope.All = permitService.All().$promise.then(handlePermits);
-    permitScope.Save = function () {
-      // The polylines have circular references in them so they have to be detached first before saving
-      permitScope.permit.permits.row.locationPolylines.length = 0;
-
+    permitScope.permit.Save = function () {
       $scope.submitResult = "Submitting";
 
-      var permit = permitScope.permit.permits.row;
+      var pspr = permitScope.permit.permits.row;
 
       //alert('trying to save: ' + JSON.stringify(permit));
-      permitService.save(permit, function (data) {
+      permitService.save(pspr, function (data) {
         // On success the data returned should have the objId of the permit
         $scope.submitResult = "Submitted";
-        permitScope.permit.permits.row.isPreview = false;
+        pspr.isPreview = false;
       }, function(error) {
         // Error has occurred
         $scope.submitResult = "Submission Issues, please check your data and retry";
-        permitScope.permit.permits.row.isPreview = false;
+        pspr.isPreview = false;
       });
     };
 

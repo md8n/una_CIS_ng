@@ -649,48 +649,54 @@
             </div>
           </div>
         </div>
-        <div id="PermitApplicationMap" ng-controller="geoDataController">
-          <div class="row">
-            <div id="map" class="col-xs-12"></div>
-          </div>
-          <div class="row" ng-hide="permit.permits.row.isPreview">
-            <div class="col-xs-6">
-              <dl class="dl-horizontal">
-                <dt>GeoData Service is:</dt>
-                <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
-              </dl>
-            </div>
-            <div class="col-xs-6">
-              <dl class="dl-horizontal">
-                <dt>Clear map data</dt>
-                <dd>
-                  <input class="btn" id="ResetMap" type="button" value="Reset Map" ng-click="geoData.ResetMap()" />
-                </dd>
-              </dl>
-            </div>
-          </div>
-          <h3 id="PermitApplicationLocationCalculation">Location Details</h3>
-          <div class="row" ng-show="!!permit.permits.row.locationRoutes && permit.permits.row.locationRoutes.length > 0">
-            <div class="col-xs-5">
-              <div ng-repeat="locationRoute in permit.permits.row.locationRoutes">
-                <strong>Route of Your Infrastructure</strong>
-                <ul ng-repeat="lonLat in locationRoute">
-                  <li>{{"Lon:" + lonLat[0].toFixed(7) + " Lat:" + lonLat[1].toFixed(7)}}</li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-xs-7">
-              <div ng-repeat="locationDescs in permit.permits.row.locationDescriptions">
-                <strong>Location of Your Infrastructure</strong>
-                <ul ng-repeat="locDesc in locationDescs">
-                  <li>{{locDesc}}</li>
-                </ul>
-              </div>
-            </div>
-            <!-- This hidden field is present to force recalculation of the various fees below -->
-            <pre id="location" ng-show="false">{{permit.permits.row | json}}</pre>
+      <div id="PermitApplicationMap" ng-controller="geoDataController">
+        <div class="row">
+          <div class="col-xs-12">
+            <div id="map" ng-class="{'isPreview': permit.permits.row.isPreview}"></div>
           </div>
         </div>
+        <div class="row" ng-hide="permit.permits.row.isPreview">
+          <div class="col-xs-6">
+            <dl class="dl-horizontal">
+              <dt>GeoData Service is:</dt>
+              <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
+            </dl>
+          </div>
+          <div class="col-xs-6">
+            <dl class="dl-horizontal">
+              <dt>Clear map data</dt>
+              <dd>
+                <input class="btn" id="ResetMap" type="button" value="Reset Map" ng-click="geoData.ResetMap()"/>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <h3 id="PermitApplicationLocationCalculation">Location Details</h3>
+          </div>
+        </div>
+        <div class="row" ng-show="!!permit.permits.row.locationRoutes && permit.permits.row.locationRoutes.length > 0">
+          <div class="col-xs-5">
+            <div ng-repeat="locationRoute in permit.permits.row.locationRoutes">
+              <strong>Route of Your Infrastructure</strong>
+              <ul ng-repeat="lonLat in locationRoute">
+                <li>{{"Lon:" + lonLat[0].toFixed(7) + " Lat:" + lonLat[1].toFixed(7)}}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-7">
+            <div ng-repeat="locationDescs in permit.permits.row.locationDescriptions">
+              <strong>Location of Your Infrastructure</strong>
+              <ul ng-repeat="locDesc in locationDescs">
+                <li>{{locDesc}}</li>
+              </ul>
+            </div>
+          </div>
+          <!-- This hidden field is present to force recalculation of the various fees below -->
+          <pre id="location" ng-show="false">{{permit.permits.row | json}}</pre>
+        </div>
+      </div>
         <div class="bs-docs-section" ng-show="!!permit.permits.row.locationRoutes && permit.permits.row.locationRoutes.length > 0">
           <h2 id="PermitApplicationFeeEstimation">
             <a class="anchorjs-link" href="#PermitApplicationFeeEstimation" aria-label="Anchor link for: permit application fee estimation">Permit Application Fees</a>
@@ -702,28 +708,28 @@
           <div class="table-responsive">
             <table class="table table-striped table-condensed table-hover">
               <thead>
-                <tr>
-                  <th class="col-xs-6">Item</th>
-                  <th class="col-xs-1 text-right">Unit</th>
-                  <th class="col-xs-1 text-right">Rate</th>
-                  <th class="col-xs-2">&nbsp;</th>
-                  <th class="col-xs-2 text-right">Total</th>
-                </tr>
+              <tr>
+                <th class="col-xs-6">Item</th>
+                <th class="col-xs-1 text-right">Unit</th>
+                <th class="col-xs-1 text-right">Rate</th>
+                <th class="col-xs-2">&nbsp;</th>
+                <th class="col-xs-2 text-right">Total</th>
+              </tr>
               </thead>
               <tbody>
-                <tr class="animate-show" ng-repeat="fee in permit.calc.fees | filter: permit.calc.applicationFilter">
-                  <td>{{fee.name}}</td>
-                  <td class="text-right">{{fee.units($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length)}}</td>
-                  <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
-                  <td>{{fee.rateDesc()}}</td>
-                  <td class="text-right">{{fee.total($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length) | currency: "N&nbsp;": 0}}</td>
-                </tr>
+              <tr class="animate-show" ng-repeat="fee in permit.calc.fees | filter: permit.calc.applicationFilter">
+                <td>{{fee.name}}</td>
+                <td class="text-right">{{fee.units($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length)}}</td>
+                <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
+                <td>{{fee.rateDesc()}}</td>
+                <td class="text-right">{{fee.total($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length) | currency: "N&nbsp;": 0}}</td>
+              </tr>
               </tbody>
               <tfoot>
-                <tr class="animate-show">
-                  <td class="text-right" colspan="4"><strong>Application Fee Total</strong></td>
-                  <td class="text-right"><strong>{{permit.calc.total(permit.calc.fees, permit.calc.applicationFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length) | currency: "N&nbsp;": 0 }}</strong></td>
-                </tr>
+              <tr class="animate-show">
+                <td class="text-right" colspan="4"><strong>Application Fee Total</strong></td>
+                <td class="text-right"><strong>{{permit.calc.total(permit.calc.fees, permit.calc.applicationFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length) | currency: "N&nbsp;": 0 }}</strong></td>
+              </tr>
               </tfoot>
             </table>
           </div>

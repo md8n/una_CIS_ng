@@ -125,9 +125,6 @@ Una.Map = function (gm, mapElId) {
 
           var lonLats = [];
           permitScope.$apply(function () { pspr.locationDescriptions.push([]); });
-          try {
-            permitScope.$apply(function () { pspr.locationPolylines.push(pl); });
-          } catch (e) { }
           var locDescCount = pspr.locationDescriptions.length;
           for (var ix = 0; ix < plP.getLength() ; ix++) {
             const pt = plP.getAt(ix);
@@ -188,6 +185,10 @@ Una.Map = function (gm, mapElId) {
           permitScope.$apply(function () {
             pspr.totalDistance = pspr.distances.reduce(function (a, b) { return a + b; });
           });
+          try {
+            permitScope.$apply(function () { permitScope.map.locationPolylines.push(pl); });
+          } catch (e) { }
+
           permitScope.$apply();
         }
       });

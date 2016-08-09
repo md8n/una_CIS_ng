@@ -20,12 +20,14 @@ Una.Map = function (gm, mapElId) {
   function geocode(lnglat, destArrayIndex) {
     var mStatus = gm.GeocoderStatus.OK;
 
+    var pspr = !!permitScope ? permitScope.permit.permits.row : null;
+
     geocoder.geocode({ 'location': lnglat }, function (results, status) {
       mStatus = status;
       if (status === gm.GeocoderStatus.OK) {
         if (results.length > 0) {
           const result = getClosestAddress(results, lnglat).formatted_address;
-          permitScope.$apply(function () { permitScope.permit.permits.row.locationDescriptions[destArrayIndex].push(result); });
+          permitScope.$apply(function () { pspr.locationDescriptions[destArrayIndex].push(result); });
         } else {
           window.alert('Warning: No location results were returned by the Geocoder.  This is just a notice, you may still submit your application.');
         }
@@ -111,11 +113,22 @@ Una.Map = function (gm, mapElId) {
 
         const infLc = document.getElementById("location");
         if (infLc && permitScope) {
-          const polylineFeature = { "type": "Feature", "geometry": { "type": "LineString", "coordinates": [] }, "properties": {} };
+          // Set up a polyline feature - note the deliberately wrong initial values for bbox
+          var polylineFeature = {
+            "type": "Feature",
+            "bbox": [200, 100, -200, -100],
+            "geometry": { "type": "LineString", "coordinates": [] },
+            "properties": {}
+          };
+
+          var pspr = permitScope.permit.permits.row;
+
           var lonLats = [];
-          permitScope.$apply(function () { permitScope.permit.permits.row.locationDescriptions.push([]); });
-          permitScope.$apply(function () { permitScope.permit.permits.row.locationPolylines.push(pl); });
-          var locDescCount = permitScope.permit.permits.row.locationDescriptions.length;
+          permitScope.$apply(function () { pspr.locationDescriptions.push([]); });
+          try {
+            permitScope.$apply(function () { pspr.locationPolylines.push(pl); });
+          } catch (e) { }
+          var locDescCount = pspr.locationDescriptions.length;
           for (var ix = 0; ix < plP.getLength() ; ix++) {
             const pt = plP.getAt(ix);
             const lon = Number(Math.round(pt.lng() + 'e7') + 'e-7');
@@ -123,6 +136,42 @@ Una.Map = function (gm, mapElId) {
 
             lonLats.push([lon, lat]);
             polylineFeature.geometry.coordinates.push([lon, lat]);
+
+            // Set this feature's bbox
+            if (lon < polylineFeature.bbox[0]) {
+              polylineFeature.bbox[0] = lon;
+            }
+            if (lat < polylineFeature.bbox[1]) {
+              polylineFeature.bbox[1] = lat;
+            }
+            if (lon > polylineFeature.bbox[2]) {
+              polylineFeature.bbox[2] = lon;
+            }
+            if (lat > polylineFeature.bbox[3]) {
+              polylineFeature.bbox[3] = lat;
+            }
+
+            // Set the bbox for the entire featurecollection
+            if (lon < pspr.locations.bbox[0]) {
+              pspr.locations.bbox[0] = lon;
+            }
+            if (lat < pspr.locations.bbox[1]) {
+              pspr.locations.bbox[1] = lat;
+            }
+            if (lon > pspr.locations.bbox[2]) {
+              pspr.locations.bbox[2] = lon;
+            }
+            if (lat > pspr.locations.bbox[3]) {
+              pspr.locations.bbox[3] = lat;
+            }
+
+            var latLngBounds = {
+              west: pspr.locations.bbox[0],
+              south: pspr.locations.bbox[1],
+              east: pspr.locations.bbox[2],
+              north: pspr.locations.bbox[3]
+            };
+            //Una.gMap.fitBounds(latLngBounds);
 
             setTimeout(function (lon, lat, locDescCount) {
               var mStatus = geocode({ lng: lon, lat: lat }, locDescCount - 1);
@@ -133,40 +182,15 @@ Una.Map = function (gm, mapElId) {
               200 * ix, lon, lat, locDescCount);
           }
 
-          permitScope.$apply(function () { permitScope.permit.permits.row.locations.features.push(polylineFeature); });
-          permitScope.$apply(function () { permitScope.permit.permits.row.locationRoutes.push(lonLats); });
-          permitScope.$apply(function () { permitScope.permit.permits.row.distances.push(dist); });
+          permitScope.$apply(function () { pspr.locations.features.push(polylineFeature); });
+          permitScope.$apply(function () { pspr.locationRoutes.push(lonLats); });
+          permitScope.$apply(function () { pspr.distances.push(dist); });
           permitScope.$apply(function () {
-            permitScope.permit.permits.row.totalDistance = permitScope.permit.permits.row.distances.reduce(function (a, b) { return a + b; });
+            pspr.totalDistance = pspr.distances.reduce(function (a, b) { return a + b; });
           });
           permitScope.$apply();
         }
       });
-
-    //function buildAddress(addressComponents, formattedAddress) {
-    //  if (!addressComponents || !addressComponents.isArray) {
-    //    return formattedAddress;
-    //  }
-
-    //}
-
-    //  ////gm.event.addListener(drawingManager, 'overlaycomplete', function (event) {
-    //  ////  if (event.type === google.maps.drawing.OverlayType.POLYLINE) {
-    //  ////    var plP = event.overlay.getPath();
-    //  ////    alert('has plP');
-    //  ////  }
-    //  ////});
-
-    //  //function loadKmlLayer(src, map) {
-    //  //  var kmlLayer = new google.maps.KmlLayer(src, {
-    //  //    clickable: false,
-    //  //    suppressInfoWindows: false,
-    //  //    preserveViewport: false
-    //  //  });
-    //  //  kmlLayer.setMap(map);
-    //  //}
-
-    //  //loadKmlLayer("@mapUrl", map);
   }
 
   return {

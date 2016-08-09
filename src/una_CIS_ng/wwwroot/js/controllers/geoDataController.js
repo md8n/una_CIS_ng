@@ -39,7 +39,7 @@
       return false;
     }
 
-    const addEventListener = function() {
+    const addEventListener = function () {
       var gm = google.maps;
 
       const wasRebuilt = rebuildDrawingManager(gm);
@@ -53,14 +53,17 @@
 
             const infLc = document.getElementById("location");
             if (infLc && permitScope) {
-              const polylineFeature = {
+              // Set up a polyline feature - note the deliberately wrong initial values for bbox
+              var polylineFeature = {
                 "type": "Feature",
+                "bbox": [200, 100, -200, -100],
                 "geometry": { "type": "LineString", "coordinates": [] },
                 "properties": {}
               };
               var lonLats = [];
-              $scope.permit.permits.row.locationDescriptions.push([]);
-              var locDescCount = permitScope.permit.permits.row.locationDescriptions.length;
+              var pspr = permitScope.permit.permits.row;
+              pspr.locationDescriptions.push([]);
+              var locDescCount = pspr.locationDescriptions.length;
               for (var ix = 0; ix < plP.getLength() ; ix++) {
                 const pt = plP.getAt(ix);
                 const lon = Number(Math.round(pt.lng() + 'e7') + 'e-7');
@@ -68,6 +71,42 @@
 
                 lonLats.push([lon, lat]);
                 polylineFeature.geometry.coordinates.push([lon, lat]);
+
+                // Set this feature's bbox
+                if (lon < polylineFeature.bbox[0]) {
+                  polylineFeature.bbox[0] = lon;
+                }
+                if (lat < polylineFeature.bbox[1]) {
+                  polylineFeature.bbox[1] = lat;
+                }
+                if (lon > polylineFeature.bbox[2]) {
+                  polylineFeature.bbox[2] = lon;
+                }
+                if (lat > polylineFeature.bbox[3]) {
+                  polylineFeature.bbox[3] = lat;
+                }
+
+                // Set the bbox for the entire featurecollection
+                if (lon < pspr.locations.bbox[0]) {
+                  pspr.locations.bbox[0] = lon;
+                }
+                if (lat < pspr.locations.bbox[1]) {
+                  pspr.locations.bbox[1] = lat;
+                }
+                if (lon > pspr.locations.bbox[2]) {
+                  pspr.locations.bbox[2] = lon;
+                }
+                if (lat > pspr.locations.bbox[3]) {
+                  pspr.locations.bbox[3] = lat;
+                }
+
+                var latLngBounds = {
+                  west: pspr.locations.bbox[0],
+                  south: pspr.locations.bbox[1],
+                  east: pspr.locations.bbox[2],
+                  north: pspr.locations.bbox[3]
+                };
+                //Una.gMap.fitBounds(latLngBounds);
 
                 setTimeout(function (lon, lat, locDescCount) {
                     var mStatus = geocode({ lng: lon, lat: lat }, locDescCount - 1);
@@ -78,12 +117,11 @@
                   200 * ix, lon, lat, locDescCount);
               }
 
-              $scope.permit.permits.row.locations.features.push(polylineFeature);
-              $scope.permit.permits.row.locationRoutes.push(lonLats);
-              $scope.permit.permits.row.locationPolylines.push(pl);
-              $scope.permit.permits.row.distances.push(dist);
-              $scope.permit.permits.row.totalDistance = $scope.permit.permits.row.distances
-                .reduce(function(a, b) { return a + b; });
+              pspr.locations.features.push(polylineFeature);
+              pspr.locationRoutes.push(lonLats);
+              pspr.locationPolylines.push(pl);
+              pspr.distances.push(dist);
+              pspr.totalDistance = pspr.distances.reduce(function(a, b) { return a + b; });
             }
           });
       }

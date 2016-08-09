@@ -957,12 +957,4 @@
 @section scripts
 {
   <script src="@mapInitUrl" async defer></script>
-  <script type="text/javascript" async defer>
-    function initMap() {
-      const unaMap = Una.Map(google.maps, "map");
-      Una.gMap = unaMap.map;
-      Una.dm = unaMap.drawingManager;
-      //alert("Una loaded:" + !!Una + " map loaded:" + !!Una.gMap + " DrawingManager loaded:" + !!Una.dm);
-    }
-  </script>
 }

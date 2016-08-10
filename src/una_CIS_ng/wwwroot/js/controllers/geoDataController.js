@@ -12,6 +12,10 @@
     var dm = null;
     var dmRebuilt = false;
 
+    // Set up the basic bits for geoData
+    $scope.geoData = $scope.geoData || {};
+    $scope.geoData.title = "geoDataController";
+
     function unaMap(mapElId) {
       gm = google.maps;
       geocoder = new gm.Geocoder;
@@ -130,7 +134,12 @@
 
     function rebuildDrawingManager() {
       if (typeof (dm) !== "undefined" && dm !== null) {
+        // Clear the drawingmanager
+        dm.setMap(null);
+        dm.setMap(map);
+
         dmRebuilt = false;
+        return;
       }
 
       dm = new gm.drawing.DrawingManager({
@@ -146,6 +155,8 @@
           editable: true
         }
       });
+
+      dm.setMap(map);
 
       dmRebuilt = true;
     }
@@ -261,11 +272,7 @@
 
       //alert(JSON.stringify($scope.permit.permits.row.locations));
 
-      // Clear the drawingmanager
-      dm.setMap(null);
-      dm.setMap(map);
-
-      var pspr = $scope.permit.permits.row;
+      const pspr = $scope.permit.permits.row;
       // Clear the data (this impacts the fee calculation)
       pspr.distances.length = 0;
       pspr.totalDistance = 0;
@@ -277,17 +284,28 @@
       $scope.map.locationPolylines.forEach(function (el) { el.setMap(null); });
       $scope.map.locationPolylines.length = 0;
 
+      fitMap();
+
       addEventListener();
     }
 
     function fitMap() {
-      if (!!map) {
-        map.fitBounds(createLatLngBounds(permitScope.permit.permits.row.locations.bbox));
+      const pspr = $scope.permit.permits.row;
+      if (!!map && (pspr.totalDistance > 0 || !!$scope.geoData.geoFeatures)) {
+        var bbox = [200, 100, -200, -100];
+
+        if (pspr.totalDistance > 0) {
+          bbox = pspr.locations.bbox;
+        } else {
+          $scope.geoData.geoFeatures.forEach(function (feature) {
+            bbox = setBboxBbox(bbox, feature.bbox);
+          });
+        }
+
+        map.fitBounds(createLatLngBounds(bbox));
       }
     }
 
-    $scope.geoData = $scope.geoData || {};
-    $scope.geoData.title = "geoDataController";
     //$scope.apiData = geoDataService.APIData;
     $scope.geoData.All = geoDataService.All().$promise.then(handleGeoData);
     $scope.geoData.IsDbConnected = geoDataService.IsDbConnected();

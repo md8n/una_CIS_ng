@@ -42,8 +42,8 @@
           <div class="well well-sm">
             <h3 id="PermitHolderDeclaration">Permit Holder</h3>
             <div class="form-group row">
-              <label class="col-xs-5 col-sm-5 col-md-4 col-lg-3 text-right">The Permit Holder is a:</label>
-              <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9">
+              <label class="col-xs-5 col-sm-4 col-md-4 col-lg-3 text-right">The Permit Holder is a:</label>
+              <div class="col-xs-6 col-sm-5">
                 <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity Type">
                   <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.entityType == 'Person'}">
                     <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.entityType" value="Person" autocomplete="off" ng-required="true"> Person
@@ -55,8 +55,8 @@
               </div>
             </div>
             <div id="PermitApplicationHolder" class="form-group row">
-              <label class="col-xs-5 col-sm-5 col-md-4 col-lg-3 text-right">The Permit Holder is also the Infrastructure Owner:</label>
-              <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9">
+              <label class="col-xs-5 col-sm-4 col-md-4 col-lg-3 text-right">The Permit Holder is also the Infrastructure Owner:</label>
+              <div class="col-xs-6 col-sm-5">
                 <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity is Infrastructure Owner">
                   <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.isInfrastructureOwner}">
                     <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.holder.isInfrastructureOwner" ng-value="true" autocomplete="off" checked ng-required="true"> Yes
@@ -68,18 +68,18 @@
               </div>
             </div>
             <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.entityType === 'Person'">
-              <div class="col-sm-3">
+              <div class="col-sm-4">
                 <label title="Personal names / First names">Personal name</label>
                 <input class="form-control" type="text" name="rowHoldingEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holder.personalName" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType === 'Person'">
               </div>
-              <div class="col-sm-3">
+              <div class="col-sm-5">
                 <label title="Surname / Family name / Patronymic">Surname</label>
                 <input class="form-control" type="text" name="rowHoldingEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holder.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType === 'Person'">
               </div>
             </div>
             <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.entityType === 'Organisation'">
               <label class="col-sm-4 col-lg-3 text-right">Organisation Name</label>
-              <div class="col-sm-8 col-lg-9">
+              <div class="col-sm-5">
                 <input class="form-control" name="rowHoldingEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.holder.name" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType === 'Organisation'">
               </div>
             </div>
@@ -87,20 +87,20 @@
               <small>An email address is required. If you do not have an email address you may not be the Permit Holder. The Permit Application will be emailed to this address.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Email</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingEntityEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holder.email" maxlength="512" ng-required="!!permit.permits.row.parties.holder.entityType">
                 </div>
               </div>
               <small ng-show="permit.permits.row.parties.holder.entityType === 'Person'">If the Permit Holder is a Person, then a Mobile Phone number is required.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingEntityMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holder.mobile" maxlength="36" ng-required="permit.permits.row.parties.holder.entityType === 'Person'">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Office Phone</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingEntityOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holder.officePhone" maxlength="36">
                 </div>
               </div>
@@ -110,43 +110,43 @@
               <small>A Postal Box is NOT acceptable for the Office Physical Address fields.<br />If you do not have a physical address you may not be the Permit Holder.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingEntityPhysicalAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.holder.addresses.physical.unit" maxlength="50">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Number and Street / Lot Number">Number and Street</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingEntityPhysicalAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holder.addresses.physical.street" maxlength="128" ng-required="true">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Village / Town / Suburb / City">Suburb</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingEntityPhysicalAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holder.addresses.physical.suburb" maxlength="128" ng-required="true">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="State / Province / Territory / Prefecture">State</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingEntityPhysicalAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holder.addresses.physical.state" maxlength="50" ng-required="true">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Post Code / Zip Code">Post Code</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingEntityPhysicalAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.holder.addresses.physical.postcode" maxlength="12">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Country</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingEntityPhysicalAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holder.addresses.physical.country" maxlength="128" ng-required="true">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Use Office Physical Address for Mailing Address?</label>
-                <div class="col-xs-6 col-sm-6 col-lg-9">
+                <div class="col-xs-6 col-sm-5">
                   <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holder Office Address Is Also Mailing Address">
                     <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.addresses.physical.isMailing}">
                       <input type="radio" ng-model="permit.permits.row.parties.holder.addresses.physical.isMailing" ng-value="true" autocomplete="off" checked> Yes
@@ -169,37 +169,37 @@
               <div ng-show="!permit.permits.row.parties.holder.addresses.physical.isMailing">
                 <div class="form-group">
                   <label class="col-sm-4 col-lg-3 text-right" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
-                  <div class="col-sm-8 col-lg-9">
+                  <div class="col-sm-5">
                     <input class="form-control" name="rowHoldingEntityMailingAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.holder.addresses.mailing.unit" maxlength="50">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-4 col-lg-3 text-right" title="Number and Street / Lot Number">Number and Street</label>
-                  <div class="col-sm-8 col-lg-9">
+                  <div class="col-sm-5">
                     <input class="form-control" name="rowHoldingEntityMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holder.addresses.mailing.street" maxlength="128" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-4 col-lg-3 text-right" title="Village / Town / Suburb / City">Suburb</label>
-                  <div class="col-sm-8 col-lg-9">
+                  <div class="col-sm-5">
                     <input class="form-control" name="rowHoldingEntityMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holder.addresses.mailing.suburb" maxlength="128" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-4 col-lg-3 text-right" title="State / Province / Territory / Prefecture">State</label>
-                  <div class="col-sm-8 col-lg-9">
+                  <div class="col-sm-5">
                     <input class="form-control" name="rowHoldingEntityMailingAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holder.addresses.mailing.state" maxlength="50" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-4 col-lg-3 text-right" title="Post Code / Zip Code">Post Code</label>
-                  <div class="col-sm-8 col-lg-9">
+                  <div class="col-sm-5">
                     <input class="form-control" name="rowHoldingEntityMailingAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.holder.addresses.mailing.postcode" maxlength="12">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-4 col-lg-3 text-right">Country</label>
-                  <div class="col-sm-8 col-lg-9">
+                  <div class="col-sm-5">
                     <input class="form-control" name="rowHoldingEntityMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holder.addresses.mailing.country" maxlength="128" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
                   </div>
                 </div>
@@ -221,11 +221,11 @@
             <div ng-show="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
               <small>The Permit Holder Contact must be an individual, based in Nigeria, who is contactable by electronic means, especially via email and txt message (sms).</small><br />
               <div class="form-group">
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                   <label title="Personal names / First names">Personal name</label>
                   <input class="form-control" type="text" name="rowHoldingContactNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holderContact.personalName" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-5">
                   <label title="Surname / Family name / Patronymic">Surname</label>
                   <input class="form-control" type="text" name="rowHoldingContactNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holderContact.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
@@ -233,68 +233,70 @@
               <small>A copy of the Permit Application will be emailed to this address.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Email</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control col-sm-6" name="rowHoldingContactEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holderContact.email" maxlength="512" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
               <small>All phone numbers provided must be Nigeria based, satellite service numbers are not acceptable.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingContactMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holderContact.mobile" maxlength="36" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Office Phone</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingContactOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holderContact.officePhone" maxlength="36">
                 </div>
               </div>
               <h4>Permit Holding Contact Primary Mailing Address</h4>
               <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Mailing Address Type</label>
-                <div class="btn-group col-sm-8 col-lg-9" data-toggle="buttons" role="group" aria-label="Permit Holder Contact Mailing Address">
-                  <label class="btn btn-primary active">
-                    <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalTrue" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.isPostal" value="true" autocomplete="off" checked> Postal
-                  </label>
-                  <label class="btn btn-primary">
-                    <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalFalse" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.isPostal" value="false" autocomplete="off"> Street
-                  </label>
+                <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Mailing Address Type</label>
+                <div class="col-xs-6 col-sm-5">
+                  <div class="btn-group btn-group-justified" data-toggle="buttons" role="group" aria-label="Permit Holder Contact Mailing Address">
+                    <label class="btn btn-primary active">
+                      <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalTrue" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.isPostal" value="true" autocomplete="off" checked> Postal
+                    </label>
+                    <label class="btn btn-primary">
+                      <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalFalse" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.isPostal" value="false" autocomplete="off"> Street
+                    </label>
+                  </div>
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingContactMailingAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.unit" maxlength="50">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Number and Street / Lot Number">Number and Street</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingContactMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.street" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Village / Town / Suburb / City">Suburb</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingContactMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.suburb" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="State / Province / Territory / Prefecture">State</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingContactMailingAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.state" maxlength="50" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Post Code / Zip Code">Post Code</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingContactMailingAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.postcode" maxlength="12">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Country</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowHoldingContactMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.country" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
                 </div>
               </div>
@@ -310,8 +312,8 @@
             </div>
             <div ng-show="!permit.permits.row.parties.holder.isInfrastructureOwner">
               <div class="form-group row">
-                <label class="col-xs-6 col-sm-5 col-md-4 col-lg-3 text-right">The Infrastructure Owner is a:</label>
-                <div class="col-xs-6 col-sm-7 col-md-8 col-lg-9">
+                <label class="col-xs-5 col-sm-4 col-md-4 col-lg-3 text-right">The Infrastructure Owner is a:</label>
+                <div class="col-xs-6 col-sm-5">
                   <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity Type">
                     <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.infOwner.entityType == 'Person'}">
                       <input type="radio" name="rowInfOwnerEntityType" ng-model="permit.permits.row.parties.infOwner.entityType" value="Person" autocomplete="off" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner"> Person
@@ -323,85 +325,87 @@
                 </div>
               </div>
               <div class="form-group animate-show" ng-show="permit.permits.row.parties.infOwner.entityType === 'Person'">
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                   <label title="Personal names / First names">Personal name</label>
                   <input class="form-control" type="text" name="rowInfOwnerEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.infOwner.personalName" maxlength="128" ng-required="permit.permits.row.parties.infOwner.entityType === 'Person'">
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-5">
                   <label title="Surname / Family name / Patronymic">Surname</label>
                   <input class="form-control" type="text" name="rowInfOwnerEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.infOwner.surname" maxlength="128" ng-required="permit.permits.row.parties.infOwner.entityType === 'Person'">
                 </div>
               </div>
               <div class="form-group animate-show" ng-show="permit.permits.row.parties.infOwner.entityType === 'Organisation'">
                 <label class="col-sm-4 col-lg-3 text-right">Organisation Name</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowInfOwnerEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.infOwner.name" maxlength="128" ng-required="permit.permits.row.parties.infOwner.entityType === 'Organisation'">
                 </div>
               </div>
               <small>A copy of the Permit Application will be emailed to this address.</small>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Email</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control col-sm-6" name="rowInfOwnerEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.infOwner.email" maxlength="512">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowInfOwnerMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.infOwner.mobile" maxlength="36">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Office Phone</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowInfOwnerOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.infOwner.officePhone" maxlength="36">
                 </div>
               </div>
               <h4>Infrastructure Owner Primary Mailing Address</h4>
               <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Mailing Address Type</label>
-                <div class="btn-group col-sm-8 col-lg-9" data-toggle="buttons" role="group" aria-label="Infrastructure Owner Mailing Address">
-                  <label class="btn btn-primary active">
-                    <input type="radio" name="rowInfOwnerMailingAddressPostal" id="rowInfOwnerMailingAddressPostalTrue" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.isPostal" value="true" autocomplete="off" checked> Postal
-                  </label>
-                  <label class="btn btn-primary">
-                    <input type="radio" name="rowInfOwnerMailingAddressPostal" id="rowInfOwnerMailingAddressPostalFalse" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.isPostal" value="false" autocomplete="off"> Street
-                  </label>
+                <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Mailing Address Type</label>
+                <div class="col-xs-6 col-sm-5">
+                  <div class="btn-group btn-group-justified" data-toggle="buttons" role="group" aria-label="Infrastructure Owner Mailing Address">
+                    <label class="btn btn-primary active">
+                      <input type="radio" name="rowInfOwnerMailingAddressPostal" id="rowInfOwnerMailingAddressPostalTrue" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.isPostal" value="true" autocomplete="off" checked> Postal
+                    </label>
+                    <label class="btn btn-primary">
+                      <input type="radio" name="rowInfOwnerMailingAddressPostal" id="rowInfOwnerMailingAddressPostalFalse" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.isPostal" value="false" autocomplete="off"> Street
+                    </label>
+                  </div>
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowInfOwnerMailingAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.unit" maxlength="50">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Number and Street / Lot Number">Number and Street</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowInfOwnerMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.street" maxlength="128" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Village / Town / Suburb / City">Suburb</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowInfOwnerMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.suburb" maxlength="128" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="State / Province / Territory / Prefecture">State</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowInfOwnerMailingAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.state" maxlength="50" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right" title="Post Code / Zip Code">Post Code</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowInfOwnerMailingAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.postcode" maxlength="12">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-4 col-lg-3 text-right">Country</label>
-                <div class="col-sm-8 col-lg-9">
+                <div class="col-sm-5">
                   <input class="form-control" name="rowInfOwnerMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.country" maxlength="128" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner">
                 </div>
               </div>
@@ -601,24 +605,28 @@
             <a class="anchorjs-link" href="#PermitApplicationLocation" aria-label="Anchor link for: permit application location">Location / Route of Infrastructure</a>
           </h2>
           <div class="form-group row" ng-hide="permit.permits.row.isPreview">
-            <p>
-              Drawing on the map, show the route required for this Right-of-Way permit.<br />
-              The GPS coordinates, and total distance in meters (rounded down to the nearest meter) will be calculated for you.<br />
-              If the route is non-contiguous (has breaks or gaps) then you will be issued with individual Right-of-Way Permits for each section.<br />
-              If you make a mistake then you will need to reset the map to erase all of the routes and start again.
-            </p>
-            <p>If you have a lot of infrastructure, or it covers a large area, then you can do multiple submissions as follows:</p>
-            <ol>
-              <li>Enter all of the required contact information above</li>
-              <li>Draw a section of your infrastructure below</li>
-              <li>Submit your application (all the information you have entered will still remain on screen)</li>
-              <li>Click the "Reset Map" button to clear the map data</li>
-              <li>Draw the next section of your infrastructure</li>
-            </ol>
+            <div class="cols-xs-12 col-sm-9 col-lg-6">
+              <p>
+                Drawing on the map, show the route required for this Right-of-Way permit.<br />
+                The GPS coordinates, and total distance in meters (rounded down to the nearest meter) will be calculated for you.<br />
+                If the route is non-contiguous (has breaks or gaps) then you will be issued with individual Right-of-Way Permits for each section.<br />
+                If you make a mistake then you will need to reset the map to erase all of the routes and start again.
+              </p>
+            </div>
+            <div class="cols-xs-12 col-sm-9 col-lg-6">
+              <p>If you have a lot of infrastructure, or it covers a large area, then you can do multiple submissions as follows:</p>
+              <ol>
+                <li>Enter all of the required contact information above</li>
+                <li>Draw a section of your infrastructure below</li>
+                <li>Submit your application (all the information you have entered will still remain on screen)</li>
+                <li>Click the "Reset Map" button to clear the map data</li>
+                <li>Draw the next section of your infrastructure</li>
+              </ol>
+            </div>
           </div>
           <div class="form-group row">
-            <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Location Includes:</label>
-            <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10" ng-hide="permit.permits.row.isPreview">
+            <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Location Includes:</label>
+            <div class="col-xs-6 col-sm-5" ng-hide="permit.permits.row.isPreview">
               <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Location">
                 <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.isSpecialZone}">
                   <input type="radio" name="infLoc" ng-model="permit.permits.row.isSpecialZone" ng-value="true" autocomplete="off" ng-required="true"> Business District <br /> High Density Zone
@@ -633,8 +641,8 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Construction Method:</label>
-            <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10" ng-hide="permit.permits.row.isPreview">
+            <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Construction Method:</label>
+            <div class="col-xs-6 col-sm-5" ng-hide="permit.permits.row.isPreview">
               <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
                 <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.consType == 'Trenching'}">
                   <input type="radio" name="consType" ng-model="permit.permits.row.consType" value="Trenching" autocomplete="off" ng-required="true"> Trenching
@@ -666,7 +674,7 @@
             <dl class="dl-horizontal" title="Zoom the map to fit your infrastructure">
               <dt>Zoom to<br/>infrastructure</dt>
               <dd>
-                <input class="btn" id="FitMap" type="button" value="Fit Map" ng-click="geoData.FitMap()" ng-disabled="permit.permits.row.totalDistance <= 0" />
+                <input class="btn" id="FitMap" type="button" value="Fit Map" ng-click="geoData.FitMap()"/>
               </dd>
             </dl>
           </div>

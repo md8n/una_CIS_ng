@@ -3,8 +3,8 @@
 (function (angular) {
   "use strict";
 
-  const lgCode = "en-NG";
-  const curCode = "NGN";
+  var lgCode = "en-NG";
+  var curCode = "NGN";
 
   angular
     .module("unaApp") // defined in unaApp.js
@@ -45,7 +45,7 @@
     $scope.calc.fees.push(new feeDefinition("penaltyExtended", "(calc.infState == 'Existing' || calc.infState == 'Decommissioning')", "Penalty - Any contravention or omission without a specific penalty listed above", 0, 1, "day", "N 50,000"));
 
     $scope.calc.applicationFilter = function (element) {
-      const calc = $scope.calc;
+      var calc = $scope.calc;
       return (element.feeType === "application" || element.feeType === "penalty") && eval(element.condition);
     };
 
@@ -62,17 +62,17 @@
     }
 
     $scope.calc.firstRenewalFilter = function (element) {
-      const calc = $scope.calc;
+      var calc = $scope.calc;
       return element.feeType === "firstAnnual" && eval(element.condition);
     };
 
     $scope.calc.renewalFilter = function (element) {
-      const calc = $scope.calc;
+      var calc = $scope.calc;
       return element.feeType === "annual" && eval(element.condition);
     };
 
     $scope.calc.penaltyFilter = function (element) {
-      const calc = $scope.calc;
+      var calc = $scope.calc;
       return element.feeType === "penaltyExtended" && eval(element.condition);
     };
 

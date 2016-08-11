@@ -30,18 +30,18 @@
               return this.unit;
             }
 
-            const dim = Number(dimension || 0);
-            const sec = Number(section || 0);
+            var dim = Number(dimension || 0);
+            var sec = Number(section || 0);
 
             return this.measure === "section" ? sec : dim;
           },
           total: function(dimension, section) {
-            const units = this.units(dimension, section);
+            var units = this.units(dimension, section);
             if (this.divider === 0 || this.rate === 0 || units === 0) {
               return 0;
             }
 
-            const total = (units / this.divider) * this.rate;
+            var total = (units / this.divider) * this.rate;
 
             return Math.round(total);
           }
@@ -49,8 +49,8 @@
 
         // "static" methods - no access to this
         fee.formatNairaStr = function(sourceVal) {
-          const lgCode = "en-NG";
-          const curCode = "NGN";
+          var lgCode = "en-NG";
+          var curCode = "NGN";
 
           return sourceVal.toLocaleString(lgCode,
           { style: "currency", currency: curCode, minimumFractionDigits: 0, maximumFractionDigits: 0 });

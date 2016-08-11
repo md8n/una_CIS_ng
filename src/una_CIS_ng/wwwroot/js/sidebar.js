@@ -5,9 +5,9 @@ var sb = document.getElementById("sidebar");
 $("#sidebar").affix({
   offset: {
     top: function () {
-      const offsetTop = 0; // $("#sidebar").offset().top;
-      const sideBarMargin = parseInt($("#sidebar").children(0).css("margin-top"), 10);
-      const navOuterHeight = $("#PermitApplication").height();
+      var offsetTop = 0; // $("#sidebar").offset().top;
+      var sideBarMargin = parseInt($("#sidebar").children(0).css("margin-top"), 10);
+      var navOuterHeight = $("#PermitApplication").height();
 
       return (this.top = offsetTop - navOuterHeight - sideBarMargin);
     },

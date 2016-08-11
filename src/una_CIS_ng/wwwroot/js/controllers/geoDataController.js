@@ -36,22 +36,22 @@
 
     // Set up the callback for Google Maps API
     $scope.initMap = function () {
-      const uMap = unaMap("map");
+      var uMap = unaMap("map");
       //Una.gMap = unaMap.map;
       //Una.dm = unaMap.drawingManager;
       //alert("Una loaded:" + !!Una + " map loaded:" + !!Una.gMap + " DrawingManager loaded:" + !!Una.dm);
     };
-    const initMap = function () {
+    var initMap = function () {
       $scope.initMap();
     }
     window.initMap = initMap;
 
     // distance calc derived from www.geodatasource.com
     function distance(lonlat1, lonlat2) {
-      const radlat1 = Math.PI * lonlat1.lat / 180;
-      const radlat2 = Math.PI * lonlat2.lat / 180;
-      const radtheta = Math.PI * (lonlat1.lng - lonlat2.lng) / 180;
-      const dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+      var radlat1 = Math.PI * lonlat1.lat / 180;
+      var radlat2 = Math.PI * lonlat2.lat / 180;
+      var radtheta = Math.PI * (lonlat1.lng - lonlat2.lng) / 180;
+      var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
 
       // note: not interested in conversion to miles, Kms, Nms, etc.
       return Math.acos(dist) * (180 / Math.PI);
@@ -59,7 +59,7 @@
 
     // These are the address types we're after. 
     // If none of these are present then we'll fall back to just taking the first result
-    const preferredTypes = ["room", "floor", "subpremise", "premise", "street_address",
+    var preferredTypes = ["room", "floor", "subpremise", "premise", "street_address",
       "bus_station", "train_station", "transit_station", "airport",
       "establishment", "point_of_interest", "natural_feature", "park", "parking"
     ];
@@ -69,8 +69,8 @@
         return null;
       }
 
-      const preferredResults = addressResults.filter(function (a) { return a.types.filter(function (t) { return preferredTypes.includes(t); }).length > 0; });
-      const prefCount = preferredResults.length;
+      var preferredResults = addressResults.filter(function (a) { return a.types.filter(function (t) { return preferredTypes.includes(t); }).length > 0; });
+      var prefCount = preferredResults.length;
       if (prefCount === 0) {
         // nothing in the preferred list - so return the first result we got
         return addressResults[0];
@@ -79,9 +79,9 @@
         return preferredResults[0];
       } else {
         // Get the closest
-        const preferredResult = preferredResults.sort(function (a, b) {
-          const aDist = distance(a.geometry.location, lnglat);
-          const bDist = distance(b.geometry.location, lnglat);
+        var preferredResult = preferredResults.sort(function (a, b) {
+          var aDist = distance(a.geometry.location, lnglat);
+          var bDist = distance(b.geometry.location, lnglat);
           if (aDist > bDist) return 1;
           if (aDist < bDist) return -1;
           return 0;
@@ -100,7 +100,7 @@
         mStatus = status;
         if (status === gm.GeocoderStatus.OK) {
           if (results.length > 0) {
-            const result = getClosestAddress(results, lnglat).formatted_address;
+            var result = getClosestAddress(results, lnglat).formatted_address;
             permitScope.$apply(function () { pspr.locationDescriptions[destArrayIndex].push(result); });
           } else {
             window.alert('Warning: No location results were returned by the Geocoder.  This is just a notice, you may still submit your application.');
@@ -116,7 +116,7 @@
       return mStatus;
     }
 
-    const handleGeoData = function (response) {
+    var handleGeoData = function (response) {
       // Una.gMap is the google maps object returned by Map.cshtml and Permit.cshtml
       $scope.geoData = $scope.geoData || {};
       $scope.geoData.geoFeatures = [];
@@ -211,10 +211,10 @@
         gm.event.addListener(dm,
           "polylinecomplete",
           function (pl) {
-            const plP = pl.getPath();
-            const dist = Math.floor(gm.geometry.spherical.computeLength(plP));
+            var plP = pl.getPath();
+            var dist = Math.floor(gm.geometry.spherical.computeLength(plP));
 
-            const infLc = document.getElementById("location");
+            var infLc = document.getElementById("location");
             if (infLc && permitScope) {
               // Set up a polyline feature - note the deliberately wrong initial values for bbox
               var polylineFeature = {
@@ -228,9 +228,9 @@
               pspr.locationDescriptions.push([]);
               var locDescCount = pspr.locationDescriptions.length;
               for (var ix = 0; ix < plP.getLength() ; ix++) {
-                const pt = plP.getAt(ix);
-                const lon = Number(Math.round(pt.lng() + 'e7') + 'e-7');
-                const lat = Number(Math.round(pt.lat() + 'e7') + 'e-7');
+                var pt = plP.getAt(ix);
+                var lon = Number(Math.round(pt.lng() + 'e7') + 'e-7');
+                var lat = Number(Math.round(pt.lat() + 'e7') + 'e-7');
 
                 lonLats.push([lon, lat]);
                 polylineFeature.geometry.coordinates.push([lon, lat]);
@@ -279,7 +279,7 @@
 
       //alert(JSON.stringify($scope.permit.permits.row.locations));
 
-      const pspr = $scope.permit.permits.row;
+      var pspr = $scope.permit.permits.row;
       // Clear the data (this impacts the fee calculation)
       pspr.distances.length = 0;
       pspr.totalDistance = 0;
@@ -306,7 +306,7 @@
     }
 
     function getCurrentBBox() {
-      const pspr = $scope.permit.permits.row;
+      var pspr = $scope.permit.permits.row;
 
       var bbox = [200, 100, -200, -100];
 

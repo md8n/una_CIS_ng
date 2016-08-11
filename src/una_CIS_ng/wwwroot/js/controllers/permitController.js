@@ -16,9 +16,9 @@
 
   angular
     .module("unaApp") // defined in unaApp.js
-    .controller("permitController", ["$scope", "permitService", "feeDefinition", permitController]);
+    .controller("permitController", ["$scope", "$rootScope", "permitService", "feeDefinition", permitController]);
 
-  function permitController($scope, permitService, feeDefinition) {
+  function permitController($scope, $rootScope, permitService, feeDefinition) {
     $scope.permit = $scope.permit || {};
 
     permitScope = $scope;
@@ -68,12 +68,12 @@
     permitScope.permit.calc.fees.push(new feeDefinition("penaltyExtended", "(permitScope.calc.infState == 'Existing' || permitScope.calc.infState == 'Decommissioning')", "Penalty - Any contravention or omission without a specific penalty listed above", 0, 1, "day", 50000));
 
     permitScope.permit.calc.applicationFilter = function (element) {
-      const calc = $scope.permit.calc;
+      var calc = $scope.permit.calc;
       return (element.feeType === "application" || element.feeType === "penalty") && eval(element.condition);
     };
 
     permitScope.permit.calc.undeclaredFilter = function (element) {
-      const calc = $scope.permit.calc;
+      var calc = $scope.permit.calc;
       return (element.feeType === "application" || element.feeType === "penaltyUndeclared") && eval(element.condition);
     };
 
@@ -108,6 +108,8 @@
     };
 
     permitScope.IsDbConnected = permitService.IsDbConnected();
+
+    permitScope.GDFitMap = function () { $rootScope.$emit("GeoDataFitMap", {}); }
 
     //activate();
 

@@ -660,7 +660,7 @@
       <div id="PermitApplicationMap" ng-controller="geoDataController">
         <div class="row">
           <div class="col-xs-12 afterMap">
-            <div id="map" ng-class="{'isPreview': permit.permits.row.isPreview}"></div>
+            <div id="map" class="center-block" ng-class="{'isPreview': permit.permits.row.isPreview}"></div>
           </div>
         </div>
         <div class="row" ng-hide="permit.permits.row.isPreview">
@@ -767,12 +767,12 @@
           <div class="form-group btn-group col-xs-12 row" aria-label="Print Preview and Submit">
             <div class="col-xs-3" title="You need three green lights before the Preview button will be available">
               <label class="btn btn-radio btn-info" ng-class="{'active': !permit.permits.row.isPreview}" ng-disabled="!(!!permit.permits.row.parties.holder.entityType) || permit.permits.row.totalDistance === 0 || permit.permits.row.isPreview">
-                <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="true" ng-click="geoData.FitMap()" autocomplete="off">Preview >>
+                <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="true" ng-change="GDFitMap()" autocomplete="off">Preview >>
               </label>
             </div>
             <div class="col-xs-3" title="Correct any problems before attempting to Submit">
               <label class="btn btn-radio btn-warning" ng-class="{'active': permit.permits.row.isPreview}" ng-disabled="!permit.permits.row.isPreview">
-                <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="false" ng-click="geoData.FitMap()" autocomplete="off"><< Correct
+                <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="false" ng-change="GDFitMap()" autocomplete="off"><< Correct
               </label>
             </div>
             <div class="col-xs-3" title="You must Preview first before the Submit button will be available">

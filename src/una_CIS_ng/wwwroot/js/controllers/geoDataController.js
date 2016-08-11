@@ -3,14 +3,15 @@
 
   angular
     .module("unaApp") // defined in unaApp.js
-    .controller("geoDataController", ["$scope", "geoDataService", geoDataController]);
+    .controller("geoDataController", ["$scope", "$rootScope", "geoDataService", geoDataController]);
 
-  function geoDataController($scope, geoDataService) {
+  function geoDataController($scope, $rootScope, geoDataService) {
     var gm = null;
     var geocoder = null;
     var map = null;
     var dm = null;
     var dmRebuilt = false;
+    var didFit = false;
 
     // Set up the basic bits for geoData
     $scope.geoData = $scope.geoData || {};
@@ -121,15 +122,11 @@
       $scope.geoData.geoFeatures = [];
       if (!!map) {
         $scope.geoData.geoFeatures = response.map(function (obj) { return obj.Feature; });
-        var bbox = [200, 100, -200, -100];
         $scope.geoData.geoFeatures.forEach(function (feature) {
           map.data.addGeoJson(feature);
-          bbox = setBboxBbox(bbox, feature.bbox);
         });
-
-        map.fitBounds(createLatLngBounds(bbox));
+        fitMap();
       }
-      //alert("Loaded GeoData Successfully");
     };
 
     function rebuildDrawingManager() {
@@ -204,8 +201,13 @@
       };
     }
 
+    function getLatLngCenter(bbox) {
+      return { "lng": (bbox[0] + bbox[2]) / 2, "lat": (bbox[1] + bbox[3]) / 2 };
+    }
+
     function addEventListener() {
       if (dmRebuilt) {
+        // Add a listener for when we've finished drawing a polyline
         gm.event.addListener(dm,
           "polylinecomplete",
           function (pl) {
@@ -258,6 +260,11 @@
             }
           });
 
+        // Add a listener for when resize has occurred
+        gm.event.addListener(map, 'resize', function () {
+          map.fitBounds(createLatLngBounds(getCurrentBBox()));
+        });
+
         // Mark the drawing manager as no longer 'rebuilt'
         dmRebuilt = false;
       }
@@ -289,21 +296,30 @@
       addEventListener();
     }
 
+    // Allow fitMap to be callable by other controllers
+    $rootScope.$on("GeoDataFitMap", function () { fitMap(); });
+
     function fitMap() {
-      const pspr = $scope.permit.permits.row;
-      if (!!map && (pspr.totalDistance > 0 || !!$scope.geoData.geoFeatures)) {
-        var bbox = [200, 100, -200, -100];
-
-        if (pspr.totalDistance > 0) {
-          bbox = pspr.locations.bbox;
-        } else {
-          $scope.geoData.geoFeatures.forEach(function (feature) {
-            bbox = setBboxBbox(bbox, feature.bbox);
-          });
-        }
-
-        map.fitBounds(createLatLngBounds(bbox));
+      if (!!map && ($scope.permit.permits.row.totalDistance > 0 || !!$scope.geoData.geoFeatures)) {
+        map.fitBounds(createLatLngBounds(getCurrentBBox()));
       }
+    }
+
+    function getCurrentBBox() {
+      const pspr = $scope.permit.permits.row;
+
+      var bbox = [200, 100, -200, -100];
+
+      if (pspr.totalDistance > 0) {
+        bbox = pspr.locations.bbox;
+        didFit = true;
+      } else {
+        $scope.geoData.geoFeatures.forEach(function (feature) {
+          bbox = setBboxBbox(bbox, feature.bbox);
+        });
+      }
+
+      return bbox;
     }
 
     //$scope.apiData = geoDataService.APIData;

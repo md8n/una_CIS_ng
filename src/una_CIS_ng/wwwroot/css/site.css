@@ -49,17 +49,21 @@ dl.dl-horizontal dt {
 }
 
 #map, iframe {
-  height: 480px;
-  width: 100%;
+    width: 680px; /* 511 pt */
+    height: 360px; /* 270 pt */
 }
 
   #map.isPreview {
-    width: 511pt;
+    pointer-events: none;
   }
 
-  .afterMap {
-    padding-bottom: 15px;
-  }
+    #map.isPreview .gmnoprint {
+      display: none;
+    }
+
+.afterMap {
+  padding-bottom: 15px;
+}
 
 /* Special reduced sizes for very small screens */
 @media (max-width: 767px) {
@@ -111,6 +115,8 @@ dl.dl-horizontal dt {
   #map, iframe {
     height: 280px;
     width: 100%;
+    max-width: 680px; /* 511 pt */
+    max-height: 360px; /* 270 pt */
   }
 }
 

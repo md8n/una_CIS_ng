@@ -10,6 +10,14 @@
   padding-right: 15px;
 }
 
+.nav > li > a.dropdown-parent {
+  padding-right: 5px;
+}
+
+.nav > li > a.dropdown-child {
+  padding-left: 5px;
+}
+
 /* Set widths on the form inputs since otherwise they're 100% wide */
 /*input,
 select,

@@ -52,9 +52,16 @@
         <ul class="nav navbar-nav">
           <li><a asp-controller="Home" asp-action="Index">Home</a></li>
           <li><a asp-controller="Home" asp-action="Map">Map</a></li>
-          <li><a asp-controller="Home" asp-action="Permit">Permit</a></li>
-          <li><a asp-controller="Home" asp-action="PermitInfo">Permit Info</a></li>
-          <li><a asp-controller="Home" asp-action="PermitFee">Fee Estimator</a></li>
+          <li><a class="dropdown-parent" asp-controller="Home" asp-action="Permit">Permit</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle dropdown-child" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="False"> <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a asp-controller="Home" asp-action="Permit">Application</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a asp-controller="Home" asp-action="PermitInfo">Permit Info</a></li>
+              <li><a asp-controller="Home" asp-action="PermitFee">Fee Estimator</a></li>
+            </ul>
+          </li>
           <li><a asp-controller="Home" asp-action="About">About</a></li>
           <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
         </ul>
@@ -71,9 +78,9 @@
   </div>
 
   <environment names="Development">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-resource.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-animate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
     <script src="~/lib/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -90,9 +97,9 @@
     <script src="~/js/sidebar.js" asp-append-version="true" type="text/javascript"></script>
   </environment>
   <environment names="Staging,Production">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-resource.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
     <script src="~/lib/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
             asp-fallback-src="~/lib/jquery/dist/jquery.min.js"

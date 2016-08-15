@@ -1,0 +1,288 @@
+﻿@{
+  var mapKey = ViewData["GoogleAPIBrowserKey"];
+  var mapInitUrl = "https://maps.googleapis.com/maps/api/js?key=" + mapKey + "&libraries=drawing,geometry&callback=initMap";
+}
+
+<div class="container bs-docs-container" ng-controller="permitController">
+  <div class="row">
+    <div class="col-md-9 col-lg-10" role="main">
+        <div class="bs-docs-section">
+          <h1 id="PermitApplication" class="page-header">Permit Application - Right of Way</h1>
+        </div>
+        <div class="bs-docs-section">
+          <div class="well well-sm">
+            <h4>Permit Holder {{permit.permits.row.parties.holder.isInfrastructureOwner ? " and Infrastructure Owner" : ""}}</h4>
+            <div class="row">
+              <label class="col-xs-4 col-lg-3 text-right">Name</label>
+              <div class="col-xs-8 col-lg-9" ng-show="permit.permits.row.parties.holder.entityType === 'Person'">
+                <span>{{permit.permits.row.parties.holder.personalName}}</span>
+                <span><strong>{{permit.permits.row.parties.holder.surname}}</strong></span>
+              </div>
+              <div class="col-xs-8 col-lg-9" ng-show="permit.permits.row.parties.holder.entityType === 'Organisation'">
+                <span><strong>{{permit.permits.row.parties.holder.name}}</strong></span>
+              </div>
+            </div>
+            <div class="row" ng-show="!!permit.permits.row.parties.holder.email">
+              <label class="col-xs-4 col-lg-3 text-right">Email</label>
+              <div class="col-xs-8 col-lg-9">
+                <span>{{permit.permits.row.parties.holder.email}}</span>
+              </div>
+            </div>
+            <div class="row" ng-show="!!permit.permits.row.parties.holder.mobile">
+              <label class="col-xs-4 col-lg-3 text-right">Mobile Phone</label>
+              <div class="col-xs-8 col-lg-9">
+                <span>{{permit.permits.row.parties.holder.mobile}}</span>
+              </div>
+            </div>
+            <div class="row" ng-show="!!permit.permits.row.parties.holder.officePhone">
+              <label class="col-xs-4 col-lg-3 text-right">Office Phone</label>
+              <div class="col-xs-8 col-lg-9">
+                <span>{{permit.permits.row.parties.holder.officePhone}}</span>
+              </div>
+            </div>
+            <div class="well well-sm" ng-show="permit.permits.row.parties.holder.addresses.physical.suburb">
+              <h4>Office Physical {{permit.permits.row.parties.holder.addresses.physical.isMailing ? "and Mailing" : ""}} Address</h4>
+              <div class="row">
+                <label class="col-xs-4 col-lg-3 text-right">Address</label>
+                <div class="col-xs-8 col-lg-9">
+                  <address>
+                    <span ng-show="permit.permits.row.parties.holder.addresses.physical.unit">{{permit.permits.row.parties.holder.addresses.physical.unit}} </span>
+                    <span ng-show="permit.permits.row.parties.holder.addresses.physical.street">{{permit.permits.row.parties.holder.addresses.physical.street}} </span>
+                    <span ng-show="permit.permits.row.parties.holder.addresses.physical.suburb">{{permit.permits.row.parties.holder.addresses.physical.suburb}} </span>
+                    <span ng-show="permit.permits.row.parties.holder.addresses.physical.state">{{permit.permits.row.parties.holder.addresses.physical.state}} </span>
+                    <span ng-show="permit.permits.row.parties.holder.addresses.physical.postcode">{{permit.permits.row.parties.holder.addresses.physical.postcode}} </span>
+                    <span ng-show="permit.permits.row.parties.holder.addresses.physical.country">{{permit.permits.row.parties.holder.addresses.physical.country}}</span>
+                  </address>
+                </div>
+              </div>
+            </div>
+            <div class="well well-sm" ng-show="!permit.permits.row.parties.holder.addresses.physical.isMailing && permit.permits.row.parties.holder.addresses.mailing.suburb">
+              <h4>Office Mailing Address</h4>
+              <div class="row">
+                <label class="col-xs-4 col-lg-3 text-right">Address</label>
+                <div class="col-xs-8 col-lg-9">
+                  <address>
+                    <span ng-show="permit.permits.row.parties.holder.addresses.mailing.unit">{{permit.permits.row.parties.holder.addresses.mailing.unit}} </span>
+                    <span ng-show="permit.permits.row.parties.holder.addresses.mailing.street">{{permit.permits.row.parties.holder.addresses.mailing.street}} </span>
+                    <span ng-show="permit.permits.row.parties.holder.addresses.mailing.suburb">{{permit.permits.row.parties.holder.addresses.mailing.suburb}} </span>
+                    <span ng-show="permit.permits.row.parties.holder.addresses.mailing.state">{{permit.permits.row.parties.holder.addresses.mailing.state}} </span>
+                    <span ng-show="permit.permits.row.parties.holder.addresses.mailing.postcode">{{permit.permits.row.parties.holder.addresses.mailing.postcode}} </span>
+                    <span ng-show="permit.permits.row.parties.holder.addresses.mailing.country">{{permit.permits.row.parties.holder.addresses.mailing.country}}</span>
+                  </address>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="well well-sm" ng-show="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
+            <h4>Permit Holder Contact</h4>
+            <div class="row">
+              <label class="col-xs-4 col-lg-3 text-right">Name</label>
+              <div class="col-xs-8 col-lg-9">
+                <span>{{permit.permits.row.parties.holderContact.personalName}}</span>
+                <span><strong>{{permit.permits.row.parties.holderContact.surname}}</strong></span>
+              </div>
+            </div>
+            <div class="row" ng-show="!!permit.permits.row.parties.holderContact.email">
+              <label class="col-xs-4 col-lg-3 text-right">Email</label>
+              <div class="col-xs-8 col-lg-9">
+                <span>{{permit.permits.row.parties.holderContact.email}}</span>
+              </div>
+            </div>
+            <div class="row" ng-show="!!permit.permits.row.parties.holderContact.mobile">
+              <label class="col-xs-4 col-lg-3 text-right">Mobile Phone</label>
+              <div class="col-xs-8 col-lg-9">
+                <span>{{permit.permits.row.parties.holderContact.mobile}}</span>
+              </div>
+            </div>
+            <div class="row" ng-show="!!permit.permits.row.parties.holderContact.officePhone">
+              <label class="col-xs-4 col-lg-3 text-right">Office Phone</label>
+              <div class="col-xs-8 col-lg-9">
+                <span>{{permit.permits.row.parties.holderContact.officePhone}}</span>
+              </div>
+            </div>
+            <div class="well well-sm" ng-show="permit.permits.row.parties.holderContact.addresses.physical.suburb">
+              <h4>Office Physical Address {{permit.permits.row.parties.holderContact.addresses.physical.isMailing ? "and Office Mailing Address" : ""}}</h4>
+              <div class="row">
+                <label class="col-xs-4 col-lg-3 text-right">Address</label>
+                <div class="col-xs-8 col-lg-9">
+                  <address>
+                    <span ng-show="permit.permits.row.parties.holderContact.addresses.physical.unit">{{permit.permits.row.parties.holderContact.addresses.physical.unit}} </span>
+                    <span ng-show="permit.permits.row.parties.holderContact.addresses.physical.street">{{permit.permits.row.parties.holderContact.addresses.physical.street}} </span>
+                    <span ng-show="permit.permits.row.parties.holderContact.addresses.physical.suburb">{{permit.permits.row.parties.holderContact.addresses.physical.suburb}} </span>
+                    <span ng-show="permit.permits.row.parties.holderContact.addresses.physical.state">{{permit.permits.row.parties.holderContact.addresses.physical.state}} </span>
+                    <span ng-show="permit.permits.row.parties.holderContact.addresses.physical.postcode">{{permit.permits.row.parties.holderContact.addresses.physical.postcode}} </span>
+                    <span ng-show="permit.permits.row.parties.holderContact.addresses.physical.country">{{permit.permits.row.parties.holderContact.addresses.physical.country}} </span>
+                  </address>
+                </div>
+              </div>
+            </div>
+            <div class="well well-sm" ng-show="!permit.permits.row.parties.holderContact.addresses.physical.isMailing && permit.permits.row.parties.holderContact.addresses.mailing.suburb">
+              <h4>Office Mailing Address</h4>
+              <div class="row">
+                <label class="col-xs-4 col-lg-3 text-right">Address</label>
+                <div class="col-xs-8 col-lg-9">
+                  <address>
+                    <span ng-show="permit.permits.row.parties.holderContact.addresses.mailing.unit">{{permit.permits.row.parties.holderContact.addresses.mailing.unit}} </span>
+                    <span ng-show="permit.permits.row.parties.holderContact.addresses.mailing.street">{{permit.permits.row.parties.holderContact.addresses.mailing.street}} </span>
+                    <span ng-show="permit.permits.row.parties.holderContact.addresses.mailing.suburb">{{permit.permits.row.parties.holderContact.addresses.mailing.suburb}} </span>
+                    <span ng-show="permit.permits.row.parties.holderContact.addresses.mailing.state">{{permit.permits.row.parties.holderContact.addresses.mailing.state}} </span>
+                    <span ng-show="permit.permits.row.parties.holderContact.addresses.mailing.postcode">{{permit.permits.row.parties.holderContact.addresses.mailing.postcode}} </span>
+                    <span ng-show="permit.permits.row.parties.holderContact.addresses.mailing.country">{{permit.permits.row.parties.holderContact.addresses.mailing.country}} </span>
+                  </address>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="well well-sm" ng-show="!permit.permits.row.parties.holder.isInfrastructureOwner">
+            <h4>Infrastructure Owner</h4>
+            <div class="row">
+              <label class="col-xs-4 col-lg-3 text-right">Name</label>
+              <div class="col-xs-8 col-lg-9" ng-show="permit.permits.row.parties.infOwner.entityType === 'Person'">
+                <span>{{permit.permits.row.parties.infOwner.personalName}}</span>
+                <span><strong>{{permit.permits.row.parties.infOwner.surname}}</strong></span>
+              </div>
+              <div class="col-xs-8 col-lg-9" ng-show="permit.permits.row.parties.infOwner.entityType === 'Organisation'">
+                <span><strong>{{permit.permits.row.parties.infOwner.name}}</strong></span>
+              </div>
+            </div>
+            <div class="row" ng-show="!!permit.permits.row.parties.infOwner.email">
+              <label class="col-xs-4 col-lg-3 text-right">Email</label>
+              <div class="col-xs-8 col-lg-9">
+                <span>{{permit.permits.row.parties.infOwner.email}}</span>
+              </div>
+            </div>
+            <div class="row" ng-show="!!permit.permits.row.parties.infOwner.mobile">
+              <label class="col-xs-4 col-lg-3 text-right">Mobile Phone</label>
+              <div class="col-xs-8 col-lg-9">
+                <span>{{permit.permits.row.parties.infOwner.mobile}}</span>
+              </div>
+            </div>
+            <div class="row" ng-show="!!permit.permits.row.parties.infOwner.officePhone">
+              <label class="col-xs-4 col-lg-3 text-right">Office Phone</label>
+              <div class="col-xs-8 col-lg-9">
+                <span>{{permit.permits.row.parties.infOwner.officePhone}}</span>
+              </div>
+            </div>
+            <div class="well well-sm" ng-show="permit.permits.row.parties.infOwner.addresses.physical.suburb">
+              <h4>Office Physical Address {{permit.permits.row.parties.infOwner.addresses.physical.isMailing ? "and Office Mailing Address" : ""}}</h4>
+              <div class="row">
+                <label class="col-xs-4 col-lg-3 text-right">Address</label>
+                <div class="col-xs-8 col-lg-9">
+                  <address>
+                    <span ng-show="permit.permits.row.parties.infOwner.addresses.physical.unit">{{permit.permits.row.parties.infOwner.addresses.physical.unit}} </span>
+                    <span ng-show="permit.permits.row.parties.infOwner.addresses.physical.street">{{permit.permits.row.parties.infOwner.addresses.physical.street}} </span>
+                    <span ng-show="permit.permits.row.parties.infOwner.addresses.physical.suburb">{{permit.permits.row.parties.infOwner.addresses.physical.suburb}} </span>
+                    <span ng-show="permit.permits.row.parties.infOwner.addresses.physical.state">{{permit.permits.row.parties.infOwner.addresses.physical.state}} </span>
+                    <span ng-show="permit.permits.row.parties.infOwner.addresses.physical.postcode">{{permit.permits.row.parties.infOwner.addresses.physical.postcode}} </span>
+                    <span ng-show="permit.permits.row.parties.infOwner.addresses.physical.country">{{permit.permits.row.parties.infOwner.addresses.physical.country}} </span>
+                  </address>
+                </div>
+              </div>
+            </div>
+            <div class="well well-sm" ng-show="!permit.permits.row.parties.infOwner.addresses.physical.isMailing && permit.permits.row.parties.infOwner.addresses.mailing.suburb">
+              <h4>Office Mailing Address</h4>
+              <div class="row">
+                <label class="col-xs-4 col-lg-3 text-right">Address</label>
+                <div class="col-xs-8 col-lg-9">
+                  <address>
+                    <span ng-show="permit.permits.row.parties.infOwner.addresses.mailing.unit">{{permit.permits.row.parties.infOwner.addresses.mailing.unit}} </span>
+                    <span ng-show="permit.permits.row.parties.infOwner.addresses.mailing.street">{{permit.permits.row.parties.infOwner.addresses.mailing.street}} </span>
+                    <span ng-show="permit.permits.row.parties.infOwner.addresses.mailing.suburb">{{permit.permits.row.parties.infOwner.addresses.mailing.suburb}} </span>
+                    <span ng-show="permit.permits.row.parties.infOwner.addresses.mailing.state">{{permit.permits.row.parties.infOwner.addresses.mailing.state}} </span>
+                    <span ng-show="permit.permits.row.parties.infOwner.addresses.mailing.postcode">{{permit.permits.row.parties.infOwner.addresses.mailing.postcode}} </span>
+                    <span ng-show="permit.permits.row.parties.infOwner.addresses.mailing.country">{{permit.permits.row.parties.infOwner.addresses.mailing.country}}</span>
+                  </address>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bs-docs-section">
+          <h2 id="PermitApplicationLocation">>Location / Route of Infrastructure</h2>
+          <div class="form-group row">
+            <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Location Includes:</label>
+            <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
+              <span>{{permit.permits.row.isSpecialZone ? "Business District / High Density Zone" : "No Business or High Density"}}</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Construction Method:</label>
+            <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10">
+              <span>{{permit.permits.row.consType == 'Trenching' ? "Trenching" : "Horizontal Drilling"}}</span>
+            </div>
+          </div>
+        </div>
+      <div id="PermitApplicationMap" ng-controller="geoDataController">
+        <div class="row">
+          <div class="col-xs-12 afterMap">
+            <div id="map" class="center-block isPreview"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <h3 id="PermitApplicationLocationCalculation">Location Details</h3>
+          </div>
+        </div>
+        <div class="row" ng-show="!!permit.permits.row.locationRoutes && permit.permits.row.locationRoutes.length > 0">
+          <div class="col-xs-5">
+            <div ng-repeat="locationRoute in permit.permits.row.locationRoutes">
+              <strong>Route of Your Infrastructure</strong>
+              <ul ng-repeat="lonLat in locationRoute">
+                <li>{{"Lon:" + lonLat[0].toFixed(7) + " Lat:" + lonLat[1].toFixed(7)}}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-7">
+            <div ng-repeat="locationDescs in permit.permits.row.locationDescriptions">
+              <strong>Location of Your Infrastructure</strong>
+              <ul ng-repeat="locDesc in locationDescs">
+                <li>{{locDesc}}</li>
+              </ul>
+            </div>
+          </div>
+          <!-- This hidden field is present to force recalculation of the various fees below -->
+          <pre id="location" ng-show="false">{{permit.permits.row | json}}</pre>
+        </div>
+      </div>
+        <div class="bs-docs-section">
+          <h2>Permit Application Fees</h2>
+          <div>
+            <p>Assuming that you have made a full and valid declaration the fees and penalties shown will be correct.</p>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-condensed table-hover">
+              <thead>
+              <tr>
+                <th class="col-xs-6">Item</th>
+                <th class="col-xs-1 text-right">Unit</th>
+                <th class="col-xs-1 text-right">Rate</th>
+                <th class="col-xs-2">&nbsp;</th>
+                <th class="col-xs-2 text-right">Total</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="animate-show" ng-repeat="fee in permit.calc.fees | filter: permit.calc.applicationFilter">
+                <td>{{fee.name}}</td>
+                <td class="text-right">{{fee.units($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length)}}</td>
+                <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
+                <td>{{fee.rateDesc()}}</td>
+                <td class="text-right">{{fee.total($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length) | currency: "N&nbsp;": 0}}</td>
+              </tr>
+              </tbody>
+              <tfoot>
+              <tr class="animate-show">
+                <td class="text-right" colspan="4"><strong>Application Fee Total</strong></td>
+                <td class="text-right"><strong>{{permit.calc.total(permit.calc.fees, permit.calc.applicationFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length) | currency: "N&nbsp;": 0 }}</strong></td>
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+@section scripts
+{
+  <script src="@mapInitUrl" async defer></script>
+}

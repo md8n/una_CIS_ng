@@ -9,7 +9,7 @@
 <div class="container bs-docs-container" ng-controller="permitController">
   <div class="row">
     <div class="col-md-9 col-lg-10" role="main">
-      <form class="form-horizontal" role="form" ng-submit="permit.Save()">
+      <form name="PermitApplication" class="form-horizontal" role="form" ng-submit="permit.Save()">
         <div class="bs-docs-section">
           <h1 id="PermitApplication" class="page-header">
             <a class="anchorjs-link" href="#PermitApplication" aria-label="Anchor link for: permit application">Permit Application</a>
@@ -815,11 +815,11 @@
             <span class="label" ng-class="{'label-success': permit.permits.row.totalDistance > 0, 'label-warning': permit.permits.row.totalDistance <= 0}">Route Declared </span>
             <span class="label" ng-class="{'label-success': !permit.permits.row.isPreview, 'label-warning': permit.permits.row.isPreview}">Ready to Preview </span>
           </div>
-          <p ng-hide="permit.permits.row.isPreview" title="You need three green lights before the Preview button will be available">Enter all required information above before attempting to Preview and Submit your application.</p>
+          <p ng-hide="permit.permits.row.isPreview" title="You need three green lights, and all required fields entered, before the Preview button will be available">Enter all required information above before attempting to Preview and Submit your application.</p>
           <p ng-hide="permit.permits.row.isPreview">Note that contact details will be checked as part of the approval process.</p>
           <div class="form-group btn-group col-xs-12 row" aria-label="Print Preview and Submit">
-            <div class="col-xs-3" title="You need three green lights before the Preview button will be available">
-              <label class="btn btn-radio btn-info" ng-class="{'active': !permit.permits.row.isPreview}" ng-disabled="!(!!permit.permits.row.parties.holder.entityType) || permit.permits.row.totalDistance === 0 || permit.permits.row.isPreview">
+            <div class="col-xs-3" title="You need three green lights, and all required fields entered, before the Preview button will be available">
+              <label class="btn btn-radio btn-info" ng-class="{'active': !permit.permits.row.isPreview}" ng-disabled="!(!!permit.permits.row.parties.holder.entityType) || permit.permits.row.totalDistance === 0 || permit.permits.row.isPreview || PermitApplication.$invalid">
                 <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="true" ng-change="GDFitMap()" autocomplete="off">Preview &gt;&gt;
               </label>
             </div>

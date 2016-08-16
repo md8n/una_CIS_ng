@@ -174,11 +174,11 @@ namespace una_CIS_ng.Controllers
         }
       }
 
-      if (failedRecipients.Any())
-      {
-        var errorResult = "There were some issues sending emails to the intended recipients";
-        return BadRequest(); // + failedRecipients.Select(f => f.Address));
-      }
+      //if (failedRecipients.Any())
+      //{
+      //  var errorResult = "There were some issues sending emails to the intended recipients";
+      //  return BadRequest(); // + failedRecipients.Select(f => f.Address));
+      //}
 
       return Ok(objId);
     }

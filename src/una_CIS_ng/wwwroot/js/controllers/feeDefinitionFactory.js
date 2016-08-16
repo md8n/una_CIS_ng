@@ -25,18 +25,26 @@
             }
             return " " + (this.divider === 1 ? " per" : " for every " + this.divider) + " " + this.measure;
           },
-          units: function(dimension, section) {
+          units: function (dimension, section, permits) {
             if (this.unit === 1) {
               return this.unit;
             }
 
             var dim = Number(dimension || 0);
             var sec = Number(section || 0);
+            var prm = Number(permits || 0);
 
-            return this.measure === "section" ? sec : dim;
+            switch (this.measure) {
+              case "section":
+                return sec;
+              case "permit":
+                return prm;
+              default:
+                return dim;
+            }
           },
-          total: function(dimension, section) {
-            var units = this.units(dimension, section);
+          total: function (dimension, section, permits) {
+            var units = this.units(dimension, section, permits);
             if (this.divider === 0 || this.rate === 0 || units === 0) {
               return 0;
             }

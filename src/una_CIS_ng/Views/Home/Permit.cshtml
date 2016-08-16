@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System
+@{
   ViewData["Title"] = "Permit - Right-of-Way";
   var mapKey = ViewData["GoogleAPIBrowserKey"];
   var mapInitUrl = "https://maps.googleapis.com/maps/api/js?key=" + mapKey + "&libraries=drawing,geometry&callback=initMap";
@@ -22,11 +23,15 @@
           <ul>
             <li>The <a href="#PermitApplicationParties">Permit Holder</a> must be identified. Other people and organisations may need to be identified also.</li>
             <li>The <a href="#PermitApplicationLocation">location / route of your infrastructure</a> must be clearly identified.</li>
+            <li>The <a href="#PermitApplicationInfState">current state of your infrastructure</a> must be declared.</li>
             <li>The Permit Application must be submitted by clicking the submit button below.</li>
             <li>The relevant fees, charges and penalties must be paid.</li>
           </ul>
           <div class="bs-callout-sm bs-callout-info">
-            <small>If you are putting in new infrastructure then a Construction Permit is also required. This is not available electronically at present.</small>
+            <small>You cannot mix different infrastructure states on the same Permit Application.<br />Make multiple Permit Applications instead.</small>
+          </div>
+          <div class="bs-callout-sm bs-callout-info">
+            <small>If you are putting in new infrastructure then a Construction Permit is also required.<br />This form will calculate the fee for you, but the Construction Permit itself is not available electronically at present.</small>
           </div>
           <div class="bs-callout-sm bs-callout-warning">
             <small>Some other agencies may require you to obtain relevant permits / authorisation also - LASIMRA and its authorised agencies are not responsible for this.</small>
@@ -618,26 +623,121 @@
               <ol>
                 <li>Enter all of the required contact information above</li>
                 <li>Draw a section of your infrastructure below</li>
-                <li>Submit your application (all the information you have entered will still remain on screen)</li>
+                <li>Declare the state of your infrastructure</li>
+                <li>"Preview" and then "Submit" your application (all the information you have entered will still remain on screen)</li>
                 <li>Click the "Reset Map" button to clear the map data</li>
-                <li>Draw the next section of your infrastructure</li>
+                <li>Draw the next section of your infrastructure and continue with step 3 above.</li>
               </ol>
             </div>
           </div>
+        </div>
+        <div id="PermitApplicationMap" ng-controller="geoDataController">
+          <div class="row">
+            <div class="col-xs-12 afterMap">
+              <div id="map" class="center-block" ng-class="{'isPreview': permit.permits.row.isPreview}"></div>
+            </div>
+          </div>
+          <div class="row" ng-hide="permit.permits.row.isPreview">
+            <div class="col-xs-3">
+              <dl class="dl-horizontal">
+                <dt>GeoData<br />Service is:</dt>
+                <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
+              </dl>
+            </div>
+            <div class="col-xs-3">
+              <dl class="dl-horizontal" title="Zoom the map to fit your infrastructure">
+                <dt>Zoom to<br />infrastructure</dt>
+                <dd>
+                  <input class="btn" id="FitMap" type="button" value="Fit Map" ng-click="geoData.FitMap()" />
+                </dd>
+              </dl>
+            </div>
+            <div class="col-xs-3">
+              <dl class="dl-horizontal" title="Clear all of the infrastructure data you've drawn">
+                <dt>Clear map<br />data</dt>
+                <dd>
+                  <input class="btn" id="ResetMap" type="button" value="Reset Map" ng-click="geoData.ResetMap()" />
+                </dd>
+              </dl>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <h3 id="PermitApplicationLocationCalculation">Location Details</h3>
+            </div>
+          </div>
+          <div class="row" ng-show="!!permit.permits.row.locationRoutes && permit.permits.row.locationRoutes.length > 0">
+            <div class="col-xs-5">
+              <div ng-repeat="locationRoute in permit.permits.row.locationRoutes">
+                <strong>Route of Your Infrastructure</strong>
+                <ul ng-repeat="lonLat in locationRoute">
+                  <li>{{"Lon:" + lonLat[0].toFixed(7) + " Lat:" + lonLat[1].toFixed(7)}}</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-xs-7">
+              <div ng-repeat="locationDescs in permit.permits.row.locationDescriptions">
+                <strong>Location of Your Infrastructure</strong>
+                <ul ng-repeat="locDesc in locationDescs">
+                  <li>{{locDesc}}</li>
+                </ul>
+              </div>
+            </div>
+            <!-- This hidden field is present to force recalculation of the various fees below -->
+            <pre id="location" ng-show="false">{{permit.permits.row | json}}</pre>
+          </div>
+        </div>
+        <div class="bs-docs-section">
+          <h2 id="PermitApplicationInfState">
+            <a class="anchorjs-link" href="#PermitApplicationInfState" aria-label="Anchor link for: permit application infrastructure state">Infrastructure State</a>
+          </h2>
           <div class="form-group row">
-            <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Location Includes:</label>
-            <div class="col-xs-6 col-sm-5" ng-hide="permit.permits.row.isPreview">
-              <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Location">
-                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.isSpecialZone}">
-                  <input type="radio" name="infLoc" ng-model="permit.permits.row.isSpecialZone" ng-value="true" autocomplete="off" ng-required="true"> Business District <br /> High Density Zone
+            <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Infrastructure state:</label>
+            <div class="col-xs-7 col-sm-6" ng-hide="permit.permits.row.isPreview">
+              <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure State">
+                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.infState == 'Planned'}">
+                  <input type="radio" name="infState" ng-model="permit.permits.row.infState" value="Planned" autocomplete="off" ng-required="true"> Planned
                 </label>
-                <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.isSpecialZone}">
-                  <input type="radio" name="infLoc" ng-model="permit.permits.row.isSpecialZone" ng-value="false" autocomplete="off" ng-required="true"> No Business or <br /> High Density
+                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.infState == 'Existing'}">
+                  <input type="radio" name="infState" ng-model="permit.permits.row.infState" value="Existing" autocomplete="off" ng-required="true"> Existing
+                </label>
+                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.infState == 'Decommissioning'}">
+                  <input type="radio" name="infState" ng-model="permit.permits.row.infState" value="Decommissioning" autocomplete="off" ng-required="true"> Decommissioning
                 </label>
               </div>
             </div>
             <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10" ng-hide="!permit.permits.row.isPreview">
-              <span>{{permit.permits.row.isSpecialZone ? "Business District / High Density Zone" : "No Business or High Density"}}</span>
+              <span>{{permit.permits.row.infLoc === "Business" ? "Business District" : permit.permits.row.infLoc === "HighDensity" ? "High Density Zone" : "No Business or High Density"}}</span>
+            </div>
+          </div>
+          <div class="form-group row" ng-show="permit.permits.row.infState == 'Planned'">
+            <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Construction Permits:</label>
+            <div class="col-xs-7 col-sm-6" ng-hide="permit.permits.row.isPreview">
+              <div class="input-group">
+                <input name="consPermits" id="consPermits" ng-model="permit.permits.row.consPermits" type="number" />
+              </div>
+            </div>
+            <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10" ng-hide="!permit.permits.row.isPreview">
+              <span>{{permit.permits.row.consPermits}}</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Location Includes:</label>
+            <div class="col-xs-7 col-sm-6" ng-hide="permit.permits.row.isPreview">
+              <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Location">
+                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.infLoc === 'Business'}">
+                  <input type="radio" name="infLoc" ng-model="permit.permits.row.infLoc" value="Business" autocomplete="off" ng-required="true"> Business <br />District
+                </label>
+                <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.infLoc === 'HighDensity'}">
+                  <input type="radio" name="infLoc" ng-model="permit.permits.row.infLoc" value="HighDensity" autocomplete="off" ng-required="true"> High Density <br />Zone
+                </label>
+                <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.infLoc === 'Other'}">
+                  <input type="radio" name="infLoc" ng-model="permit.permits.row.infLoc" value="Other" autocomplete="off" ng-required="true"> No Business or <br /> High Density
+                </label>
+              </div>
+            </div>
+            <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10" ng-hide="!permit.permits.row.isPreview">
+              <span>{{permit.permits.row.infLoc === "Business" ? "Business District" : permit.permits.row.infLoc === "HighDensity" ? "High Density Zone" : "No Business or High Density"}}</span>
             </div>
           </div>
           <div class="form-group row">
@@ -657,100 +757,53 @@
             </div>
           </div>
         </div>
-      <div id="PermitApplicationMap" ng-controller="geoDataController">
-        <div class="row">
-          <div class="col-xs-12 afterMap">
-            <div id="map" class="center-block" ng-class="{'isPreview': permit.permits.row.isPreview}"></div>
-          </div>
-        </div>
-        <div class="row" ng-hide="permit.permits.row.isPreview">
-          <div class="col-xs-3">
-            <dl class="dl-horizontal">
-              <dt>GeoData Service is:</dt>
-              <dd>{{geoData.IsDbConnected ? "connected" : "not available"}}</dd>
-            </dl>
-          </div>
-          <div class="col-xs-3">
-            <dl class="dl-horizontal" title="Zoom the map to fit your infrastructure">
-              <dt>Zoom to<br/>infrastructure</dt>
-              <dd>
-                <input class="btn" id="FitMap" type="button" value="Fit Map" ng-click="geoData.FitMap()"/>
-              </dd>
-            </dl>
-          </div>
-          <div class="col-xs-3">
-            <dl class="dl-horizontal" title="Clear all of the infrastructure data you've drawn">
-              <dt>Clear map data</dt>
-              <dd>
-                <input class="btn" id="ResetMap" type="button" value="Reset Map" ng-click="geoData.ResetMap()"/>
-              </dd>
-            </dl>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12">
-            <h3 id="PermitApplicationLocationCalculation">Location Details</h3>
-          </div>
-        </div>
-        <div class="row" ng-show="!!permit.permits.row.locationRoutes && permit.permits.row.locationRoutes.length > 0">
-          <div class="col-xs-5">
-            <div ng-repeat="locationRoute in permit.permits.row.locationRoutes">
-              <strong>Route of Your Infrastructure</strong>
-              <ul ng-repeat="lonLat in locationRoute">
-                <li>{{"Lon:" + lonLat[0].toFixed(7) + " Lat:" + lonLat[1].toFixed(7)}}</li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-xs-7">
-            <div ng-repeat="locationDescs in permit.permits.row.locationDescriptions">
-              <strong>Location of Your Infrastructure</strong>
-              <ul ng-repeat="locDesc in locationDescs">
-                <li>{{locDesc}}</li>
-              </ul>
-            </div>
-          </div>
-          <!-- This hidden field is present to force recalculation of the various fees below -->
-          <pre id="location" ng-show="false">{{permit.permits.row | json}}</pre>
-        </div>
-      </div>
         <div class="bs-docs-section" ng-show="!!permit.permits.row.locationRoutes && permit.permits.row.locationRoutes.length > 0">
           <h2 id="PermitApplicationFeeEstimation">
             <a class="anchorjs-link" href="#PermitApplicationFeeEstimation" aria-label="Anchor link for: permit application fee estimation">Permit Application Fees</a>
           </h2>
           <div>
             <p ng-hide="permit.permits.row.isPreview">Note that the fees will be recalculated on the server.</p>
-            <p>Assuming that you have made a full and valid declaration the fees and penalties shown will be correct.</p>
+            <p>Assuming that you have made a full and valid declaration for your infrastructure the fees and penalties shown will be correct.</p>
           </div>
           <div class="table-responsive">
             <table class="table table-striped table-condensed table-hover">
               <thead>
-              <tr>
-                <th class="col-xs-6">Item</th>
-                <th class="col-xs-1 text-right">Unit</th>
-                <th class="col-xs-1 text-right">Rate</th>
-                <th class="col-xs-2">&nbsp;</th>
-                <th class="col-xs-2 text-right">Total</th>
-              </tr>
+                <tr>
+                  <th class="col-xs-6">Item</th>
+                  <th class="col-xs-1 text-right">Unit</th>
+                  <th class="col-xs-1 text-right">Rate</th>
+                  <th class="col-xs-2">&nbsp;</th>
+                  <th class="col-xs-2 text-right">Total</th>
+                </tr>
               </thead>
               <tbody>
-              <tr class="animate-show" ng-repeat="fee in permit.calc.fees | filter: permit.calc.applicationFilter">
-                <td>{{fee.name}}</td>
-                <td class="text-right">{{fee.units($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length)}}</td>
-                <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
-                <td>{{fee.rateDesc()}}</td>
-                <td class="text-right">{{fee.total($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length) | currency: "N&nbsp;": 0}}</td>
-              </tr>
+                <tr class="animate-show" ng-repeat="fee in permit.calc.fees | filter: permit.calc.applicationFilter">
+                  <td>{{fee.name}}</td>
+                  <td class="text-right">{{fee.units($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length, $parent.permit.permits.row.consPermits)}}</td>
+                  <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
+                  <td>{{fee.rateDesc()}}</td>
+                  <td class="text-right">{{fee.total($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length, $parent.permit.permits.row.consPermits) | currency: "N&nbsp;": 0}}</td>
+                </tr>
               </tbody>
               <tfoot>
-              <tr class="animate-show">
-                <td class="text-right" colspan="4"><strong>Application Fee Total</strong></td>
-                <td class="text-right"><strong>{{permit.calc.total(permit.calc.fees, permit.calc.applicationFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length) | currency: "N&nbsp;": 0 }}</strong></td>
-              </tr>
+                <tr class="animate-show">
+                  <td class="text-right" colspan="4"><strong>Application Fee Total</strong></td>
+                  <td class="text-right"><strong>{{permit.calc.total(permit.calc.fees, permit.calc.applicationFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length, permit.permits.row.consPermits) | currency: "N&nbsp;": 0 }}</strong></td>
+                </tr>
               </tfoot>
             </table>
           </div>
           <p ng-hide="permit.permits.row.isPreview">
-            If you had not declared your infrastructure the fee would be: <strong>{{permit.calc.total(permit.calc.fees, permit.calc.undeclaredFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length) | currency: "N&nbsp;": 0 }}</strong>
+            If you had not declared your infrastructure the fee would be: <strong>{{permit.calc.total(permit.calc.fees, permit.calc.undeclaredFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length, permit.permits.row.consPermits) | currency: "N&nbsp;": 0 }}</strong>
+          </p>
+          <p ng-hide="!permit.permits.row.isPreview">
+            To pay for the above raise a bank draft / bank cheque <br />
+            to: <strong>{{bankDraftRecipient}}</strong> <br />
+            for the amount of: <strong>{{permit.calc.total(permit.calc.fees, permit.calc.applicationFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length, permit.permits.row.consPermits) | currency: "N&nbsp;": 0 }}</strong>
+          </p>
+          <p ng-hide="!permit.permits.row.isPreview">
+            Present this bank draft/ bank cheque at the UNA office together with this application. <br />
+            This payment must be made and processed on or before <strong>@DateTime.Now.AddDays(7).ToString("dddd, dd MMMM, yyyy")</strong>
           </p>
         </div>
         <div class="bs-docs-section hidden-print">
@@ -810,7 +863,10 @@
           </ul>
         </li>
         <li>
-          <a href="#PermitApplicationFeeEstimation">Fees Estimate</a>
+          <a href="#PermitApplicationInfState">Inf. State</a>
+        </li>
+        <li>
+          <a href="#PermitApplicationFeeEstimation">Fees Calc.</a>
         </li>
         <li>
           <a href="#PermitApplicationSubmit">Submit</a>

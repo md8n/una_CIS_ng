@@ -11,15 +11,27 @@ namespace una_CIS_ng.Models
 
     public string type { get; set; }
 
-    public bool isSpecialZone { get; set; }
+    public string infState { get; set; }
+
+    public string infLoc { get; set; }
+
+    public string infDisc { get; set; }
+
+    public string infType { get; set; }
 
     public string consType { get; set; }
+
+    public int consPermits { get; set; }
+
+    public string permState { get; set; }
 
     public double[] distances { get; set; }
 
     public double totalDistance { get; set; }
 
     public GeoJsonFeatureCollection<GeoJson2DGeographicCoordinates> locations { get; set; }
+
+    //public LonLat[][] locationRoutes { get; set; }
 
     public string[][] locationDescriptions { get; set; }
 

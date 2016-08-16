@@ -228,11 +228,26 @@ namespace una_CIS_ng.Controllers
             case "type":
               permit.type = jValue.ToString();
               break;
-            case "isSpecialZone":
-              permit.isSpecialZone = (bool)jValue;
+            case "infState":
+              permit.infState = jValue.ToString();
+              break;
+            case "infLoc":
+              permit.infLoc = jValue.ToString();
+              break;
+            case "infDisc":
+              permit.infDisc = jValue.ToString();
+              break;
+            case "infType":
+              permit.infType = jValue.ToString();
               break;
             case "consType":
               permit.consType = jValue.ToString();
+              break;
+            case "consPermits":
+              permit.consPermits = (int)jValue;
+              break;
+            case "permState":
+              permit.permState = jValue.ToString();
               break;
             case "distances":
               if (jArray == null)

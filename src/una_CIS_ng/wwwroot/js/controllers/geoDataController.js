@@ -134,6 +134,7 @@
             });
           }
         }
+        map.data.setStyle({ strokeColor: 'darkred', strokeWeight: 1, strokeOpacity: 0.7 });
         $scope.geoData.geoFeatures.forEach(function (feature) {
           map.data.addGeoJson(feature);
         });

@@ -8,6 +8,7 @@
       return $resource("/api/Permit/", {},
       {
         "All": { method: "GET", url: "/api/Permit/All", isArray: true },
+        "GeoData": { method: "GET", url: "/api/Permit/GeoData", isArray: true },
         "APIData": { method: "GET", params: {}, isArray: false },
         "IsDbConnected": { method: "GET", url: "/api/Permit/IsDbConnected", isArray: false }
       });

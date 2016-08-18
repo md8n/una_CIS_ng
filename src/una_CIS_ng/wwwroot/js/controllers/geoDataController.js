@@ -22,7 +22,8 @@
       geocoder = new gm.Geocoder;
 
       if (!!gm && !!gm.Map) {
-        map = new gm.Map(document.getElementById(mapElId),
+        var mapEl = document.getElementById(mapElId);
+        map = new gm.Map(mapEl,
         {
           center: { lat: 6.520226, lng: 3.468163 }, // 6.520226, 3.468163
           zoom: 9
@@ -30,7 +31,7 @@
 
         //infowindow = new gm.InfoWindow;
 
-        resetMap();
+        resetMap(mapEl.hasAttribute("showdrawingcontrols"));
       }
     };
 
@@ -117,7 +118,7 @@
     }
 
     var handleGeoData = function (response) {
-      // Una.gMap is the google maps object returned by Map.cshtml and Permit.cshtml
+      // map is the google maps object returned by Map.cshtml and Permit.cshtml
       $scope.geoData = $scope.geoData || {};
       $scope.geoData.geoFeatures = [];
       if (!!map) {
@@ -129,7 +130,9 @@
       }
     };
 
-    function rebuildDrawingManager() {
+    function rebuildDrawingManager(showDrawingControls) {
+      showDrawingControls = !!showDrawingControls;
+
       if (typeof (dm) !== "undefined" && dm !== null) {
         // Clear the drawingmanager
         dm.setMap(null);
@@ -139,9 +142,14 @@
         return;
       }
 
+      if (!!dm) {
+        // Clear the drawingmanager first
+        dm.setMap(null);
+      }
+
       dm = new gm.drawing.DrawingManager({
         drawingMode: null, // gm.drawing.OverlayType.POLYLINE,
-        drawingControl: true,
+        drawingControl: showDrawingControls,
         drawingControlOptions: {
           position: gm.ControlPosition.TOP_CENTER,
           drawingModes: [
@@ -149,7 +157,7 @@
           ]
         },
         polyLineOptions: {
-          editable: true
+          editable: showDrawingControls
         }
       });
 
@@ -201,10 +209,6 @@
       };
     }
 
-    function getLatLngCenter(bbox) {
-      return { "lng": (bbox[0] + bbox[2]) / 2, "lat": (bbox[1] + bbox[3]) / 2 };
-    }
-
     function addEventListener() {
       if (dmRebuilt) {
         // Add a listener for when we've finished drawing a polyline
@@ -241,8 +245,6 @@
                 // Set the bbox for the entire featurecollection
                 pspr.locations.bbox = setBbox(pspr.locations.bbox, lon, lat);
 
-                //map.fitBounds(createLatLngBounds(pspr.locations.bbox));
-
                 setTimeout(function (lon, lat, locDescCount) {
                   var mStatus = geocode({ lng: lon, lat: lat }, locDescCount - 1);
                   if (mStatus == gm.GeocoderStatus.OVER_QUERY_LIMIT) {
@@ -270,8 +272,10 @@
       }
     }
 
-    function resetMap() {
-      rebuildDrawingManager();
+    function resetMap(showDrawingControls) {
+      showDrawingControls = !!showDrawingControls;
+
+      rebuildDrawingManager(showDrawingControls);
 
       if (typeof (dm) === "undefined" || dm === null) {
         return;
@@ -279,34 +283,41 @@
 
       //alert(JSON.stringify($scope.permit.permits.row.locations));
 
-      var pspr = $scope.permit.permits.row;
-      // Clear the data (this impacts the fee calculation)
-      pspr.distances.length = 0;
-      pspr.totalDistance = 0;
-      pspr.locations.features.length = 0;
-      pspr.locationRoutes.length = 0;
-      pspr.locationDescriptions.length = 0;
+      if (!!$scope.permit) {
+        var pspr = $scope.permit.permits.row;
+        // Clear the data (this impacts the fee calculation)
+        pspr.distances.length = 0;
+        pspr.totalDistance = 0;
+        pspr.locations.features.length = 0;
+        pspr.locationRoutes.length = 0;
+        pspr.locationDescriptions.length = 0;
 
-      // detach the polylines from the map first, then throw them all away
-      $scope.map.locationPolylines.forEach(function (el) { el.setMap(null); });
-      $scope.map.locationPolylines.length = 0;
+        // detach the polylines from the map first, then throw them all away
+        $scope.map.locationPolylines.forEach(function (el) { el.setMap(null); });
+        $scope.map.locationPolylines.length = 0;
+      }
 
       fitMap();
 
-      addEventListener();
+      if (showDrawingControls) {
+        addEventListener();
+      }
     }
+
+    // Allow handleGeoData to be callable by other controllers
+    $rootScope.$on("GeoDataHandleGeoData", function () { handleGeoData(); });
 
     // Allow fitMap to be callable by other controllers
     $rootScope.$on("GeoDataFitMap", function () { fitMap(); });
 
     function fitMap() {
-      if (!!map && ($scope.permit.permits.row.totalDistance > 0 || !!$scope.geoData.geoFeatures)) {
+      if (!!map && ((!!$scope.permit && $scope.permit.permits.row.totalDistance > 0) || !!$scope.geoData.geoFeatures)) {
         map.fitBounds(createLatLngBounds(getCurrentBBox()));
       }
     }
 
     function getCurrentBBox() {
-      var pspr = $scope.permit.permits.row;
+      var pspr = !!$scope.permit ? $scope.permit.permits.row : {"totalDistance": 0};
 
       var bbox = [200, 100, -200, -100];
 

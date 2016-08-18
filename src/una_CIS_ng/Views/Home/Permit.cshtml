@@ -3,7 +3,6 @@
   ViewData["Title"] = "Permit - Right-of-Way";
   var mapKey = ViewData["GoogleAPIBrowserKey"];
   var mapInitUrl = "https://maps.googleapis.com/maps/api/js?key=" + mapKey + "&libraries=drawing,geometry&callback=initMap";
-  //var mapInitUrl = "http://maps.google.com/maps?file=api&amp;v=2&amp;key=" + @mapKey;
 }
 
 <div class="container bs-docs-container" ng-controller="permitController">
@@ -634,7 +633,7 @@
         <div id="PermitApplicationMap" ng-controller="geoDataController">
           <div class="row">
             <div class="col-xs-12 afterMap">
-              <div id="map" class="center-block" ng-class="{'isPreview': permit.permits.row.isPreview}"></div>
+              <div id="map" class="center-block" ng-class="{'isPreview': permit.permits.row.isPreview}" showdrawingcontrols></div>
             </div>
           </div>
           <div class="row" ng-hide="permit.permits.row.isPreview">
@@ -656,7 +655,7 @@
               <dl class="dl-horizontal" title="Clear all of the infrastructure data you've drawn">
                 <dt>Clear map<br />data</dt>
                 <dd>
-                  <input class="btn" id="ResetMap" type="button" value="Reset Map" ng-click="geoData.ResetMap()" />
+                  <input class="btn" id="ResetMap" type="button" value="Reset Map" ng-click="geoData.ResetMap(true)" />
                 </dd>
               </dl>
             </div>

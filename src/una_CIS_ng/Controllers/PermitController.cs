@@ -55,9 +55,23 @@ namespace una_CIS_ng.Controllers
         select new Dictionary<string, string> { { "id", "\"" + prm.id + "\"" }, { "Permit", prm.ToJson() } }
         ).ToList();
 
-      var geoDataJson = new JsonStringResult(allPermits);
+      var permitJson = new JsonStringResult(allPermits);
 
-      return geoDataJson;
+      return permitJson;
+    }
+
+    // GET: api/Permit/GeoData
+    [HttpGet("GeoData")]
+    public async Task<IActionResult> GetAllGeoData()
+    {
+      var permList = await _permitRepository.GetAllPermitAsync();
+
+      var locations = permList
+        .Where(p => p.locations?.Features != null)
+        .Select(l => new {id = l.id, locations = BsonSerializer.Deserialize<GeoJsonFeatureCollection<GeoJson2DGeographicCoordinates>>(l.locations.ToBsonDocument()).ToJson() })
+        .ToList();
+
+      return Ok(locations);
     }
 
     // GET: api/Permit/5

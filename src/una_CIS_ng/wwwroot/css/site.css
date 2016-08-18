@@ -1,4 +1,5 @@
 ﻿body {
+  font-family: Tahoma, Verdana, Segoe, sans-serif;
   padding-top: 50px;
   padding-bottom: 20px;
 }
@@ -31,6 +32,33 @@ textarea {
   line-height: 1.4;
 }
 
+/*  title-@Constants.UnaAbbr */
+.title-UNA {
+  background: -moz-linear-gradient(left, rgba(86,180,217,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, rgba(86,180,217,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, rgba(86,180,217,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#56b4d9', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+  color: white;
+}
+
+/*  title-@Constants.LasimraAbbr */
+.title-LASIMRA {
+  background: -moz-linear-gradient(left, rgba(104,33,122,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, rgba(104,33,122,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, rgba(104,33,122,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#68217a', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+  color: white;
+}
+
+/*  title-@Constants.CisAbbr */
+.title-CIS {
+  background: -moz-linear-gradient(left, rgba(127,186,0,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, rgba(127,186,0,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, rgba(127,186,0,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7fba00', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+  color: white;
+}
+
 /* buttons and links extension to use brackets: [ click me ] */
 .btn-bracketed::before {
   display: inline-block;
@@ -57,8 +85,8 @@ dl.dl-horizontal dt {
 }
 
 #map, iframe {
-    width: 680px; /* 511 pt */
-    height: 360px; /* 270 pt */
+  width: 680px; /* 511 pt */
+  height: 360px; /* 270 pt */
 }
 
   #map.isPreview {

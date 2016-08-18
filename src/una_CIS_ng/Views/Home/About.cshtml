@@ -4,12 +4,12 @@
   ViewData["Title"] = "About";
 }
 
-<h2>@ViewData["Title"].</h2>
-<h3>@ViewData["Message"]</h3>
+@*<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>*@
 
 <div class="row">
   <div class="col-md-4">
-    <h2>@*<img src="/mstile-150x150.png" alt="@Constants.LasimraAbbr" width="150" height="150" />*@@Constants.LasimraAbbr</h2>
+    <h2 class="title-@Constants.LasimraAbbr">@*<img src="/mstile-150x150.png" alt="@Constants.LasimraAbbr" width="150" height="150" />*@@Constants.LasimraAbbr</h2>
     <h4>@Constants.LasimraFullTitle</h4>
     <p>@Constants.LasimraAbbr is a @Constants.LagosFullTitle regulatory body charged with managing the usage of public spaces (land, air and water) for infrastructure.</p>
     <p>Its current focus is on telecommunications infrastructure, both towers and underground cabling.</p>
@@ -23,7 +23,7 @@
     </ul>
   </div>
   <div class="col-md-4">
-    <h2>@Constants.UnaFullTitle</h2>
+    <h2 class="title-@Constants.UnaAbbr">@Constants.UnaAbbr</h2>
     <h4>@Constants.UnaFullTitle</h4>
     <p>@Constants.LagosAbbr needs significant telecommunications infrastructure to meet present needs and to grow.</p>
     <p>Unfortunately the installation of a lot of this infrastructure has been haphazard and much of it is non-compliant with @Constants.LasimraAbbr regulations and policies.</p>
@@ -40,7 +40,7 @@
     </ul>
   </div>
   <div class="col-md-4">
-    <h2>@Constants.CisAbbr</h2>
+    <h2 class="title-@Constants.CisAbbr">@Constants.CisAbbr</h2>
     <h4>@Constants.CisFullTitle</h4>
     <p>@Constants.CisAbbr has been mandated by @Constants.LasimraAbbr to conduct the @Constants.UnaFullTitle including the activities related to handling Right-of-Way permit compliance issues.</p>
     <p>@Constants.CisAbbr has significant experience in performing physical audits of underground infrastructure, and has teamed up with other international organisations experienced in systems, regulation and policy development to develop a complete solution for @Constants.UnaAbbr.</p>

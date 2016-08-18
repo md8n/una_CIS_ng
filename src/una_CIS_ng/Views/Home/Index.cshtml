@@ -16,7 +16,6 @@
       <img src="~/images/banner1.svg" alt="@Constants.UnaFullTitle" class="img-responsive" />
       <div class="carousel-caption" role="option">
         <p>
-          @Constants.LunaFullTitle
           <a class="btn btn-default" href="@Constants.UnaUrl">
             Learn More
           </a>
@@ -27,7 +26,6 @@
       <img src="~/images/banner2.svg" alt="@Constants.LasimraAbbr" class="img-responsive" />
       <div class="carousel-caption" role="option">
         <p>
-          @Constants.LasimraAbbr - @Constants.LasimraFullTitle
           <a class="btn btn-default" href="@Constants.LasimraUrl">
             Learn More
           </a>
@@ -69,7 +67,7 @@
 
 <div class="row" ng-controller="geoDataController">
   <div class="col-md-4">
-    <h2>@Constants.UnaAbbr</h2>
+    <h2 class="title-@Constants.UnaAbbr">@Constants.UnaAbbr</h2>
     <h4>@Constants.UnaFullTitle</h4>
     <p>
       The @Constants.UnaFullTitle is a review of installed infrastructure within @Constants.LagosFullTitle, 
@@ -87,7 +85,7 @@
     </p>
   </div>
   <div class="col-md-4">
-    <h2>@Constants.LasimraAbbr</h2>
+    <h2 class="title-@Constants.LasimraAbbr">@Constants.LasimraAbbr</h2>
     <h4>@Constants.LasimraFullTitle</h4>
     <p>
       @Constants.LasimraAbbr is responsible for all infrastructure in public space.
@@ -103,7 +101,7 @@
     </p>
   </div>
   <div class="col-md-4">
-    <h2>@Constants.CisAbbr</h2>
+    <h2 class="title-@Constants.CisAbbr">@Constants.CisAbbr</h2>
     <h4>@Constants.CisFullTitle</h4>
     <p>
       @Constants.CisAbbr is a multinational business with its head office in @Constants.LagosAbbr. 

@@ -66,10 +66,13 @@ namespace una_CIS_ng.Controllers
     {
       var permList = await _permitRepository.GetAllPermitAsync();
 
-      var locations = permList
-        .Where(p => p.locations?.Features != null)
-        .Select(l => new {id = l.id, locations = BsonSerializer.Deserialize<GeoJsonFeatureCollection<GeoJson2DGeographicCoordinates>>(l.locations.ToBsonDocument()).ToJson() })
-        .ToList();
+      var locations = (
+        from perm in permList
+        select perm into permit
+        where permit?.locations != null
+        select BsonSerializer.Deserialize<GeoJsonFeatureCollection<GeoJson2DGeographicCoordinates>>(permit.locations.ToBsonDocument()) into prmLoc
+        select new Dictionary<string, string> {{ "FeatureCollection", prmLoc.ToJson() } }
+        ).ToList();
 
       return Ok(locations);
     }
@@ -141,7 +144,7 @@ namespace una_CIS_ng.Controllers
       var from = new Email("do_not_reply@cis.ng");
       var subject = "Test message from CIS";
       var to = new Email("obikenz@hotmail.com");
-      Email[] cc = {to, new Email("lee@md8n.com"), new Email("meteorist@live.com"), new Email("info@cis.ng"), new Email("chukwudi.okpara@cis.ng") };
+      Email[] cc = { to, new Email("lee@md8n.com"), new Email("meteorist@live.com"), new Email("info@cis.ng"), new Email("chukwudi.okpara@cis.ng") };
       var doco = new Attachment
       {
         Filename = "Test.pdf",

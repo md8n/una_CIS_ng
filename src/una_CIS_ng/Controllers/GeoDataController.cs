@@ -40,7 +40,7 @@ namespace una_CIS_ng.Controllers
         select gd.AsBsonDocument into geoData
         where geoData != null
         select BsonSerializer.Deserialize<GeoData>(geoData) into geoD
-        select new Dictionary<string, string> {{"Id", "\"" + geoD.Id + "\""}, {"Feature", geoD.Feature.ToJson<GeoJsonFeature<GeoJson2DGeographicCoordinates>>()}}
+        select new Dictionary<string, string> {{"Id", "\"" + geoD.Id + "\""}, {"Feature", geoD.Feature.ToJson()}}
         ).ToList();
 
       var geoDataJson = new JsonStringResult(allGeoData);

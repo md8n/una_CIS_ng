@@ -3,9 +3,9 @@
 
   angular
     .module("unaApp") // defined in unaApp.js
-    .controller("geoDataController", ["$scope", "$rootScope", "geoDataService", geoDataController]);
+    .controller("geoDataController", ["$scope", "$rootScope", "geoDataService", "permitService", geoDataController]);
 
-  function geoDataController($scope, $rootScope, geoDataService) {
+  function geoDataController($scope, $rootScope, geoDataService, permitService) {
     var gm = null;
     var geocoder = null;
     var map = null;
@@ -122,11 +122,23 @@
       $scope.geoData = $scope.geoData || {};
       $scope.geoData.geoFeatures = [];
       if (!!map) {
-        $scope.geoData.geoFeatures = response.map(function (obj) { return obj.Feature; });
+        if (Array.isArray(response)) {
+          if (response[0].hasOwnProperty("Feature")) {
+            $scope.geoData.geoFeatures = response.map(function (obj) { return obj.Feature; });
+          } else if (response[0].hasOwnProperty("FeatureCollection")) {
+            $scope.geoData.geoFeatures = response.map(function (obj) {
+              if (typeof (obj.FeatureCollection) === "string") {
+                obj.FeatureCollection = JSON.parse(obj.FeatureCollection);
+              }
+              return obj.FeatureCollection;
+            });
+          }
+        }
         $scope.geoData.geoFeatures.forEach(function (feature) {
           map.data.addGeoJson(feature);
         });
-        fitMap();
+
+        //fitMap();
       }
     };
 
@@ -281,6 +293,9 @@
         return;
       }
 
+      //geoDataService.All().$promise.then(handleGeoData);
+      permitService.GeoData().$promise.then(handleGeoData);
+
       //alert(JSON.stringify($scope.permit.permits.row.locations));
 
       if (!!$scope.permit) {
@@ -296,8 +311,6 @@
         $scope.map.locationPolylines.forEach(function (el) { el.setMap(null); });
         $scope.map.locationPolylines.length = 0;
       }
-
-      fitMap();
 
       if (showDrawingControls) {
         addEventListener();
@@ -317,7 +330,7 @@
     }
 
     function getCurrentBBox() {
-      var pspr = !!$scope.permit ? $scope.permit.permits.row : {"totalDistance": 0};
+      var pspr = !!$scope.permit ? $scope.permit.permits.row : { "totalDistance": 0 };
 
       var bbox = [200, 100, -200, -100];
 
@@ -326,7 +339,19 @@
         didFit = true;
       } else {
         $scope.geoData.geoFeatures.forEach(function (feature) {
-          bbox = setBboxBbox(bbox, feature.bbox);
+          if (!!feature) {
+            if (!feature.hasOwnProperty("bbox") && feature.hasOwnProperty("coordinates")) {
+              var bbx = [200, 100, -200, -100];
+              feature.geometry.coordinates.map(function (coord) { bbx = setBbox(bbx, coord[0], coord[1]); });
+              if (bbx[0] !== 200) {
+                feature.bbox = bbx;
+              }
+            }
+
+            if (feature.hasOwnProperty("bbox")) {
+              bbox = setBboxBbox(bbox, feature.bbox);
+            }
+          }
         });
       }
 
@@ -334,7 +359,7 @@
     }
 
     //$scope.apiData = geoDataService.APIData;
-    $scope.geoData.All = geoDataService.All().$promise.then(handleGeoData);
+    //$scope.geoData.All = geoDataService.All().$promise.then(handleGeoData);
     $scope.geoData.IsDbConnected = geoDataService.IsDbConnected();
     $scope.geoData.ResetMap = resetMap;
     $scope.geoData.FitMap = fitMap;
@@ -344,5 +369,5 @@
     //function activate() { }
   }
 
-  geoDataController.$inject = ["$scope", "geoDataService"];
+  geoDataController.$inject = ["$scope", "geoDataService", "permitService"];
 })(angular);

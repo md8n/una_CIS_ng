@@ -231,6 +231,11 @@
             var plP = pl.getPath();
             var dist = Math.floor(gm.geometry.spherical.computeLength(plP));
 
+            if (dist === 0) {
+              alert("Single points cannot be used to show your infrastructure route.  Please try again");
+              return;
+            }
+
             var infLc = document.getElementById("location");
             if (infLc && permitScope) {
               // Set up a polyline feature - note the deliberately wrong initial values for bbox

@@ -1,6 +1,9 @@
-﻿@{
+﻿@model Permit
+@{
   var mapKey = ViewData["GoogleAPIBrowserKey"];
   var mapInitUrl = "https://maps.googleapis.com/maps/api/js?key=" + mapKey + "&libraries=drawing,geometry&callback=initMap";
+
+  var holderIsInfrastructureOwner = Model.parties.Where(p => p.entityType == "holder").Select(h => h.isInfrastructureOwner).First();
 }
 
 <div class="container bs-docs-container" ng-controller="permitController">
@@ -11,7 +14,7 @@
         </div>
         <div class="bs-docs-section">
           <div class="well well-sm">
-            <h4>Permit Holder {{permit.permits.row.parties.holder.isInfrastructureOwner ? " and Infrastructure Owner" : ""}}</h4>
+            <h4>Permit Holder @{holderIsInfrastructureOwner ? " and Infrastructure Owner" : ""}</h4>
             <div class="row">
               <label class="col-xs-4 col-lg-3 text-right">Name</label>
               <div class="col-xs-8 col-lg-9" ng-show="permit.permits.row.parties.holder.entityType === 'Person'">

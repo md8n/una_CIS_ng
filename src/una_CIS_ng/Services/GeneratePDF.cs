@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using una_CIS_ng.Core;
 
 namespace una_CIS_ng.Services
 {
@@ -38,8 +39,8 @@ namespace una_CIS_ng.Services
       return CreatePDFDocument(
         "Permit Application - " + permitType + " for " + permitHolderName,
         "Permit Application",
-        "Critical Infrastructural Services Ltd", 
-        "Permit Application, " + permitType + ", " + permitHolderName + ", LASIMRA, CIS, Lagos, Nigeria");
+        Constants.CisFullTitle, 
+        "Permit Application, " + permitType + ", " + permitHolderName + ", " + Constants.LasimraAbbr + ", " + Constants.CisAbbr + ", "+ Constants.LagosAbbr + ", Nigeria");
     }
 
     public static PdfWriter CreatePdfWriter(Document oDoc, Stream docStream)

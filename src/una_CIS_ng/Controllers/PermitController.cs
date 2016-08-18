@@ -142,7 +142,7 @@ namespace una_CIS_ng.Controllers
       dynamic sg = new SendGridAPIClient(apiKey);
 
       var from = new Email("do_not_reply@cis.ng");
-      var subject = "Test message from CIS";
+      var subject = "Test message from " + Constants.CisAbbr;
       var to = new Email("obikenz@hotmail.com");
       Email[] cc = { to, new Email("lee@md8n.com"), new Email("meteorist@live.com"), new Email("info@cis.ng"), new Email("chukwudi.okpara@cis.ng") };
       var doco = new Attachment
@@ -160,11 +160,11 @@ namespace una_CIS_ng.Controllers
           Content content;
           if (email.Address == to.Address && email.Name == to.Name)
           {
-            content = new Content("text/html", "<p>Dear Applicant,</p><p>This is the data you submitted via the UNA website.</p><p>Regards</p><p>UNA Support Team</p><pre>" + jPerm.ToString(Formatting.Indented) + "</pre>");
+            content = new Content("text/html", "<p>Dear Applicant,</p><p>This is the data you submitted via the " + Constants.UnaAbbr + " website.</p><p>Regards</p><p>UNA Support Team</p><pre>" + jPerm.ToString(Formatting.Indented) + "</pre>");
           }
           else
           {
-            content = new Content("text/html", "<p>This is the data the applicant submitted via the UNA website.</p><p>Regards</p><p>UNA Support Team</p><pre>" + jPerm.ToString(Formatting.Indented) + "</pre>");
+            content = new Content("text/html", "<p>This is the data the applicant submitted via the " + Constants.UnaAbbr + " website.</p><p>Regards</p><p>UNA Support Team</p><pre>" + jPerm.ToString(Formatting.Indented) + "</pre>");
           }
           var mail = new Mail(from, subject, email, content)
           {

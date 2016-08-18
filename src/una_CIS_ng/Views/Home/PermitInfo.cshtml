@@ -1,4 +1,6 @@
-﻿@{
+﻿@using una_CIS_ng.Core
+
+@{
   ViewData["Title"] = "Permit Information";
 }
 
@@ -16,7 +18,7 @@
   <li>Details about your infrastructure must be clearly identified.</li>
   <li>Relevant documents, e.g. engineers reports, must be provided.</li>
   <li>The relevant fees, charges and penalties must be paid.</li>
-  <li><small>(Some other agencies may require you to obtain relevant permits / authorisation also - LASIMRA and its authorised agencies are not responsible for this)</small></li>
+  <li><small>(Some other agencies may require you to obtain relevant permits / authorisation also - @Constants.LasimraAbbr and its authorised agencies are not responsible for this)</small></li>
 </ul>
 
 <h3>General Requirements for Keeping Permits</h3>
@@ -65,7 +67,7 @@
 <h3>Fees, Charges and Penalties for Issuing and Retaining Permits</h3>
 <p>
   Note: These fees, charges and penalties, and the rules related to their application,
-  are subject to change at the discretion of LASIMRA and at the discretion of its appointed agencies (after consultation with LASIMRA).
+  are subject to change at the discretion of @Constants.LasimraAbbr and at the discretion of its appointed agencies (after consultation with @Constants.LasimraAbbr).
   No refund is offered for any changes.
 </p>
 <div class="table-responsive">
@@ -74,8 +76,8 @@
       <tr>
         <th class="col-xs-1">Charge Type</th>
         <th class="col-xs-1 text-center">Schedule</th>
-        <th class="col-xs-8 text-center">Description</th>
-        <th class="col-xs-1 text-center">Rate</th>
+        <th class="col-xs-6 text-center">Description</th>
+        <th class="col-xs-3 text-center">Rate</th>
         <th class="col-xs-1 text-center">Charge</th>
       </tr>
     </thead>
@@ -216,7 +218,7 @@
       <tr>
         <td>Settlement Fee</td>
         <td>Annual</td>
-        <td>Existing Non-Conforming Antenna - As assessed and agreed with LASIMRA or its Agent</td>
+        <td>Existing Non-Conforming Antenna - As assessed and agreed with @Constants.LasimraAbbr or its Agent</td>
         <td class="text-center">flat fee</td>
         <td class="text-right">N50,000<br/>- N250,000</td>
       </tr>
@@ -230,7 +232,7 @@
       <tr>
         <td>Penalty</td>
         <td>Offence</td>
-        <td>Failure to rectify after notice period has expired.  LASIMRA or its Agent orders action</td>
+        <td>Failure to rectify after notice period has expired.  @Constants.LasimraAbbr or its Agent orders action</td>
         <td class="text-center">flat fee<br />(per infrastructure)</td>
         <td class="text-right">Cost of action<br />(all inclusive)</td>
       </tr>
@@ -265,12 +267,12 @@
   <li>Short Term - Such as Construction Permits</li>
   <li>Long Term / Indefinite - Such as Right-of-Way Permits for underground infrastructure</li>
 </ul>
-<p>Permits may be reissued at the discretion of LASIMRA or its authorised agencies, for several reasons:</p>
+<p>Permits may be reissued at the discretion of @Constants.LasimraAbbr or its authorised agencies, for several reasons:</p>
 <ul>
   <li>The Permit Holder has changed their name.</li>
   <li>The Permit itself has been transferred (e.g. sold) to another party.</li>
   <li>There were significant discrepancies between the actual infrastructure and that described on the Permit.</li>
-  <li>There has been a change of law, requiring LASIMRA or its authorised agencies to reissue the Permit.</li>
+  <li>There has been a change of law, requiring @Constants.LasimraAbbr or its authorised agencies to reissue the Permit.</li>
   <li>Conditions imposed upon the Permit have been changed.</li>
   <li>In general, any significant change to the details of a Permit, or to the conditions of a Permit, will result in that Permit being invalidated, and a new Permit being issued.</li>
   <li>Where a Permit must be reissued because of something the Permit Holder / Infrastructure Owner has done (or not done as the Permit required) then it is likely that the Permit Holder / Infrastructure Owner will be charged a fee for the Permit to be reissued.</li>
@@ -303,9 +305,9 @@
 <ul>
   <li>Permits are only issued after the full amount in fees, charges and penalties have been paid (and after all other conditions have been met)</li>
   <li>Payment is currently only accepted in the form of a bank draft / bank cheque</li>
-  <li>Any charges imposed by the bank issuing the bank draft / bank cheque are in addition to any fees, charges and penalties imposed by LASIMRA</li>
+  <li>Any charges imposed by the bank issuing the bank draft / bank cheque are in addition to any fees, charges and penalties imposed by @Constants.LasimraAbbr</li>
   <li>You may pay for multiple permits with a single payment</li>
   <li>Refunds are not offered for overpayments or payments (in full or part) for a permit that is no longer required</li>
-  <li>No facility for maintaining credit with LASIMRA for 'unused' payments presently exists</li>
+  <li>No facility for maintaining credit with @Constants.LasimraAbbr for 'unused' payments presently exists</li>
 </ul>
 @*<a asp-controller="PdfForm" asp-action="PermitApplicationRoW">Static PDF Permit Application - Right of Way</a>*@

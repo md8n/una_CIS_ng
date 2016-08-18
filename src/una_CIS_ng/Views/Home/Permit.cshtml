@@ -1,4 +1,6 @@
 ﻿@using System
+@using una_CIS_ng.Core
+
 @{
   ViewData["Title"] = "Permit - Right-of-Way";
   var mapKey = ViewData["GoogleAPIBrowserKey"];
@@ -18,7 +20,7 @@
           <h2 id="PermitApplicationInstructions">
             <a class="anchorjs-link" href="#PermitApplicationInstructions" aria-label="Anchor link for: permit application instructions">Instructions</a>
           </h2>
-          <p>To obtain a Permit for your infrastructure several things are required:</p>
+          <p>To declare your existing or planned infrastructure, and obtain a Permit for it, several things are required:</p>
           <ul>
             <li>The <a href="#PermitApplicationParties">Permit Holder</a> must be identified. Other people and organisations may need to be identified also.</li>
             <li>The <a href="#PermitApplicationLocation">location / route of your infrastructure</a> must be clearly identified.</li>
@@ -27,13 +29,16 @@
             <li>The relevant fees, charges and penalties must be paid.</li>
           </ul>
           <div class="bs-callout-sm bs-callout-info">
-            <small>You cannot mix different infrastructure states on the same Permit Application.<br />Make multiple Permit Applications instead.</small>
+            <small>You cannot mix different infrastructure states (Planned, Existing, Decommissioning) on the same Permit Application.<br />Make multiple Permit Applications instead.</small>
           </div>
           <div class="bs-callout-sm bs-callout-info">
             <small>If you are putting in new infrastructure then a Construction Permit is also required.<br />This form will calculate the fee for you, but the Construction Permit itself is not available electronically at present.</small>
           </div>
+          <div class="bs-callout-sm bs-callout-success">
+            <small>Note that the information you provide through this form is not 'private' for the purposes of the @Constants.UnaFullTitle. <br/>However, your contact details are defined as 'protected' information and their disclosure is strictly controlled.</small>
+          </div>
           <div class="bs-callout-sm bs-callout-warning">
-            <small>Some other agencies may require you to obtain relevant permits / authorisation also - LASIMRA and its authorised agencies are not responsible for this.</small>
+            <small>Some other agencies may require you to obtain relevant permits / authorisation also - @Constants.LasimraAbbr and its authorised agencies are not responsible for this.</small>
           </div>
           <p>
             Please see <a href="./PermitInfo">Permit Info</a> for more information about obtaining Permits and keeping them.
@@ -741,7 +746,7 @@
           </div>
           <div class="form-group row">
             <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Construction Method:</label>
-            <div class="col-xs-6 col-sm-5" ng-hide="permit.permits.row.isPreview">
+            <div class="col-xs-7 col-sm-6" ng-hide="permit.permits.row.isPreview">
               <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
                 <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.consType == 'Trenching'}">
                   <input type="radio" name="consType" ng-model="permit.permits.row.consType" value="Trenching" autocomplete="off" ng-required="true"> Trenching
@@ -801,7 +806,7 @@
             for the amount of: <strong>{{permit.calc.total(permit.calc.fees, permit.calc.applicationFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length, permit.permits.row.consPermits) | currency: "N&nbsp;": 0 }}</strong>
           </p>
           <p ng-hide="!permit.permits.row.isPreview">
-            Present this bank draft/ bank cheque at the UNA office together with this application. <br />
+            Present this bank draft/ bank cheque at the @Constants.UnaAbbr office together with this application. <br />
             This payment must be made and processed on or before <strong>@DateTime.Now.AddDays(7).ToString("dddd, dd MMMM, yyyy")</strong>
           </p>
         </div>

@@ -1,4 +1,6 @@
-﻿@{
+﻿@using una_CIS_ng.Core
+
+@{
   ViewData["Title"] = "Permit - Fee Estimator";
 }
 
@@ -229,7 +231,7 @@
     </table>
   </div>
   <h3>Special Penalties</h3>
-  <p>Contact CIS if any of these apply to you</p>
+  <p>Contact @Constants.CisAbbr if any of these apply to you</p>
   <div class="table-responsive">
     <table class="table table-striped table-condensed table-hover">
       <thead>

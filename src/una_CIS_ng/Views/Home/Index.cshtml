@@ -13,10 +13,10 @@
   </ol>
   <div class="carousel-inner" role="listbox">
     <div class="item active">
-      <img src="~/images/banner1.svg" alt="Utility Network Audit" class="img-responsive" />
+      <img src="~/images/banner1.svg" alt="@Constants.UnaFullTitle" class="img-responsive" />
       <div class="carousel-caption" role="option">
         <p>
-          Lagos State - Utility Network Audit
+          @Constants.LunaFullTitle
           <a class="btn btn-default" href="@Constants.UnaUrl">
             Learn More
           </a>
@@ -24,10 +24,10 @@
       </div>
     </div>
     <div class="item">
-      <img src="~/images/banner2.svg" alt="LASIMRA" class="img-responsive" />
+      <img src="~/images/banner2.svg" alt="@Constants.LasimraAbbr" class="img-responsive" />
       <div class="carousel-caption" role="option">
         <p>
-          LASIMRA - Lagos State Infrastructure Maintenance and Regulatory Agency
+          @Constants.LasimraAbbr - @Constants.LasimraFullTitle
           <a class="btn btn-default" href="@Constants.LasimraUrl">
             Learn More
           </a>
@@ -35,10 +35,10 @@
       </div>
     </div>
     <div class="item">
-      <img src="~/images/banner3.svg" alt="CIS" class="img-responsive" />
+      <img src="~/images/banner3.svg" alt="@Constants.CisAbbr" class="img-responsive" />
       <div class="carousel-caption" role="option">
         <p>
-          CIS - Critical Infrastructural Services Ltd.
+          @Constants.CisAbbr - @Constants.CisFullTitle
           <a class="btn btn-default" href="@Constants.CisUrl">
             Learn More
           </a>
@@ -69,38 +69,58 @@
 
 <div class="row" ng-controller="geoDataController">
   <div class="col-md-4">
-    <h2>UNA</h2>
-    <h3>Utility Network Audit</h3>
-    <p>The Utility Network Audit is a review of installed infrastructure within Lagos State, ordered by LASIMRA, and performed by CIS under authority from LASIMRA.</p>
-    <p>The current focus of UNA reflects the focus of LASIMRA, that is, telecommunications infrastructure. UNA will specifically be reviewing underground telecommunications infrastructure.</p>
-    <p>To apply for a Right-of-Way Permit for your existing infrastructure go to <a href="./Home/Permit">Permit</a>.</p>
-  </div>
-  <div class="col-md-4">
-    <h2>LASIMRA</h2>
-    <h3>Lagos State Infrastructure Maintenance and Regulatory Agency</h3>
+    <h2>@Constants.UnaAbbr</h2>
+    <h4>@Constants.UnaFullTitle</h4>
     <p>
-      LASIMRA is responsible for all infrastructure in public space.
+      The @Constants.UnaFullTitle is a review of installed infrastructure within @Constants.LagosFullTitle, 
+      ordered by @Constants.LasimraAbbr, and performed by @Constants.CisAbbr under authority from @Constants.LasimraAbbr.
     </p>
     <p>
-      LASIMRA's responsibilities overlap with several other Lagos State agencies.
-      In these cases LASIMRA's statutory responsibilities are to work with the other agencies in coordinating all activities related to the infrastructure.
+      @Constants.UnaAbbr will specifically be reviewing underground telecommunications infrastructure.
+      The primary output of @Constants.UnaAbbr will be a database detailing as-built infrastructure throughout @Constants.LagosAbbr.
+      This database will serve the @Constants.LagosAbbr community as a repository of information on critical @Constants.LagosAbbr infrastructure.
     </p>
     <p>
-      LASIMRA also has specific responsibilities with respect to managing telecommunications infrastructure. 
-      The Utility Network Audit is just one example of LASIMRA performing its mandated duties.
+      <strong>If you have un-permitted infrastructure it is important to declare it to @Constants.UnaAbbr to avoid harsh penalties and the physical removal of your infrastructure.</strong>
+      You can perform this declaration through the <a href="./Home/Permit">Permit</a> page, which will calculate the correct fees, charges and penalties for you.
+      You can use this same page to apply for a Right-of-Way Permit for your planned infrastructure.
     </p>
   </div>
   <div class="col-md-4">
-    <h2>CIS</h2>
-    <h3>Critical Infrastructural Services Ltd.</h3>
+    <h2>@Constants.LasimraAbbr</h2>
+    <h4>@Constants.LasimraFullTitle</h4>
     <p>
-      CIS is a multinational business with its head office in Lagos.
+      @Constants.LasimraAbbr is responsible for all infrastructure in public space.
     </p>
     <p>
-      CIS specialises in auditing installed infrastructure, especially underground infrastructure.
+      LASIMRA's responsibilities are as a 'one-stop shop' in infrastructure regulation and maintenance.
+      LASIMRA's statutory responsibilities include coordinating other agencies in activities related to infrastructure.
+      The database of installed and planned infrastructure is a key deliverable of @Constants.LasimraAbbr.
     </p>
     <p>
-      CIS has retained international expertise in underground drilling (no-dig), auditing of underground infrastructure, GIS systems development, general systems development, business analysis and policy development.  And is providing these services to LASIMRA.
+      @Constants.LasimraAbbr also has specific responsibilities with respect to managing telecommunications infrastructure. 
+      The @Constants.UnaFullTitle is just one example of @Constants.LasimraAbbr performing its mandated duties.
+    </p>
+  </div>
+  <div class="col-md-4">
+    <h2>@Constants.CisAbbr</h2>
+    <h4>@Constants.CisFullTitle</h4>
+    <p>
+      @Constants.CisAbbr is a multinational business with its head office in @Constants.LagosAbbr. 
+      It is performing the @Constants.UnaFullTitle in partnership with international consulting firms in Brisbane, Australia and Auckland, New Zealand.
+    </p>
+    <p>
+      @Constants.CisAbbr specialises in auditing installed infrastructure, especially underground infrastructure.
+    </p>
+    <p>
+      @Constants.CisAbbr has retained international expertise in:
+      <ul>
+        <li>Underground drilling (no-dig), auditing of underground infrastructure,</li>
+        <li>
+          GIS systems development, general systems development, business analysis and policy development.
+        </li>
+      </ul>
+      With its international partners @Constants.CisAbbr is providing these services to @Constants.LasimraAbbr.
     </p>
   </div>
   @*<div class="col-md-3">

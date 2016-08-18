@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using una_CIS_ng.Core;
 
 namespace una_CIS_ng.Controllers
 {
@@ -190,7 +191,7 @@ namespace una_CIS_ng.Controllers
         sectionIndex++;
       }
 
-      chapter.BookmarkTitle = "UNA CIS";
+      chapter.BookmarkTitle = Constants.UnaAbbr + " " + Constants.CisAbbr;
       return chapter;
     }
 

@@ -97,7 +97,7 @@ dl.dl-horizontal dt {
     pointer-events: none;
   }
 
-    #map.isPreview .gmnoprint {
+    #map.isPreview .gmnoprint, #map.isPreview .gm-style-cc {
       display: none;
     }
 

@@ -629,7 +629,7 @@
                 <li>Draw a section of your infrastructure below</li>
                 <li>Declare the state of your infrastructure</li>
                 <li>"Preview" and then "Submit" your application (all the information you have entered will still remain on screen)</li>
-                <li>Click the "Reset Map" button to clear the map data</li>
+                <li>Click the "Reset Map" button to clear the map data (your newly submitted infrastructure will show up)</li>
                 <li>Draw the next section of your infrastructure and continue with step 3 above.</li>
               </ol>
             </div>
@@ -692,7 +692,7 @@
                 </label>
               </div>
             </div>
-            <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10" ng-hide="!permit.permits.row.isPreview">
+            <div class="col-xs-7 col-sm-8 col-lg-9" ng-hide="!permit.permits.row.isPreview">
               <span>{{permit.permits.row.infLoc === "Business" ? "Business District" : permit.permits.row.infLoc === "HighDensity" ? "High Density Zone" : "No Business or High Density"}}</span>
             </div>
           </div>
@@ -703,7 +703,7 @@
                 <input name="consPermits" id="consPermits" ng-model="permit.permits.row.consPermits" type="number" />
               </div>
             </div>
-            <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10" ng-hide="!permit.permits.row.isPreview">
+            <div class="col-xs-7 col-sm-8 col-lg-9" ng-hide="!permit.permits.row.isPreview">
               <span>{{permit.permits.row.consPermits}}</span>
             </div>
           </div>
@@ -722,7 +722,7 @@
                 </label>
               </div>
             </div>
-            <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10" ng-hide="!permit.permits.row.isPreview">
+            <div class="col-xs-7 col-sm-8 col-lg-9" ng-hide="!permit.permits.row.isPreview">
               <span>{{permit.permits.row.infLoc === "Business" ? "Business District" : permit.permits.row.infLoc === "HighDensity" ? "High Density Zone" : "No Business or High Density"}}</span>
             </div>
           </div>
@@ -738,7 +738,7 @@
                 </label>
               </div>
             </div>
-            <div class="col-xs-7 col-sm-8 col-md-9 col-lg-10" ng-hide="!permit.permits.row.isPreview">
+            <div class="col-xs-7 col-sm-8 col-lg-9" ng-hide="!permit.permits.row.isPreview">
               <span>{{permit.permits.row.consType == 'Trenching' ? "Trenching" : "Horizontal Drilling"}}</span>
             </div>
           </div>

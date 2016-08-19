@@ -36,10 +36,10 @@
         "consType": "Trenching",
         "consPermits": 1,
         "permState": "New", // permit state
-
         "distances": [],
         "totalDistance": 0,
-        "locations": { "type": "FeatureCollection", "bbox": [2.705989, 6.375578, 4.351192, 6.430167], "features": [] },
+        // Note the deliberately wrong bbox
+        "locations": { "type": "FeatureCollection", "bbox": [200, 100, -200, -100], "features": [] },
         "locationRoutes": [],
         "locationDescriptions": [],
         "parties": {

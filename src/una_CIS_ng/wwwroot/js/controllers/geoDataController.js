@@ -338,27 +338,10 @@
     function getCurrentBBox() {
       var pspr = !!$scope.permit ? $scope.permit.permits.row : { "totalDistance": 0 };
 
-      var bbox = [200, 100, -200, -100];
+      var bbox = (pspr.totalDistance > 0) ? pspr.locations.bbox : [2.705989, 6.375578, 4.351192, 6.430167];
 
       if (pspr.totalDistance > 0) {
-        bbox = pspr.locations.bbox;
         didFit = true;
-      } else {
-        $scope.geoData.geoFeatures.forEach(function (feature) {
-          if (!!feature) {
-            if (!feature.hasOwnProperty("bbox") && feature.hasOwnProperty("coordinates")) {
-              var bbx = [200, 100, -200, -100];
-              feature.geometry.coordinates.map(function (coord) { bbx = setBbox(bbx, coord[0], coord[1]); });
-              if (bbx[0] !== 200) {
-                feature.bbox = bbx;
-              }
-            }
-
-            if (feature.hasOwnProperty("bbox")) {
-              bbox = setBboxBbox(bbox, feature.bbox);
-            }
-          }
-        });
       }
 
       return bbox;

@@ -50,7 +50,7 @@ namespace una_CIS_ng.Controllers
       var allPermits = (
         from perm in permList
         select perm into permit
-        where permit != null
+        where permit != null && (!permit.deprecationTime.HasValue || permit.deprecationTime.Value > DateTime.UtcNow)
         select BsonSerializer.Deserialize<Permit>(permit.ToBsonDocument()) into prm
         select new Dictionary<string, string> { { "id", "\"" + prm.id + "\"" }, { "Permit", prm.ToJson() } }
         ).ToList();
@@ -69,7 +69,7 @@ namespace una_CIS_ng.Controllers
       var locations = (
         from perm in permList
         select perm into permit
-        where permit?.locations != null
+        where permit?.locations != null && (!permit.deprecationTime.HasValue || permit.deprecationTime.Value > DateTime.UtcNow)
         select BsonSerializer.Deserialize<GeoJsonFeatureCollection<GeoJson2DGeographicCoordinates>>(permit.locations.ToBsonDocument()) into prmLoc
         select new Dictionary<string, string> {{ "FeatureCollection", prmLoc.ToJson() } }
         ).ToList();
@@ -216,7 +216,7 @@ namespace una_CIS_ng.Controllers
 
     private static Permit ExtractPermit(JObject jPerm)
     {
-      var permit = new Permit();
+      var permit = new Permit {submissionTime = DateTime.UtcNow, deprecationTime = null};
 
       foreach (var jPermKid in jPerm.Children())
       {

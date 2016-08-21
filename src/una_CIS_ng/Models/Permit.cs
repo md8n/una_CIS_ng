@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver.GeoJsonObjectModel;
 
@@ -10,6 +11,10 @@ namespace una_CIS_ng.Models
     public ObjectId id { get; set; }
 
     public string type { get; set; }
+
+    public DateTime submissionTime { get; set; }
+
+    public DateTime? deprecationTime { get; set; }
 
     public string infState { get; set; }
 

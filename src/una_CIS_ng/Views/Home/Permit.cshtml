@@ -665,7 +665,7 @@
             <div class="col-xs-7">
               <div ng-repeat="locationDescs in permit.permits.row.locationDescriptions">
                 <strong>Location of Your Infrastructure</strong>
-                <ul ng-repeat="locDesc in locationDescs">
+                <ul ng-repeat="locDesc in locationDescs track by $index">
                   <li>{{locDesc}}</li>
                 </ul>
               </div>

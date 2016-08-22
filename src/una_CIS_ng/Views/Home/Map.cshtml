@@ -1,13 +1,14 @@
 ﻿@{
   ViewData["Title"] = "Map";
   var mapKey = ViewData["GoogleAPIBrowserKey"];
-  var mapInitUrl = "https://maps.googleapis.com/maps/api/js?key=" + mapKey + "&libraries=drawing,geometry&callback=initMap";
+  var mapInitUrl = "https://maps.googleapis.com/maps/api/js?key=" + mapKey + "&libraries=drawing,geometry,places&callback=initMap";
 }
 
 <div class="row" ng-controller="geoDataController">
   <div class="row">
-    <div class="col-xs-12 afterMap">
+    <div class="col-xs-12 preMap afterMap">
       <div id="map" class="center-block"></div>
+      <input id="pac-input" type="text" name="pac-input" placeholder="Search Box" class="controls center-block" />
     </div>
   </div>
 </div>

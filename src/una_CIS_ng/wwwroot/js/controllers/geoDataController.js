@@ -11,11 +11,13 @@
     var map = null;
     var dm = null;
     var dmRebuilt = false;
+    var sb = null;
     var didFit = false;
 
     // Set up the basic bits for geoData
     $scope.geoData = $scope.geoData || {};
     $scope.geoData.title = "geoDataController";
+    $scope.geoData.markers = [];
 
     function unaMap(mapElId) {
       gm = google.maps;
@@ -26,7 +28,13 @@
         map = new gm.Map(mapEl,
         {
           center: { lat: 6.520226, lng: 3.468163 }, // 6.520226, 3.468163
-          zoom: 9
+          zoom: 9,
+          zoomControl: true,
+          mapTypeControl: true,
+          scaleControl: true,
+          streetViewControl: false,
+          rotateControl: false,
+          fullscreenControl: true
         });
 
         //infowindow = new gm.InfoWindow;
@@ -60,7 +68,8 @@
 
     // These are the address types we're after. 
     // If none of these are present then we'll fall back to just taking the first result
-    var preferredTypes = ["room", "floor", "subpremise", "premise", "street_address",
+    var preferredTypes = [
+      "room", "floor", "subpremise", "premise", "street_address",
       "bus_station", "train_station", "transit_station", "airport",
       "establishment", "point_of_interest", "natural_feature", "park", "parking"
     ];
@@ -70,7 +79,9 @@
         return null;
       }
 
-      var preferredResults = addressResults.filter(function (a) { return a.types.filter(function (t) { return preferredTypes.includes(t); }).length > 0; });
+      var preferredResults = addressResults.filter(function (a) {
+        return a.types.filter(function (t) { return preferredTypes.includes(t); }).length > 0;
+      });
       var prefCount = preferredResults.length;
       if (prefCount === 0) {
         // nothing in the preferred list - so return the first result we got
@@ -97,22 +108,24 @@
 
       var pspr = !!permitScope ? permitScope.permit.permits.row : null;
 
-      geocoder.geocode({ 'location': lnglat }, function (results, status) {
-        mStatus = status;
-        if (status === gm.GeocoderStatus.OK) {
-          if (results.length > 0) {
-            var result = getClosestAddress(results, lnglat).formatted_address;
-            permitScope.$apply(function () { pspr.locationDescriptions[destArrayIndex].push(result); });
+      geocoder.geocode({ 'location': lnglat },
+        function (results, status) {
+          mStatus = status;
+          if (status === gm.GeocoderStatus.OK) {
+            if (results.length > 0) {
+              var result = getClosestAddress(results, lnglat).formatted_address;
+              permitScope.$apply(function () { pspr.locationDescriptions[destArrayIndex].push(result); });
+            } else {
+              window
+                .alert('Warning: No location results were returned by the Geocoder.  This is just a notice, you may still submit your application.');
+            }
           } else {
-            window.alert('Warning: No location results were returned by the Geocoder.  This is just a notice, you may still submit your application.');
+            if (status !== gm.GeocoderStatus.OVER_QUERY_LIMIT) {
+              window
+                .alert('Warning: The Geocoder had problems getting a location result.  This is just a notice, you may still submit your application.  The Geocoder failed due to: ' + status);
+            }
           }
-        } else {
-          if (status !== gm.GeocoderStatus.OVER_QUERY_LIMIT) {
-            window
-              .alert('Warning: The Geocoder had problems getting a location result.  This is just a notice, you may still submit your application.  The Geocoder failed due to: ' + status);
-          }
-        }
-      });
+        });
 
       return mStatus;
     }
@@ -164,7 +177,7 @@
         drawingMode: null, // gm.drawing.OverlayType.POLYLINE,
         drawingControl: showDrawingControls,
         drawingControlOptions: {
-          position: gm.ControlPosition.TOP_CENTER,
+          position: gm.ControlPosition.RIGHT_TOP,
           drawingModes: [
             gm.drawing.OverlayType.POLYLINE
           ]
@@ -177,6 +190,70 @@
       dm.setMap(map);
 
       dmRebuilt = true;
+    }
+
+    function rebuildSearchBox(showDrawingControls) {
+      showDrawingControls = !!showDrawingControls;
+
+      var inpEl = document.getElementById("pac-input");
+      if (typeof (inpEl) === "undefined" || inpEl === null) {
+        return;
+      }
+      sb = new gm.places.SearchBox(inpEl);
+      map.controls[gm.ControlPosition.TOP_CENTER].push(inpEl);
+
+      // Bias the SearchBox results towards current map's viewport.
+      gm.event.addListener(map, 'bounds_changed', function () {
+        sb.setBounds(map.getBounds());
+      });
+
+      // Listen for the event fired when the user selects a prediction and retrieve
+      // more details for that place.
+      sb.addListener('places_changed', function () {
+        var places = sb.getPlaces();
+
+        if (places.length === 0) {
+          return;
+        }
+
+        // Clear out the old markers.
+        $scope.geoData.markers.forEach(function (marker) {
+          marker.setMap(null);
+        });
+        $scope.geoData.markers = [];
+
+        // For each place, get the icon, name and location.
+        var bounds = new gm.LatLngBounds();
+        places.forEach(function (place) {
+          if (!place.geometry) {
+            console.log("Returned place contains no geometry");
+            return;
+          }
+          var icon = {
+            url: place.icon,
+            size: new gm.Size(71, 71),
+            origin: new gm.Point(0, 0),
+            anchor: new gm.Point(17, 34),
+            scaledSize: new gm.Size(25, 25)
+          };
+
+          // Create a marker for each place.
+          $scope.geoData.markers.push(new gm.Marker({
+            map: map,
+            icon: icon,
+            title: place.name,
+            position: place.geometry.location
+          }));
+
+          if (place.geometry.viewport) {
+            // Only geocodes have viewport.
+            bounds.union(place.geometry.viewport);
+          } else {
+            bounds.extend(place.geometry.location);
+          }
+        });
+        map.fitBounds(bounds);
+      });
     }
 
     function setBboxBbox(bbox, bboxNew) {
@@ -269,14 +346,18 @@
                     alert('Warning: The Geocoder had problems getting a particular location result.  This is just a notice, you may still submit your application.');
                   }
                 },
-                  200 * ix, lon, lat, locDescCount);
+                  200 * ix,
+                  lon,
+                  lat,
+                  locDescCount);
               }
 
               pspr.locations.features.push(polylineFeature);
               pspr.locationRoutes.push(lonLats);
-              permitScope.map.locationPolylines.push(pl);
               pspr.distances.push(dist);
               pspr.totalDistance = pspr.distances.reduce(function (a, b) { return a + b; });
+
+              permitScope.map.locationPolylines.push(pl);
             }
           });
 
@@ -294,6 +375,7 @@
       showDrawingControls = !!showDrawingControls;
 
       rebuildDrawingManager(showDrawingControls);
+      rebuildSearchBox(showDrawingControls);
 
       if (typeof (dm) === "undefined" || dm === null) {
         return;

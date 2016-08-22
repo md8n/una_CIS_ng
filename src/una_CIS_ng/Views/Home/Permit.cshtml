@@ -4,7 +4,7 @@
 @{
   ViewData["Title"] = "Permit - Right-of-Way";
   var mapKey = ViewData["GoogleAPIBrowserKey"];
-  var mapInitUrl = "https://maps.googleapis.com/maps/api/js?key=" + mapKey + "&libraries=drawing,geometry&callback=initMap";
+  var mapInitUrl = "https://maps.googleapis.com/maps/api/js?key=" + mapKey + "&libraries=drawing,geometry,places&callback=initMap";
 }
 
 <div class="container bs-docs-container" ng-controller="permitController">
@@ -639,6 +639,7 @@
           <div class="row">
             <div class="col-xs-12 afterMap">
               <div id="map" class="center-block" ng-class="{'isPreview': permit.permits.row.isPreview}" showdrawingcontrols></div>
+              <input id="pac-input" type="text" name="pac-input" placeholder="Search Box" class="controls center-block" />
             </div>
           </div>
           <div class="row" ng-hide="permit.permits.row.isPreview">

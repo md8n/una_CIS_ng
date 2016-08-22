@@ -55,6 +55,7 @@
     // locationPolylines must be held with the map to work effectively
     permitScope.map = permitScope.map || {};
     permitScope.map.locationPolylines = [];
+    permitScope.map.markers = [];
 
     permitScope.permit.calc = permitScope.permit.calc || {};
     permitScope.permit.calc.fees = [];

@@ -1,0 +1,28 @@
+﻿<div class="row">
+  <label class="col-xs-4 col-lg-3 text-right">Name</label>
+  <div class="col-xs-8 col-lg-9" ng-show="partyInfo.entityType === 'Person'">
+    <span>{{partyInfo.personalName}}</span>
+    <span><strong>{{partyInfo.surname}}</strong></span>
+  </div>
+  <div class="col-xs-8 col-lg-9" ng-show="partyInfo.entityType === 'Organisation'">
+    <span><strong>{{partyInfo.name}}</strong></span>
+  </div>
+</div>
+<div class="row" ng-show="!!partyInfo.email">
+  <label class="col-xs-4 col-lg-3 text-right">Email</label>
+  <div class="col-xs-8 col-lg-9">
+    <span>{{partyInfo.email}}</span>
+  </div>
+</div>
+<div class="row" ng-show="!!partyInfo.mobile">
+  <label class="col-xs-4 col-lg-3 text-right">Mobile Phone</label>
+  <div class="col-xs-8 col-lg-9">
+    <span>{{partyInfo.mobile}}</span>
+  </div>
+</div>
+<div class="row" ng-show="!!partyInfo.officePhone">
+  <label class="col-xs-4 col-lg-3 text-right">Office Phone</label>
+  <div class="col-xs-8 col-lg-9">
+    <span>{{partyInfo.officePhone}}</span>
+  </div>
+</div>

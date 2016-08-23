@@ -1,0 +1,52 @@
+﻿<div class="form-group row" ng-hide="partyInfo.entityTypeIsFixed">
+  <label class="col-xs-5 col-sm-4 col-md-4 col-lg-3 text-right">The {{partyInfo.typeDesc}} is a:</label>
+  <div class="col-xs-6 col-sm-5">
+    <div class="btn-group btn-group-justified" role="group" aria-label="{{partyInfo.typeDesc}} Entity Type">
+      <label class="btn btn-radio btn-primary" ng-class="{'active': partyInfo.entityType == 'Person'}">
+        <input type="radio" name="{{'row_' + partyInfo.type + '_EntityType'}}" ng-model="partyInfo.entityType" value="Person" autocomplete="off" ng-required="partyInfo.isRequired"> Person
+      </label>
+      <label class="btn btn-radio btn-primary" ng-class="{'active': partyInfo.entityType == 'Organisation'}">
+        <input type="radio" name="{{'row_' + partyInfo.type + '_EntityType'}}" ng-model="partyInfo.entityType" value="Organisation" autocomplete="off" ng-required="partyInfo.isRequired"> Organisation
+      </label>
+    </div>
+  </div>
+</div>
+<div class="form-group animate-show" ng-show="partyInfo.entityType === 'Person'">
+  <div class="col-sm-4">
+    <label title="Personal names / First names">Personal name</label>
+    <input class="form-control" type="text" name="{{'row_' + partyInfo.type + '_PersonalName'}}" placeholder="Personal name" ng-model="partyInfo.personalName" maxlength="128" ng-required="partyInfo.isRequired && partyInfo.entityType === 'Person'">
+  </div>
+  <div class="col-sm-5">
+    <label title="Surname / Family name / Patronymic">Surname</label>
+    <input class="form-control" type="text" name="{{'row_' + partyInfo.type + '_Surname'}}" placeholder="Surname" ng-model="partyInfo.surname" maxlength="128" ng-required="partyInfo.isRequired && partyInfo.entityType === 'Person'">
+  </div>
+</div>
+<div class="form-group animate-show" ng-show="partyInfo.entityType === 'Organisation'">
+  <label class="col-sm-4 col-lg-3 text-right">Organisation Name</label>
+  <div class="col-sm-5">
+    <input class="form-control" name="{{'row_' + partyInfo.type + '_Name'}}" type="text" placeholder="Name" ng-model="partyInfo.name" maxlength="128" ng-required="partyInfo.isRequired && partyInfo.entityType === 'Organisation'">
+  </div>
+</div>
+<div ng-show="!!partyInfo.entityType">
+  <small ng-show="partyInfo.isEmailRequired">An email address is required. If you do not have an email address you may not be the {{partyInfo.typeDesc}}. The Permit Application will be emailed to this address.</small>
+  <div class="form-group">
+    <label class="col-sm-4 col-lg-3 text-right">Email</label>
+    <div class="col-sm-5">
+      <input class="form-control" name="{{'row_' + partyInfo.type + '_Email'}}" type="email" placeholder="Email" ng-model="partyInfo.email" maxlength="512" ng-required="partyInfo.isRequired && partyInfo.isEmailRequired">
+    </div>
+  </div>
+  <small ng-show="partyInfo.entityType === 'Person'">If the {{partyInfo.typeDesc}} is a Person, then a Mobile Phone number is required.</small>
+  <small ng-show="partyInfo.isNigeriaNumbersOnly">All phone numbers provided must be Nigeria based, satellite service numbers are not acceptable.</small>
+  <div class="form-group">
+    <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
+    <div class="col-sm-5">
+      <input class="form-control" name="{{'row_' + partyInfo.type + '_Mobile'}}" type="text" placeholder="+234.xxx xxx xxxx" ng-model="partyInfo.mobile" maxlength="36" ng-required="partyInfo.isRequired && partyInfo.entityType === 'Person'">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 col-lg-3 text-right">Office Phone</label>
+    <div class="col-sm-5">
+      <input class="form-control" name="{{'row_' + partyInfo.type + '_OfficePhone'}}" type="text" placeholder="+234.xxx xxx xxxx" ng-model="partyInfo.officePhone" maxlength="36">
+    </div>
+  </div>
+</div>

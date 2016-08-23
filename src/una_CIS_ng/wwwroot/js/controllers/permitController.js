@@ -42,16 +42,134 @@
         "locations": { "type": "FeatureCollection", "bbox": [200, 100, -200, -100], "features": [] },
         "locationRoutes": [],
         "locationDescriptions": [],
-        "parties": {
-          "holder": {
-            "id": null,
+        "parties": [
+          {
+            //"id": null,
             "type": "holder",
-            "addresses": { "physical": { "id": null, "type": "physical", "isMailing": true } }
+            "typeDesc": "Permit Holder",
+            "entityTypeIsFixed": false,
+            "isEmailRequired": true,
+            "isNigeriaNumbersOnly": false,
+            "isRequired": true,
+            "addresses": [
+              {
+                //"id": null,
+                "ownerTitle": "",
+                "ownerAbbr": "holder",
+                "counterDesc": "",
+                "addrForm": "Office Physical",
+                "addrAdvice": "A Postal Box is NOT acceptable for the Office Physical Address fields.  If you do not have a physical address you may not be the Permit Holder.",
+                "type": "physical",
+                "isMailing": false,
+                "mailingTypeIsFixed": false
+              },
+              {
+                //"id": null,
+                "ownerTitle": "",
+                "ownerAbbr": "holder",
+                "counterDesc": "",
+                "addrForm": "Office Postal",
+                "addrAdvice": "",
+                "type": "postal",
+                "isMailing": true,
+                "mailingTypeIsFixed": true
+              }
+            ]
+          },
+          {
+            //"id": null,
+            "type": "holderContact",
+            "typeDesc": "Permit Holder Contact",
+            "entityType": "Person",
+            "entityTypeIsFixed": true,
+            "isEmailRequired": true,
+            "isNigeriaNumbersOnly": true,
+            "isRequired": false,
+            "addresses": [
+              {
+                //"id": null,
+                "ownerTitle": "Permit Holder Contact",
+                "ownerAbbr": "holderContact",
+                "counterDesc": "Primary",
+                "addrForm": "Physical",
+                "addrAdvice": "",
+                "type": "physical",
+                "isMailing": false,
+                "mailingTypeIsFixed": false,
+                "country": "Nigeria"
+              },
+              {
+                //"id": null,
+                "ownerTitle": "Permit Holder Contact",
+                "ownerAbbr": "holderContact",
+                "counterDesc": "Primary",
+                "addrForm": "Postal",
+                "addrAdvice": "",
+                "type": "postal",
+                "isMailing": true,
+                "mailingTypeIsFixed": true,
+                "country": "Nigeria"
+              }
+            ]
+          },
+          {
+            //"id": null,
+            "type": "infOwner",
+            "typeDesc": "Infrastructure Owner",
+            "isInfrastructureOwner": true,
+            "entityType": "Organisation",
+            "entityTypeIsFixed": false,
+            "isEmailRequired": false,
+            "isNigeriaNumbersOnly": false,
+            "isRequired": false,
+            "addresses": [
+              {
+                //"id": null,
+                "ownerTitle": "Infrastructure Owner",
+                "ownerAbbr": "infOwner",
+                "counterDesc": "Primary",
+                "addrForm": "Office Physical",
+                "addrAdvice": "",
+                "type": "physical",
+                "isMailing": false,
+                "mailingTypeIsFixed": false
+              },
+              {
+                //"id": null,
+                "ownerTitle": "Infrastructure Owner",
+                "ownerAbbr": "infOwner",
+                "counterDesc": "Primary",
+                "addrForm": "Office Postal",
+                "addrAdvice": "",
+                "type": "postal",
+                "isMailing": true,
+                "mailingTypeIsFixed": true
+              }
+            ]
           }
-        },
+
+        ],
         "isPreview": false
       }
     };
+
+    permitScope.permit.findHolder = function (elem) { return elem.type === "holder" };
+    permitScope.permit.findHolderContact = function (elem) { return elem.type === "holderContact" };
+    permitScope.permit.findInfOwner = function (elem) { return elem.type === "infOwner" };
+
+    permitScope.permit.setInfOwnerRequired = function () {
+      var ppsrp = $scope.permit.permits.row.parties;
+      var holder = ppsrp.find(permitScope.permit.findHolder);
+      var infOwner = ppsrp.find(permitScope.permit.findInfOwner);
+
+      infOwner.isRequired = !holder.isInfrastructureOwner;
+      infOwner.addresses.forEach(function(addr) { addr.isRequired = infOwner.isRequired; });
+    };
+
+    permitScope.address = {};
+    permitScope.address.findPhysical = function (elem) { return elem.type === "physical" };
+    permitScope.address.findPostal = function (elem) { return elem.type === "postal" };
+
     // locationPolylines must be held with the map to work effectively
     permitScope.map = permitScope.map || {};
     permitScope.map.locationPolylines = [];
@@ -101,7 +219,7 @@
         // On success the data returned should have the objId of the permit
         $scope.submitResult = "Submitted";
         pspr.isPreview = false;
-      }, function(error) {
+      }, function (error) {
         // Error has occurred
         $scope.submitResult = "Submission Issues, please check your data and retry";
         pspr.isPreview = false;

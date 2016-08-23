@@ -35,7 +35,7 @@
             <small>If you are putting in new infrastructure then a Construction Permit is also required.<br />This form will calculate the fee for you, but the Construction Permit itself is not available electronically at present.</small>
           </div>
           <div class="bs-callout-sm bs-callout-success">
-            <small>Note that the information you provide through this form is not 'private' for the purposes of the @Constants.UnaFullTitle. <br/>However, your contact details are defined as 'protected' information and their disclosure is strictly controlled.</small>
+            <small>Note that the information you provide through this form is not 'private' for the purposes of the @Constants.UnaFullTitle. <br />However, your contact details are defined as 'protected' information and their disclosure is strictly controlled.</small>
           </div>
           <div class="bs-callout-sm bs-callout-warning">
             <small>Some other agencies may require you to obtain relevant permits / authorisation also - @Constants.LasimraAbbr and its authorised agencies are not responsible for this.</small>
@@ -49,563 +49,101 @@
             <a class="anchorjs-link" href="#PermitApplicationParties" aria-label="Anchor link for: permit application parties">Parties to the Permit</a>
           </h2>
           <div class="well well-sm">
-            <h3 id="PermitHolderDeclaration">Permit Holder</h3>
-            <div class="form-group row">
-              <label class="col-xs-5 col-sm-4 col-md-4 col-lg-3 text-right">The Permit Holder is a:</label>
-              <div class="col-xs-6 col-sm-5">
-                <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity Type">
-                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.entityType == 'Person'}">
-                    <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.entityType" value="Person" autocomplete="off" ng-required="true"> Person
-                  </label>
-                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.entityType == 'Organisation'}">
-                    <input type="radio" name="rowHoldingEntityType" ng-model="permit.permits.row.parties.holder.entityType" value="Organisation" autocomplete="off" ng-required="true"> Organisation
-                  </label>
-                </div>
-              </div>
-            </div>
+            <h3 id="PermitHolderDeclaration">{{permit.permits.row.parties.find(permit.findHolder).typeDesc}}</h3>
             <div id="PermitApplicationHolder" class="form-group row">
-              <label class="col-xs-5 col-sm-4 col-md-4 col-lg-3 text-right">The Permit Holder is also the Infrastructure Owner:</label>
+              <label class="col-xs-5 col-sm-4 col-md-4 col-lg-3 text-right">The {{permit.permits.row.parties.find(permit.findHolder).typeDesc}} is also the {{permit.permits.row.parties.find(permit.findInfOwner).typeDesc}}:</label>
               <div class="col-xs-6 col-sm-5">
-                <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity is Infrastructure Owner">
-                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.isInfrastructureOwner}">
-                    <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.holder.isInfrastructureOwner" ng-value="true" autocomplete="off" checked ng-required="true"> Yes
+                <div class="btn-group btn-group-justified" role="group" aria-label="{{permit.permits.row.parties.find(permit.findHolder).typeDesc}} Entity is Infrastructure Owner">
+                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner}">
+                    <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner" ng-change="permit.setInfOwnerRequired()" ng-value="true" autocomplete="off" checked ng-required="true"> Yes
                   </label>
-                  <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.parties.holder.isInfrastructureOwner}">
-                    <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.holder.isInfrastructureOwner" ng-value="false" autocomplete="off" ng-required="true"> No
+                  <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner}">
+                    <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner" ng-change="permit.setInfOwnerRequired()" ng-value="false" autocomplete="off" ng-required="true"> No
                   </label>
                 </div>
               </div>
             </div>
-            <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.entityType === 'Person'">
-              <div class="col-sm-4">
-                <label title="Personal names / First names">Personal name</label>
-                <input class="form-control" type="text" name="rowHoldingEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holder.personalName" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType === 'Person'">
-              </div>
-              <div class="col-sm-5">
-                <label title="Surname / Family name / Patronymic">Surname</label>
-                <input class="form-control" type="text" name="rowHoldingEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holder.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType === 'Person'">
-              </div>
+            <una-party party="permit.permits.row.parties.find(permit.findHolder)"></una-party>
+            <div class="well well-sm" ng-show="!!permit.permits.row.parties.find(permit.findHolder).entityType">
+              <una-address addr="permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical)"></una-address>
             </div>
-            <div class="form-group animate-show" ng-show="permit.permits.row.parties.holder.entityType === 'Organisation'">
-              <label class="col-sm-4 col-lg-3 text-right">Organisation Name</label>
-              <div class="col-sm-5">
-                <input class="form-control" name="rowHoldingEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.holder.name" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType === 'Organisation'">
-              </div>
-            </div>
-            <div ng-show="!!permit.permits.row.parties.holder.entityType">
-              <small>An email address is required. If you do not have an email address you may not be the Permit Holder. The Permit Application will be emailed to this address.</small>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Email</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingEntityEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holder.email" maxlength="512" ng-required="!!permit.permits.row.parties.holder.entityType">
-                </div>
-              </div>
-              <small ng-show="permit.permits.row.parties.holder.entityType === 'Person'">If the Permit Holder is a Person, then a Mobile Phone number is required.</small>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingEntityMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holder.mobile" maxlength="36" ng-required="permit.permits.row.parties.holder.entityType === 'Person'">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Office Phone</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingEntityOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holder.officePhone" maxlength="36">
-                </div>
-              </div>
-            </div>
-            <div class="well well-sm" ng-show="!!permit.permits.row.parties.holder.entityType">
-              <h4>Office Physical Address</h4>
-              <small>A Postal Box is NOT acceptable for the Office Physical Address fields.<br />If you do not have a physical address you may not be the Permit Holder.</small>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingEntityPhysicalAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.holder.addresses.physical.unit" maxlength="50">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="Number and Street / Lot Number">Number and Street</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingEntityPhysicalAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holder.addresses.physical.street" maxlength="128" ng-required="true">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="Village / Town / Suburb / City">Suburb</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingEntityPhysicalAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holder.addresses.physical.suburb" maxlength="128" ng-required="true">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="State / Province / Territory / Prefecture">State</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingEntityPhysicalAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holder.addresses.physical.state" maxlength="50" ng-required="true">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="Post Code / Zip Code">Post Code</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingEntityPhysicalAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.holder.addresses.physical.postcode" maxlength="12">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Country</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingEntityPhysicalAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holder.addresses.physical.country" maxlength="128" ng-required="true">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Use Office Physical Address for Mailing Address?</label>
-                <div class="col-xs-6 col-sm-5">
-                  <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holder Office Address Is Also Mailing Address">
-                    <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.holder.addresses.physical.isMailing}">
-                      <input type="radio" ng-model="permit.permits.row.parties.holder.addresses.physical.isMailing" ng-value="true" autocomplete="off" checked> Yes
-                    </label>
-                    <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.parties.holder.addresses.physical.isMailing}">
-                      <input type="radio" ng-model="permit.permits.row.parties.holder.addresses.physical.isMailing" ng-value="false" autocomplete="off"> No
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="well well-sm" ng-show="!!permit.permits.row.parties.holder.entityType">
-              <h4>Office Mailing Address</h4>
-              <div ng-show="permit.permits.row.parties.holder.addresses.physical.isMailing">
+            <div class="well well-sm" ng-show="!!permit.permits.row.parties.find(permit.findHolder).entityType">
+              <div ng-show="permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).isMailing">
+                <h4>Office Postal Address</h4>
                 <dl class="dl-horizontal">
-                  <dt>Office Mailing Address:</dt>
+                  <dt>Office Postal Address:</dt>
                   <dd>Use the Office Physical Address</dd>
                 </dl>
               </div>
-              <div ng-show="!permit.permits.row.parties.holder.addresses.physical.isMailing">
-                <div class="form-group">
-                  <label class="col-sm-4 col-lg-3 text-right" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
-                  <div class="col-sm-5">
-                    <input class="form-control" name="rowHoldingEntityMailingAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.holder.addresses.mailing.unit" maxlength="50">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-4 col-lg-3 text-right" title="Number and Street / Lot Number">Number and Street</label>
-                  <div class="col-sm-5">
-                    <input class="form-control" name="rowHoldingEntityMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holder.addresses.mailing.street" maxlength="128" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-4 col-lg-3 text-right" title="Village / Town / Suburb / City">Suburb</label>
-                  <div class="col-sm-5">
-                    <input class="form-control" name="rowHoldingEntityMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holder.addresses.mailing.suburb" maxlength="128" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-4 col-lg-3 text-right" title="State / Province / Territory / Prefecture">State</label>
-                  <div class="col-sm-5">
-                    <input class="form-control" name="rowHoldingEntityMailingAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holder.addresses.mailing.state" maxlength="50" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-4 col-lg-3 text-right" title="Post Code / Zip Code">Post Code</label>
-                  <div class="col-sm-5">
-                    <input class="form-control" name="rowHoldingEntityMailingAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.holder.addresses.mailing.postcode" maxlength="12">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-4 col-lg-3 text-right">Country</label>
-                  <div class="col-sm-5">
-                    <input class="form-control" name="rowHoldingEntityMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holder.addresses.mailing.country" maxlength="128" ng-required="!permit.permits.row.parties.holder.addresses.physical.isMailing">
-                  </div>
-                </div>
-                <div class="form-group" ng-show="false">
-                  <input class="form-control" type="text" ng-model="permit.permits.row.parties.holder.addresses.mailing.isMailing" ng-value="true">
-                </div>
+              <div ng-show="!permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).isMailing">
+                <una-address addr="permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPostal)"></una-address>
               </div>
             </div>
           </div>
-          <div id="PermitApplicationHolderContact" class="well well-sm" ng-show="!!permit.permits.row.parties.holder.entityType">
-            <h3 id="RoWPermitHolderContact">Permit Holder Contact</h3>
-            <small>A Permit Holder Contact is required if the Permit Holder is an Organisation or the Permit Holder is not based in Nigeria.</small>
-            <div ng-show="permit.permits.row.parties.holder.entityType === 'Person' && permit.permits.row.parties.holder.addresses.physical.country === 'Nigeria'">
+          <div id="PermitApplicationHolderContact" class="well well-sm" ng-show="!!permit.permits.row.parties.find(permit.findHolder).entityType">
+            <h3 id="RoWPermitHolderContact">{{permit.permits.row.parties.find(permit.findHolderContact).typeDesc}}</h3>
+            <small>A {{permit.permits.row.parties.find(permit.findHolderContact).typeDesc}} is required if the {{permit.permits.row.parties.find(permit.findHolder).typeDesc}} is an Organisation or the {{permit.permits.row.parties.find(permit.findHolder).typeDesc}} is not based in Nigeria.</small>
+            <div ng-show="permit.permits.row.parties.find(permit.findHolder).entityType === 'Person' && permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).country === 'Nigeria'">
               <dl class="dl-horizontal">
-                <dt>Permit Holder Contact:</dt>
-                <dd>Will be the Permit Holder</dd>
+                <dt>{{permit.permits.row.parties.find(permit.findHolderContact).typeDesc}}:</dt>
+                <dd>Will be the {{permit.permits.row.parties.find(permit.findHolder).typeDesc}}</dd>
               </dl>
             </div>
-            <div ng-show="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-              <small>The Permit Holder Contact must be an individual, based in Nigeria, who is contactable by electronic means, especially via email and txt message (sms).</small><br />
-              <div class="form-group">
-                <div class="col-sm-4">
-                  <label title="Personal names / First names">Personal name</label>
-                  <input class="form-control" type="text" name="rowHoldingContactNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.holderContact.personalName" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-                </div>
-                <div class="col-sm-5">
-                  <label title="Surname / Family name / Patronymic">Surname</label>
-                  <input class="form-control" type="text" name="rowHoldingContactNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.holderContact.surname" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-                </div>
-              </div>
-              <small>A copy of the Permit Application will be emailed to this address.</small>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Email</label>
-                <div class="col-sm-5">
-                  <input class="form-control col-sm-6" name="rowHoldingContactEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.holderContact.email" maxlength="512" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-                </div>
-              </div>
-              <small>All phone numbers provided must be Nigeria based, satellite service numbers are not acceptable.</small>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingContactMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holderContact.mobile" maxlength="36" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Office Phone</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingContactOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.holderContact.officePhone" maxlength="36">
-                </div>
-              </div>
-              <h4>Permit Holding Contact Primary Mailing Address</h4>
-              <div class="form-group">
-                <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Mailing Address Type</label>
-                <div class="col-xs-6 col-sm-5">
-                  <div class="btn-group btn-group-justified" data-toggle="buttons" role="group" aria-label="Permit Holder Contact Mailing Address">
-                    <label class="btn btn-primary active">
-                      <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalTrue" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.isPostal" value="true" autocomplete="off" checked> Postal
-                    </label>
-                    <label class="btn btn-primary">
-                      <input type="radio" name="rowHoldingContactMailingAddressPostal" id="rowHoldingContactMailingAddressPostalFalse" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.isPostal" value="false" autocomplete="off"> Street
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingContactMailingAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.unit" maxlength="50">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="Number and Street / Lot Number">Number and Street</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingContactMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.street" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="Village / Town / Suburb / City">Suburb</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingContactMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.suburb" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="State / Province / Territory / Prefecture">State</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingContactMailingAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.state" maxlength="50" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="Post Code / Zip Code">Post Code</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingContactMailingAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.postcode" maxlength="12">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Country</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowHoldingContactMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.holderContact.addresses.mailing.country" maxlength="128" ng-required="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-                </div>
-              </div>
+            <div ng-show="permit.permits.row.parties.find(permit.findHolder).entityType !== 'Person' || permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).country !== 'Nigeria'">
+              <small>The {{permit.permits.row.parties.find(permit.findHolderContact).typeDesc}} must be an individual, based in Nigeria, who is contactable by electronic means, especially via email and txt message (sms).</small><br />
+              <una-party party="permit.permits.row.parties.find(permit.findHolderContact)"></una-party>
+              <una-address addr="permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPostal)"></una-address>
             </div>
           </div>
-          <div id="PermitApplicationInfOwner" class="well well-sm" ng-show="!!permit.permits.row.parties.holder.entityType">
-            <h3 id="RoWPermitInfOwner">Infrastructure Owner</h3>
-            <div ng-show="permit.permits.row.parties.holder.isInfrastructureOwner">
+          <div id="PermitApplicationInfOwner" class="well well-sm" ng-show="!!permit.permits.row.parties.find(permit.findHolder).entityType">
+            <h3 id="RoWPermitInfOwner">{{permit.permits.row.parties.find(permit.findInfOwner).typeDesc}}</h3>
+            <div ng-show="!permit.permits.row.parties.find(permit.findInfOwner).isRequired">
               <dl class="dl-horizontal">
-                <dt>Infrastructure Owner:</dt>
-                <dd>Will be the Permit Holder</dd>
+                <dt>{{permit.permits.row.parties.find(permit.findInfOwner).typeDesc}}:</dt>
+                <dd>Will be the {{permit.permits.row.parties.find(permit.findHolder).typeDesc}}</dd>
               </dl>
             </div>
-            <div ng-show="!permit.permits.row.parties.holder.isInfrastructureOwner">
-              <div class="form-group row">
-                <label class="col-xs-5 col-sm-4 col-md-4 col-lg-3 text-right">The Infrastructure Owner is a:</label>
-                <div class="col-xs-6 col-sm-5">
-                  <div class="btn-group btn-group-justified" role="group" aria-label="Permit Holding Entity Type">
-                    <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.infOwner.entityType == 'Person'}">
-                      <input type="radio" name="rowInfOwnerEntityType" ng-model="permit.permits.row.parties.infOwner.entityType" value="Person" autocomplete="off" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner"> Person
-                    </label>
-                    <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.infOwner.entityType == 'Organisation'}">
-                      <input type="radio" name="rowInfOwnerEntityType" ng-model="permit.permits.row.parties.infOwner.entityType" value="Organisation" autocomplete="off" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner"> Organisation
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group animate-show" ng-show="permit.permits.row.parties.infOwner.entityType === 'Person'">
-                <div class="col-sm-4">
-                  <label title="Personal names / First names">Personal name</label>
-                  <input class="form-control" type="text" name="rowInfOwnerEntityNamePersonal" placeholder="Personal name" ng-model="permit.permits.row.parties.infOwner.personalName" maxlength="128" ng-required="permit.permits.row.parties.infOwner.entityType === 'Person'">
-                </div>
-                <div class="col-sm-5">
-                  <label title="Surname / Family name / Patronymic">Surname</label>
-                  <input class="form-control" type="text" name="rowInfOwnerEntityNameSurname" placeholder="Surname" ng-model="permit.permits.row.parties.infOwner.surname" maxlength="128" ng-required="permit.permits.row.parties.infOwner.entityType === 'Person'">
-                </div>
-              </div>
-              <div class="form-group animate-show" ng-show="permit.permits.row.parties.infOwner.entityType === 'Organisation'">
-                <label class="col-sm-4 col-lg-3 text-right">Organisation Name</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowInfOwnerEntityName" type="text" placeholder="Name" ng-model="permit.permits.row.parties.infOwner.name" maxlength="128" ng-required="permit.permits.row.parties.infOwner.entityType === 'Organisation'">
-                </div>
-              </div>
-              <small>A copy of the Permit Application will be emailed to this address.</small>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Email</label>
-                <div class="col-sm-5">
-                  <input class="form-control col-sm-6" name="rowInfOwnerEmail" type="email" placeholder="Email" ng-model="permit.permits.row.parties.infOwner.email" maxlength="512">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowInfOwnerMobile" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.infOwner.mobile" maxlength="36">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Office Phone</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowInfOwnerOfficePhone" type="text" placeholder="+234.xxx xxx xxxx" ng-model="permit.permits.row.parties.infOwner.officePhone" maxlength="36">
-                </div>
-              </div>
-              <h4>Infrastructure Owner Primary Mailing Address</h4>
-              <div class="form-group">
-                <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Mailing Address Type</label>
-                <div class="col-xs-6 col-sm-5">
-                  <div class="btn-group btn-group-justified" data-toggle="buttons" role="group" aria-label="Infrastructure Owner Mailing Address">
-                    <label class="btn btn-primary active">
-                      <input type="radio" name="rowInfOwnerMailingAddressPostal" id="rowInfOwnerMailingAddressPostalTrue" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.isPostal" value="true" autocomplete="off" checked> Postal
-                    </label>
-                    <label class="btn btn-primary">
-                      <input type="radio" name="rowInfOwnerMailingAddressPostal" id="rowInfOwnerMailingAddressPostalFalse" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.isPostal" value="false" autocomplete="off"> Street
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="Unit / Floor / Building Name / Building Number">Unit / Floor</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowInfOwnerMailingAddressUnit" type="text" placeholder="Unit / Floor" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.unit" maxlength="50">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="Number and Street / Lot Number">Number and Street</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowInfOwnerMailingAddressStreet" type="text" placeholder="# Street" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.street" maxlength="128" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="Village / Town / Suburb / City">Suburb</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowInfOwnerMailingAddressSuburb" type="text" placeholder="Suburb" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.suburb" maxlength="128" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="State / Province / Territory / Prefecture">State</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowInfOwnerMailingAddressState" type="text" placeholder="State" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.state" maxlength="50" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right" title="Post Code / Zip Code">Post Code</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowInfOwnerMailingAddressCode" type="text" placeholder="Post Code" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.postcode" maxlength="12">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-4 col-lg-3 text-right">Country</label>
-                <div class="col-sm-5">
-                  <input class="form-control" name="rowInfOwnerMailingAddressCountry" type="text" placeholder="Country" ng-model="permit.permits.row.parties.infOwner.addresses.mailing.country" maxlength="128" ng-required="!permit.permits.row.parties.holder.isInfrastructureOwner">
-                </div>
-              </div>
+            <div ng-show="permit.permits.row.parties.find(permit.findInfOwner).isRequired">
+              <una-party party="permit.permits.row.parties.find(permit.findInfOwner)"></una-party>
+              <una-address addr="permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPostal)"></una-address>
             </div>
           </div>
         </div>
-        <div class="bs-docs-section" ng-show="permit.permits.row.isPreview && !!permit.permits.row.parties.holder.entityType">
+        <div class="bs-docs-section" ng-show="permit.permits.row.isPreview && !!permit.permits.row.parties.find(permit.findHolder).entityType">
           <div class="well well-sm">
-            <h4>Permit Holder {{permit.permits.row.parties.holder.isInfrastructureOwner ? " and Infrastructure Owner" : ""}}</h4>
-            <div class="row">
-              <label class="col-xs-4 col-lg-3 text-right">Name</label>
-              <div class="col-xs-8 col-lg-9" ng-show="permit.permits.row.parties.holder.entityType === 'Person'">
-                <span>{{permit.permits.row.parties.holder.personalName}}</span>
-                <span><strong>{{permit.permits.row.parties.holder.surname}}</strong></span>
-              </div>
-              <div class="col-xs-8 col-lg-9" ng-show="permit.permits.row.parties.holder.entityType === 'Organisation'">
-                <span><strong>{{permit.permits.row.parties.holder.name}}</strong></span>
-              </div>
+            <h4>{{permit.permits.row.parties.find(permit.findHolder).typeDesc + " " + (permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner ? (" and " + permit.permits.row.parties.find(permit.findInfOwner).typeDesc) : "")}}</h4>
+            <una-party-ro party="permit.permits.row.parties.find(permit.findHolder)"></una-party-ro>
+            <div class="well well-sm" ng-show="permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).suburb">
+              <h4>Office Physical {{permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).isMailing ? "and Mailing" : ""}} Address</h4>
+              <una-address-ro addr="permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical)"></una-address-ro>
             </div>
-            <div class="row" ng-show="!!permit.permits.row.parties.holder.email">
-              <label class="col-xs-4 col-lg-3 text-right">Email</label>
-              <div class="col-xs-8 col-lg-9">
-                <span>{{permit.permits.row.parties.holder.email}}</span>
-              </div>
-            </div>
-            <div class="row" ng-show="!!permit.permits.row.parties.holder.mobile">
-              <label class="col-xs-4 col-lg-3 text-right">Mobile Phone</label>
-              <div class="col-xs-8 col-lg-9">
-                <span>{{permit.permits.row.parties.holder.mobile}}</span>
-              </div>
-            </div>
-            <div class="row" ng-show="!!permit.permits.row.parties.holder.officePhone">
-              <label class="col-xs-4 col-lg-3 text-right">Office Phone</label>
-              <div class="col-xs-8 col-lg-9">
-                <span>{{permit.permits.row.parties.holder.officePhone}}</span>
-              </div>
-            </div>
-            <div class="well well-sm" ng-show="permit.permits.row.parties.holder.addresses.physical.suburb">
-              <h4>Office Physical {{permit.permits.row.parties.holder.addresses.physical.isMailing ? "and Mailing" : ""}} Address</h4>
-              <div class="row">
-                <label class="col-xs-4 col-lg-3 text-right">Address</label>
-                <div class="col-xs-8 col-lg-9">
-                  <address>
-                    <span ng-show="permit.permits.row.parties.holder.addresses.physical.unit">{{permit.permits.row.parties.holder.addresses.physical.unit}} </span>
-                    <span ng-show="permit.permits.row.parties.holder.addresses.physical.street">{{permit.permits.row.parties.holder.addresses.physical.street}} </span>
-                    <span ng-show="permit.permits.row.parties.holder.addresses.physical.suburb">{{permit.permits.row.parties.holder.addresses.physical.suburb}} </span>
-                    <span ng-show="permit.permits.row.parties.holder.addresses.physical.state">{{permit.permits.row.parties.holder.addresses.physical.state}} </span>
-                    <span ng-show="permit.permits.row.parties.holder.addresses.physical.postcode">{{permit.permits.row.parties.holder.addresses.physical.postcode}} </span>
-                    <span ng-show="permit.permits.row.parties.holder.addresses.physical.country">{{permit.permits.row.parties.holder.addresses.physical.country}}</span>
-                  </address>
-                </div>
-              </div>
-            </div>
-            <div class="well well-sm" ng-show="!permit.permits.row.parties.holder.addresses.physical.isMailing && permit.permits.row.parties.holder.addresses.mailing.suburb">
+            <div class="well well-sm" ng-show="!permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).isMailing && permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPostal).suburb">
               <h4>Office Mailing Address</h4>
-              <div class="row">
-                <label class="col-xs-4 col-lg-3 text-right">Address</label>
-                <div class="col-xs-8 col-lg-9">
-                  <address>
-                    <span ng-show="permit.permits.row.parties.holder.addresses.mailing.unit">{{permit.permits.row.parties.holder.addresses.mailing.unit}} </span>
-                    <span ng-show="permit.permits.row.parties.holder.addresses.mailing.street">{{permit.permits.row.parties.holder.addresses.mailing.street}} </span>
-                    <span ng-show="permit.permits.row.parties.holder.addresses.mailing.suburb">{{permit.permits.row.parties.holder.addresses.mailing.suburb}} </span>
-                    <span ng-show="permit.permits.row.parties.holder.addresses.mailing.state">{{permit.permits.row.parties.holder.addresses.mailing.state}} </span>
-                    <span ng-show="permit.permits.row.parties.holder.addresses.mailing.postcode">{{permit.permits.row.parties.holder.addresses.mailing.postcode}} </span>
-                    <span ng-show="permit.permits.row.parties.holder.addresses.mailing.country">{{permit.permits.row.parties.holder.addresses.mailing.country}}</span>
-                  </address>
-                </div>
-              </div>
+              <una-address-ro addr="permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPostal)"></una-address-ro>
             </div>
           </div>
-          <div class="well well-sm" ng-show="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'">
-            <h4>Permit Holder Contact</h4>
-            <div class="row">
-              <label class="col-xs-4 col-lg-3 text-right">Name</label>
-              <div class="col-xs-8 col-lg-9">
-                <span>{{permit.permits.row.parties.holderContact.personalName}}</span>
-                <span><strong>{{permit.permits.row.parties.holderContact.surname}}</strong></span>
-              </div>
+          <div class="well well-sm" ng-show="permit.permits.row.parties.find(permit.findHolder).entityType !== 'Person' || permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).country !== 'Nigeria'">
+            <h4>{{permit.permits.row.parties.find(permit.findHolderContact).typeDesc}}</h4>
+            <una-party-ro party="permit.permits.row.parties.find(permit.findHolderContact)"></una-party-ro>
+            <div class="well well-sm" ng-show="!!permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPhysical).suburb">
+              <h4>Office Physical Address {{permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPhysical).isMailing ? "and Office Mailing Address" : ""}}</h4>
+              <una-address-ro addr="permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPhysical)"></una-address-ro>
             </div>
-            <div class="row" ng-show="!!permit.permits.row.parties.holderContact.email">
-              <label class="col-xs-4 col-lg-3 text-right">Email</label>
-              <div class="col-xs-8 col-lg-9">
-                <span>{{permit.permits.row.parties.holderContact.email}}</span>
-              </div>
-            </div>
-            <div class="row" ng-show="!!permit.permits.row.parties.holderContact.mobile">
-              <label class="col-xs-4 col-lg-3 text-right">Mobile Phone</label>
-              <div class="col-xs-8 col-lg-9">
-                <span>{{permit.permits.row.parties.holderContact.mobile}}</span>
-              </div>
-            </div>
-            <div class="row" ng-show="!!permit.permits.row.parties.holderContact.officePhone">
-              <label class="col-xs-4 col-lg-3 text-right">Office Phone</label>
-              <div class="col-xs-8 col-lg-9">
-                <span>{{permit.permits.row.parties.holderContact.officePhone}}</span>
-              </div>
-            </div>
-            <div class="well well-sm" ng-show="permit.permits.row.parties.holderContact.addresses.physical.suburb">
-              <h4>Office Physical Address {{permit.permits.row.parties.holderContact.addresses.physical.isMailing ? "and Office Mailing Address" : ""}}</h4>
-              <div class="row">
-                <label class="col-xs-4 col-lg-3 text-right">Address</label>
-                <div class="col-xs-8 col-lg-9">
-                  <address>
-                    <span ng-show="permit.permits.row.parties.holderContact.addresses.physical.unit">{{permit.permits.row.parties.holderContact.addresses.physical.unit}} </span>
-                    <span ng-show="permit.permits.row.parties.holderContact.addresses.physical.street">{{permit.permits.row.parties.holderContact.addresses.physical.street}} </span>
-                    <span ng-show="permit.permits.row.parties.holderContact.addresses.physical.suburb">{{permit.permits.row.parties.holderContact.addresses.physical.suburb}} </span>
-                    <span ng-show="permit.permits.row.parties.holderContact.addresses.physical.state">{{permit.permits.row.parties.holderContact.addresses.physical.state}} </span>
-                    <span ng-show="permit.permits.row.parties.holderContact.addresses.physical.postcode">{{permit.permits.row.parties.holderContact.addresses.physical.postcode}} </span>
-                    <span ng-show="permit.permits.row.parties.holderContact.addresses.physical.country">{{permit.permits.row.parties.holderContact.addresses.physical.country}} </span>
-                  </address>
-                </div>
-              </div>
-            </div>
-            <div class="well well-sm" ng-show="!permit.permits.row.parties.holderContact.addresses.physical.isMailing && permit.permits.row.parties.holderContact.addresses.mailing.suburb">
+            <div class="well well-sm" ng-show="!permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPhysical).isMailing && !!permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPostal).suburb">
               <h4>Office Mailing Address</h4>
-              <div class="row">
-                <label class="col-xs-4 col-lg-3 text-right">Address</label>
-                <div class="col-xs-8 col-lg-9">
-                  <address>
-                    <span ng-show="permit.permits.row.parties.holderContact.addresses.mailing.unit">{{permit.permits.row.parties.holderContact.addresses.mailing.unit}} </span>
-                    <span ng-show="permit.permits.row.parties.holderContact.addresses.mailing.street">{{permit.permits.row.parties.holderContact.addresses.mailing.street}} </span>
-                    <span ng-show="permit.permits.row.parties.holderContact.addresses.mailing.suburb">{{permit.permits.row.parties.holderContact.addresses.mailing.suburb}} </span>
-                    <span ng-show="permit.permits.row.parties.holderContact.addresses.mailing.state">{{permit.permits.row.parties.holderContact.addresses.mailing.state}} </span>
-                    <span ng-show="permit.permits.row.parties.holderContact.addresses.mailing.postcode">{{permit.permits.row.parties.holderContact.addresses.mailing.postcode}} </span>
-                    <span ng-show="permit.permits.row.parties.holderContact.addresses.mailing.country">{{permit.permits.row.parties.holderContact.addresses.mailing.country}} </span>
-                  </address>
-                </div>
-              </div>
+              <una-address-ro addr="permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPostal)"></una-address-ro>
             </div>
           </div>
-          <div class="well well-sm" ng-show="!permit.permits.row.parties.holder.isInfrastructureOwner">
-            <h4>Infrastructure Owner</h4>
-            <div class="row">
-              <label class="col-xs-4 col-lg-3 text-right">Name</label>
-              <div class="col-xs-8 col-lg-9" ng-show="permit.permits.row.parties.infOwner.entityType === 'Person'">
-                <span>{{permit.permits.row.parties.infOwner.personalName}}</span>
-                <span><strong>{{permit.permits.row.parties.infOwner.surname}}</strong></span>
-              </div>
-              <div class="col-xs-8 col-lg-9" ng-show="permit.permits.row.parties.infOwner.entityType === 'Organisation'">
-                <span><strong>{{permit.permits.row.parties.infOwner.name}}</strong></span>
-              </div>
+          <div class="well well-sm" ng-show="!permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner">
+            <h4>{{permit.permits.row.parties.find(permit.findInfOwner).typeDesc}}</h4>
+            <una-party-ro party="permit.permits.row.parties.find(permit.findInfOwner)"></una-party-ro>
+            <div class="well well-sm" ng-show="!!permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPhysical).suburb">
+              <h4>Office Physical Address {{permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPhysical).isMailing ? "and Office Mailing Address" : ""}}</h4>
+              <una-address-ro addr="permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPhysical)"></una-address-ro>
             </div>
-            <div class="row" ng-show="!!permit.permits.row.parties.infOwner.email">
-              <label class="col-xs-4 col-lg-3 text-right">Email</label>
-              <div class="col-xs-8 col-lg-9">
-                <span>{{permit.permits.row.parties.infOwner.email}}</span>
-              </div>
-            </div>
-            <div class="row" ng-show="!!permit.permits.row.parties.infOwner.mobile">
-              <label class="col-xs-4 col-lg-3 text-right">Mobile Phone</label>
-              <div class="col-xs-8 col-lg-9">
-                <span>{{permit.permits.row.parties.infOwner.mobile}}</span>
-              </div>
-            </div>
-            <div class="row" ng-show="!!permit.permits.row.parties.infOwner.officePhone">
-              <label class="col-xs-4 col-lg-3 text-right">Office Phone</label>
-              <div class="col-xs-8 col-lg-9">
-                <span>{{permit.permits.row.parties.infOwner.officePhone}}</span>
-              </div>
-            </div>
-            <div class="well well-sm" ng-show="permit.permits.row.parties.infOwner.addresses.physical.suburb">
-              <h4>Office Physical Address {{permit.permits.row.parties.infOwner.addresses.physical.isMailing ? "and Office Mailing Address" : ""}}</h4>
-              <div class="row">
-                <label class="col-xs-4 col-lg-3 text-right">Address</label>
-                <div class="col-xs-8 col-lg-9">
-                  <address>
-                    <span ng-show="permit.permits.row.parties.infOwner.addresses.physical.unit">{{permit.permits.row.parties.infOwner.addresses.physical.unit}} </span>
-                    <span ng-show="permit.permits.row.parties.infOwner.addresses.physical.street">{{permit.permits.row.parties.infOwner.addresses.physical.street}} </span>
-                    <span ng-show="permit.permits.row.parties.infOwner.addresses.physical.suburb">{{permit.permits.row.parties.infOwner.addresses.physical.suburb}} </span>
-                    <span ng-show="permit.permits.row.parties.infOwner.addresses.physical.state">{{permit.permits.row.parties.infOwner.addresses.physical.state}} </span>
-                    <span ng-show="permit.permits.row.parties.infOwner.addresses.physical.postcode">{{permit.permits.row.parties.infOwner.addresses.physical.postcode}} </span>
-                    <span ng-show="permit.permits.row.parties.infOwner.addresses.physical.country">{{permit.permits.row.parties.infOwner.addresses.physical.country}} </span>
-                  </address>
-                </div>
-              </div>
-            </div>
-            <div class="well well-sm" ng-show="!permit.permits.row.parties.infOwner.addresses.physical.isMailing && permit.permits.row.parties.infOwner.addresses.mailing.suburb">
+            <div class="well well-sm" ng-show="!permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPhysical).isMailing && !!permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPostal).suburb">
               <h4>Office Mailing Address</h4>
-              <div class="row">
-                <label class="col-xs-4 col-lg-3 text-right">Address</label>
-                <div class="col-xs-8 col-lg-9">
-                  <address>
-                    <span ng-show="permit.permits.row.parties.infOwner.addresses.mailing.unit">{{permit.permits.row.parties.infOwner.addresses.mailing.unit}} </span>
-                    <span ng-show="permit.permits.row.parties.infOwner.addresses.mailing.street">{{permit.permits.row.parties.infOwner.addresses.mailing.street}} </span>
-                    <span ng-show="permit.permits.row.parties.infOwner.addresses.mailing.suburb">{{permit.permits.row.parties.infOwner.addresses.mailing.suburb}} </span>
-                    <span ng-show="permit.permits.row.parties.infOwner.addresses.mailing.state">{{permit.permits.row.parties.infOwner.addresses.mailing.state}} </span>
-                    <span ng-show="permit.permits.row.parties.infOwner.addresses.mailing.postcode">{{permit.permits.row.parties.infOwner.addresses.mailing.postcode}} </span>
-                    <span ng-show="permit.permits.row.parties.infOwner.addresses.mailing.country">{{permit.permits.row.parties.infOwner.addresses.mailing.country}}</span>
-                  </address>
-                </div>
-              </div>
+              <una-address-ro addr="permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPostal)"></una-address-ro>
             </div>
           </div>
         </div>
@@ -798,7 +336,7 @@
             <a class="anchorjs-link" href="#PermitApplicationSubmit" aria-label="Anchor link for: permit application submit">Preview and Submit Application</a>
           </h2>
           <div class="col-xs-12 row" ng-hide="permit.permits.row.isPreview" title="You need three green lights before the Preview button will be available">
-            <span class="label" ng-class="{'label-success': !!permit.permits.row.parties.holder.entityType, 'label-warning': !permit.permits.row.parties.holder.entityType}">Permit Holder Declared </span>
+            <span class="label" ng-class="{'label-success': !!permit.permits.row.parties.find(permit.findHolder).entityType, 'label-warning': !permit.permits.row.parties.find(permit.findHolder).entityType}">{{permit.permits.row.parties.find(permit.findHolder).typeDesc}} Declared </span>
             <span class="label" ng-class="{'label-success': permit.permits.row.totalDistance > 0, 'label-warning': permit.permits.row.totalDistance <= 0}">Route Declared </span>
             <span class="label" ng-class="{'label-success': !permit.permits.row.isPreview, 'label-warning': permit.permits.row.isPreview}">Ready to Preview </span>
           </div>
@@ -806,7 +344,7 @@
           <p ng-hide="permit.permits.row.isPreview">Note that contact details will be checked as part of the approval process.</p>
           <div class="form-group btn-group col-xs-12 row" aria-label="Print Preview and Submit">
             <div class="col-xs-3" title="You need three green lights, and all required fields entered, before the Preview button will be available">
-              <label class="btn btn-radio btn-info" ng-class="{'active': !permit.permits.row.isPreview}" ng-disabled="!(!!permit.permits.row.parties.holder.entityType) || permit.permits.row.totalDistance === 0 || permit.permits.row.isPreview || PermitApplication.$invalid">
+              <label class="btn btn-radio btn-info" ng-class="{'active': !permit.permits.row.isPreview}" ng-disabled="!(!!permit.permits.row.parties.find(permit.findHolder).entityType) || permit.permits.row.totalDistance === 0 || permit.permits.row.isPreview || PermitApplication.$invalid">
                 <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="true" ng-change="GDFitMap()" autocomplete="off">Preview &gt;&gt;
               </label>
             </div>
@@ -836,10 +374,10 @@
         </li>
         <li>
           <a href="#PermitApplicationParties">Permit Parties</a>
-          <ul class="nav nav-stacked" ng-show="!!permit.permits.row.parties.holder.entityType">
-            <li><a href="#PermitApplicationHolder">Permit Holder</a></li>
-            <li ng-show="permit.permits.row.parties.holder.entityType !== 'Person' || permit.permits.row.parties.holder.addresses.physical.country !== 'Nigeria'"><a href="#PermitApplicationHolderContact">Holder Contact</a></li>
-            <li ng-show="!permit.permits.row.parties.holder.isInfrastructureOwner"><a href="#PermitApplicationInfOwner">Infrastructure Owner</a></li>
+          <ul class="nav nav-stacked" ng-show="!!permit.permits.row.parties.find(permit.findHolder).entityType">
+            <li><a href="#PermitApplicationHolder">{{permit.permits.row.parties.find(permit.findHolder).typeDesc}}</a></li>
+            <li ng-show="permit.permits.row.parties.find(permit.findHolder).entityType !== 'Person' || permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).country !== 'Nigeria'"><a href="#PermitApplicationHolderContact">Holder Contact</a></li>
+            <li ng-show="!permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner"><a href="#PermitApplicationInfOwner">{{permit.permits.row.parties.find(permit.findInfOwner).typeDesc}}</a></li>
           </ul>
         </li>
         <li>

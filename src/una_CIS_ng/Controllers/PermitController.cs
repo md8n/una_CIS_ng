@@ -306,38 +306,45 @@ namespace una_CIS_ng.Controllers
               break;
             case "parties":
               var parties = new List<Party>();
-              foreach (var jPrty in jValue.Children().OfType<JProperty>())
+              if (jArray == null)
               {
-                var jPrtyVal = jPrty.Value;
-                var jPrtyJson = jPrtyVal.ToString(Formatting.Indented);
-                var party = BsonSerializer.Deserialize<Party>(jPrtyJson);
-                if (party.id == null || party.id == ObjectId.Empty)
+                foreach (var jPrty in jValue.Children().OfType<JProperty>())
                 {
-                  party.id = ObjectId.GenerateNewId();
-                }
-                var addresses = new List<Address>();
-
-                foreach (var jp in jPrtyVal.Children().OfType<JProperty>().Where(jp => jp.Name == "addresses"))
-                {
-                  var newAddr = jp.Value
-                    .OfType<JProperty>()
-                    .Select(jpAddr => jpAddr.Value.ToString(Formatting.Indented))
-                    .Select(jAddrJson => BsonSerializer.Deserialize<Address>(jAddrJson))
-                    .ToList();
-
-                  foreach (var addr in newAddr)
+                  var jPrtyVal = jPrty.Value;
+                  var jPrtyJson = jPrtyVal.ToString(Formatting.Indented);
+                  var party = BsonSerializer.Deserialize<Party>(jPrtyJson);
+                  if (party.id == null || party.id == ObjectId.Empty)
                   {
-                    if (addr.id == null || addr.id == ObjectId.Empty)
+                    party.id = ObjectId.GenerateNewId();
+                  }
+                  var addresses = new List<Address>();
+
+                  foreach (var jp in jPrtyVal.Children().OfType<JProperty>().Where(jp => jp.Name == "addresses"))
+                  {
+                    var newAddr = jp.Value
+                      .OfType<JProperty>()
+                      .Select(jpAddr => jpAddr.Value.ToString(Formatting.Indented))
+                      .Select(jAddrJson => BsonSerializer.Deserialize<Address>(jAddrJson))
+                      .ToList();
+
+                    foreach (var addr in newAddr)
                     {
-                      addr.id = ObjectId.GenerateNewId();
+                      if (addr.id == null || addr.id == ObjectId.Empty)
+                      {
+                        addr.id = ObjectId.GenerateNewId();
+                      }
                     }
+
+                    addresses.AddRange(newAddr);
                   }
 
-                  addresses.AddRange(newAddr);
+                  party.addresses = addresses.ToArray();
+                  parties.Add(party);
                 }
-
-                party.address = addresses.ToArray();
-                parties.Add(party);
+              }
+              else
+              {
+                parties.AddRange(jArray.Select(jParty => JsonConvert.DeserializeObject<Party>(jParty.ToString())));
               }
 
               permit.parties = parties.ToArray();
@@ -348,6 +355,38 @@ namespace una_CIS_ng.Controllers
         {
         }
       }
+
+      // clean up of unneeded elements
+      var permitHolder = permit.parties.FirstOrDefault(p => p.type == "holder");
+      var holderContact = permit.parties.FirstOrDefault(p => p.type == "holderContact");
+      var infOwner = permit.parties.FirstOrDefault(p => p.type == "infOwner");
+
+      if (permitHolder != null)
+      {
+        if (permitHolder.isInfrastructureOwner)
+        {
+          infOwner = null;
+        }
+        if (permitHolder.entityType == "Person" && permitHolder.addresses.Any(a => a.type == "physical" && a.country == "Nigeria"))
+        {
+          holderContact = null;
+        }
+      }
+
+      var prtys = new List<Party> {permitHolder};
+      if (holderContact != null)
+      {
+        prtys.Add(holderContact);
+      }
+      if (infOwner != null)
+      {
+        prtys.Add(infOwner);
+      }
+      foreach (var prty in prtys)
+      {
+        prty.CleanAddresses();
+      }
+      permit.parties = prtys.ToArray();
 
       return permit;
     }

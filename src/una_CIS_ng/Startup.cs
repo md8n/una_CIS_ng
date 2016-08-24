@@ -70,6 +70,7 @@ namespace una_CIS_ng
       services.AddSingleton<IGeoDataRepository, GeoDataRepository>();
       services.AddSingleton<IFeeDefinitionRepository,FeeDefinitionRepository>();
       services.AddSingleton<IPermitRepository, PermitRepository>();
+      services.AddSingleton<IPenaltyRepository, PenaltyRepository>();
 
     }
 

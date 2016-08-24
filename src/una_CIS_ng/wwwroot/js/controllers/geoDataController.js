@@ -3,9 +3,9 @@
 
   angular
     .module("unaApp") // defined in unaApp.js
-    .controller("geoDataController", ["$scope", "$rootScope", "geoDataService", "permitService", geoDataController]);
+    .controller("geoDataController", ["$scope", "$rootScope", "geoDataService", "permitService", "penaltyService", geoDataController]);
 
-  function geoDataController($scope, $rootScope, geoDataService, permitService) {
+  function geoDataController($scope, $rootScope, geoDataService, permitService, penaltyService) {
     var gm = null;
     var geocoder = null;
     var map = null;
@@ -13,6 +13,10 @@
     var dmRebuilt = false;
     var sb = null;
     var didFit = false;
+
+    var pageService = null;
+    var pageScope = null;
+    var pageData = null;
 
     // Set up the basic bits for geoData
     $scope.geoData = $scope.geoData || {};
@@ -38,6 +42,16 @@
         });
 
         //infowindow = new gm.InfoWindow;
+
+        if (mapEl.hasAttribute("permit")) {
+          pageService = permitService;
+          pageScope = permitScope;
+          pageData = pageScope.permit.permits.row;
+        } else if (mapEl.hasAttribute("penalty")) {
+          pageService = penaltyService;
+          pageScope = penaltyScope;
+          pageData = pageScope.penalty.infringing;
+        }
 
         resetMap(mapEl.hasAttribute("showdrawingcontrols"));
       }
@@ -106,15 +120,13 @@
     function geocode(lnglat, destArrayIndex) {
       var mStatus = gm.GeocoderStatus.OK;
 
-      var pspr = !!permitScope ? permitScope.permit.permits.row : null;
-
       geocoder.geocode({ 'location': lnglat },
         function (results, status) {
           mStatus = status;
           if (status === gm.GeocoderStatus.OK) {
             if (results.length > 0) {
               var result = getClosestAddress(results, lnglat).formatted_address;
-              permitScope.$apply(function () { pspr.locationDescriptions[destArrayIndex].push(result); });
+              pageScope.$apply(function () { pageData.locationDescriptions[destArrayIndex].push(result); });
             } else {
               window
                 .alert('Warning: No location results were returned by the Geocoder.  This is just a notice, you may still submit your application.');
@@ -131,11 +143,11 @@
     }
 
     var handleGeoData = function (response) {
-      // map is the google maps object returned by Map.cshtml and Permit.cshtml
+      // map is the google maps object returned by Map.cshtml, Permit.cshtml, Penalty.cshtml
       $scope.geoData = $scope.geoData || {};
       $scope.geoData.geoFeatures = [];
       if (!!map) {
-        if (Array.isArray(response)) {
+        if (Array.isArray(response) && response.length > 0) {
           if (response[0].hasOwnProperty("Feature")) {
             $scope.geoData.geoFeatures = response.map(function (obj) { return obj.Feature; });
           } else if (response[0].hasOwnProperty("FeatureCollection")) {
@@ -314,7 +326,7 @@
             }
 
             var infLc = document.getElementById("location");
-            if (infLc && permitScope) {
+            if (infLc && pageScope) {
               // Set up a polyline feature - note the deliberately wrong initial values for bbox
               var polylineFeature = {
                 "type": "Feature",
@@ -323,9 +335,8 @@
                 "properties": {}
               };
               var lonLats = [];
-              var pspr = permitScope.permit.permits.row;
-              pspr.locationDescriptions.push([]);
-              var locDescCount = pspr.locationDescriptions.length;
+              pageData.locationDescriptions.push([]);
+              var locDescCount = pageData.locationDescriptions.length;
               for (var ix = 0; ix < plP.getLength() ; ix++) {
                 var pt = plP.getAt(ix);
                 var lon = Number(Math.round(pt.lng() + 'e7') + 'e-7');
@@ -338,7 +349,7 @@
                 polylineFeature.bbox = setBbox(polylineFeature.bbox, lon, lat);
 
                 // Set the bbox for the entire featurecollection
-                pspr.locations.bbox = setBbox(pspr.locations.bbox, lon, lat);
+                pageData.locations.bbox = setBbox(pageData.locations.bbox, lon, lat);
 
                 setTimeout(function (lon, lat, locDescCount) {
                   var mStatus = geocode({ lng: lon, lat: lat }, locDescCount - 1);
@@ -352,12 +363,12 @@
                   locDescCount);
               }
 
-              pspr.locations.features.push(polylineFeature);
-              pspr.locationRoutes.push(lonLats);
-              pspr.distances.push(dist);
-              pspr.totalDistance = pspr.distances.reduce(function (a, b) { return a + b; });
+              pageData.locations.features.push(polylineFeature);
+              pageData.locationRoutes.push(lonLats);
+              pageData.distances.push(dist);
+              pageData.totalDistance = pageData.distances.reduce(function (a, b) { return a + b; });
 
-              permitScope.map.locationPolylines.push(pl);
+              pageScope.map.locationPolylines.push(pl);
             }
           });
 
@@ -382,18 +393,17 @@
       }
 
       //geoDataService.All().$promise.then(handleGeoData);
-      permitService.GeoData().$promise.then(handleGeoData);
+      pageService.GeoData().$promise.then(handleGeoData);
 
-      //alert(JSON.stringify($scope.permit.permits.row.locations));
+      //alert(JSON.stringify(pageData.locations));
 
-      if (!!$scope.permit) {
-        var pspr = $scope.permit.permits.row;
+      if (!!pageScope) {
         // Clear the data (this impacts the fee calculation)
-        pspr.distances.length = 0;
-        pspr.totalDistance = 0;
-        pspr.locations.features.length = 0;
-        pspr.locationRoutes.length = 0;
-        pspr.locationDescriptions.length = 0;
+        pageData.distances.length = 0;
+        pageData.totalDistance = 0;
+        pageData.locations.features.length = 0;
+        pageData.locationRoutes.length = 0;
+        pageData.locationDescriptions.length = 0;
 
         // detach the polylines from the map first, then throw them all away
         $scope.map.locationPolylines.forEach(function (el) { el.setMap(null); });
@@ -412,13 +422,13 @@
     $rootScope.$on("GeoDataFitMap", function () { fitMap(); });
 
     function fitMap() {
-      if (!!map && ((!!$scope.permit && $scope.permit.permits.row.totalDistance > 0) || !!$scope.geoData.geoFeatures)) {
+      if (!!map && ((!!pageData && pageData.totalDistance > 0) || !!$scope.geoData.geoFeatures)) {
         map.fitBounds(createLatLngBounds(getCurrentBBox()));
       }
     }
 
     function getCurrentBBox() {
-      var pspr = !!$scope.permit ? $scope.permit.permits.row : { "totalDistance": 0 };
+      var pspr = !!pageData ? pageData : { "totalDistance": 0 };
 
       var bbox = (pspr.totalDistance > 0) ? pspr.locations.bbox : [2.705989, 6.375578, 4.351192, 6.430167];
 
@@ -440,5 +450,5 @@
     //function activate() { }
   }
 
-  geoDataController.$inject = ["$scope", "geoDataService", "permitService"];
+  geoDataController.$inject = ["$scope", "geoDataService", "permitService", "penaltyService"];
 })(angular);

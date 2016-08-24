@@ -22,7 +22,7 @@
           </h2>
           <p>To declare your existing or planned infrastructure, and obtain a Permit for it, several things are required:</p>
           <ul>
-            <li>The <a href="#PermitApplicationParties">Permit Holder</a> must be identified. Other people and organisations may need to be identified also.</li>
+            <li>The <a href="#PermitApplicationParties">{{permit.permits.row.parties.find(party.findHolder).typeDesc}}</a> must be identified. Other people and organisations may need to be identified also.</li>
             <li>The <a href="#PermitApplicationLocation">location / route of your infrastructure</a> must be clearly identified.</li>
             <li>The <a href="#PermitApplicationInfState">current state of your infrastructure</a> must be declared.</li>
             <li>The Permit Application must be submitted by clicking the submit button below.</li>
@@ -49,101 +49,101 @@
             <a class="anchorjs-link" href="#PermitApplicationParties" aria-label="Anchor link for: permit application parties">Parties to the Permit</a>
           </h2>
           <div class="well well-sm">
-            <h3 id="PermitHolderDeclaration">{{permit.permits.row.parties.find(permit.findHolder).typeDesc}}</h3>
+            <h3 id="PermitHolderDeclaration">{{permit.permits.row.parties.find(party.findHolder).typeDesc}}</h3>
             <div id="PermitApplicationHolder" class="form-group row">
-              <label class="col-xs-5 col-sm-4 col-md-4 col-lg-3 text-right">The {{permit.permits.row.parties.find(permit.findHolder).typeDesc}} is also the {{permit.permits.row.parties.find(permit.findInfOwner).typeDesc}}:</label>
+              <label class="col-xs-5 col-sm-4 col-md-4 col-lg-3 text-right">The {{permit.permits.row.parties.find(party.findHolder).typeDesc}} is also the {{permit.permits.row.parties.find(party.findInfOwner).typeDesc}}:</label>
               <div class="col-xs-6 col-sm-5">
-                <div class="btn-group btn-group-justified" role="group" aria-label="{{permit.permits.row.parties.find(permit.findHolder).typeDesc}} Entity is Infrastructure Owner">
-                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner}">
-                    <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner" ng-change="permit.setInfOwnerRequired()" ng-value="true" autocomplete="off" checked ng-required="true"> Yes
+                <div class="btn-group btn-group-justified" role="group" aria-label="{{permit.permits.row.parties.find(party.findHolder).typeDesc + ' Entity is ' + permit.permits.row.parties.find(party.findInfOwner).typeDesc}}">
+                  <label class="btn btn-radio btn-primary" ng-class="{'active': permit.permits.row.parties.find(party.findHolder).isInfrastructureOwner}">
+                    <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.find(party.findHolder).isInfrastructureOwner" ng-change="permit.setInfOwnerRequired()" ng-value="true" autocomplete="off" checked ng-required="true"> Yes
                   </label>
-                  <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner}">
-                    <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner" ng-change="permit.setInfOwnerRequired()" ng-value="false" autocomplete="off" ng-required="true"> No
+                  <label class="btn btn-radio btn-primary" ng-class="{'active': !permit.permits.row.parties.find(party.findHolder).isInfrastructureOwner}">
+                    <input type="radio" name="rowHoldingEntityIsInfrastructureOwner" ng-model="permit.permits.row.parties.find(party.findHolder).isInfrastructureOwner" ng-change="permit.setInfOwnerRequired()" ng-value="false" autocomplete="off" ng-required="true"> No
                   </label>
                 </div>
               </div>
             </div>
-            <una-party party="permit.permits.row.parties.find(permit.findHolder)"></una-party>
-            <div class="well well-sm" ng-show="!!permit.permits.row.parties.find(permit.findHolder).entityType">
-              <una-address addr="permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical)"></una-address>
+            <una-party party="permit.permits.row.parties.find(party.findHolder)"></una-party>
+            <div class="well well-sm" ng-show="!!permit.permits.row.parties.find(party.findHolder).entityType">
+              <una-address addr="permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPhysical)"></una-address>
             </div>
-            <div class="well well-sm" ng-show="!!permit.permits.row.parties.find(permit.findHolder).entityType">
-              <div ng-show="permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).isMailing">
+            <div class="well well-sm" ng-show="!!permit.permits.row.parties.find(party.findHolder).entityType">
+              <div ng-show="permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPhysical).isMailing">
                 <h4>Office Postal Address</h4>
                 <dl class="dl-horizontal">
                   <dt>Office Postal Address:</dt>
                   <dd>Use the Office Physical Address</dd>
                 </dl>
               </div>
-              <div ng-show="!permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).isMailing">
-                <una-address addr="permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPostal)"></una-address>
+              <div ng-show="!permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPhysical).isMailing">
+                <una-address addr="permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPostal)"></una-address>
               </div>
             </div>
           </div>
-          <div id="PermitApplicationHolderContact" class="well well-sm" ng-show="!!permit.permits.row.parties.find(permit.findHolder).entityType">
-            <h3 id="RoWPermitHolderContact">{{permit.permits.row.parties.find(permit.findHolderContact).typeDesc}}</h3>
-            <small>A {{permit.permits.row.parties.find(permit.findHolderContact).typeDesc}} is required if the {{permit.permits.row.parties.find(permit.findHolder).typeDesc}} is an Organisation or the {{permit.permits.row.parties.find(permit.findHolder).typeDesc}} is not based in Nigeria.</small>
-            <div ng-show="permit.permits.row.parties.find(permit.findHolder).entityType === 'Person' && permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).country === 'Nigeria'">
+          <div id="PermitApplicationHolderContact" class="well well-sm" ng-show="!!permit.permits.row.parties.find(party.findHolder).entityType">
+            <h3 id="RoWPermitHolderContact">{{permit.permits.row.parties.find(party.findHolderContact).typeDesc}}</h3>
+            <small>A {{permit.permits.row.parties.find(party.findHolderContact).typeDesc}} is required if the {{permit.permits.row.parties.find(party.findHolder).typeDesc}} is an Organisation or the {{permit.permits.row.parties.find(party.findHolder).typeDesc}} is not based in Nigeria.</small>
+            <div ng-show="permit.permits.row.parties.find(party.findHolder).entityType === 'Person' && permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPhysical).country === 'Nigeria'">
               <dl class="dl-horizontal">
-                <dt>{{permit.permits.row.parties.find(permit.findHolderContact).typeDesc}}:</dt>
-                <dd>Will be the {{permit.permits.row.parties.find(permit.findHolder).typeDesc}}</dd>
+                <dt>{{permit.permits.row.parties.find(party.findHolderContact).typeDesc}}:</dt>
+                <dd>Will be the {{permit.permits.row.parties.find(party.findHolder).typeDesc}}</dd>
               </dl>
             </div>
-            <div ng-show="permit.permits.row.parties.find(permit.findHolder).entityType !== 'Person' || permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).country !== 'Nigeria'">
-              <small>The {{permit.permits.row.parties.find(permit.findHolderContact).typeDesc}} must be an individual, based in Nigeria, who is contactable by electronic means, especially via email and txt message (sms).</small><br />
-              <una-party party="permit.permits.row.parties.find(permit.findHolderContact)"></una-party>
-              <una-address addr="permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPostal)"></una-address>
+            <div ng-show="permit.permits.row.parties.find(party.findHolder).entityType !== 'Person' || permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPhysical).country !== 'Nigeria'">
+              <small>The {{permit.permits.row.parties.find(party.findHolderContact).typeDesc}} must be an individual, based in Nigeria, who is contactable by electronic means, especially via email and txt message (sms).</small><br />
+              <una-party party="permit.permits.row.parties.find(party.findHolderContact)"></una-party>
+              <una-address addr="permit.permits.row.parties.find(party.findHolderContact).addresses.find(address.findPostal)"></una-address>
             </div>
           </div>
-          <div id="PermitApplicationInfOwner" class="well well-sm" ng-show="!!permit.permits.row.parties.find(permit.findHolder).entityType">
-            <h3 id="RoWPermitInfOwner">{{permit.permits.row.parties.find(permit.findInfOwner).typeDesc}}</h3>
-            <div ng-show="!permit.permits.row.parties.find(permit.findInfOwner).isRequired">
+          <div id="PermitApplicationInfOwner" class="well well-sm" ng-show="!!permit.permits.row.parties.find(party.findHolder).entityType">
+            <h3 id="RoWPermitInfOwner">{{permit.permits.row.parties.find(party.findInfOwner).typeDesc}}</h3>
+            <div ng-show="!permit.permits.row.parties.find(party.findInfOwner).isRequired">
               <dl class="dl-horizontal">
-                <dt>{{permit.permits.row.parties.find(permit.findInfOwner).typeDesc}}:</dt>
-                <dd>Will be the {{permit.permits.row.parties.find(permit.findHolder).typeDesc}}</dd>
+                <dt>{{permit.permits.row.parties.find(party.findInfOwner).typeDesc}}:</dt>
+                <dd>Will be the {{permit.permits.row.parties.find(party.findHolder).typeDesc}}</dd>
               </dl>
             </div>
-            <div ng-show="permit.permits.row.parties.find(permit.findInfOwner).isRequired">
-              <una-party party="permit.permits.row.parties.find(permit.findInfOwner)"></una-party>
-              <una-address addr="permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPostal)"></una-address>
+            <div ng-show="permit.permits.row.parties.find(party.findInfOwner).isRequired">
+              <una-party party="permit.permits.row.parties.find(party.findInfOwner)"></una-party>
+              <una-address addr="permit.permits.row.parties.find(party.findInfOwner).addresses.find(address.findPostal)"></una-address>
             </div>
           </div>
         </div>
-        <div class="bs-docs-section" ng-show="permit.permits.row.isPreview && !!permit.permits.row.parties.find(permit.findHolder).entityType">
+        <div class="bs-docs-section" ng-show="permit.permits.row.isPreview && !!permit.permits.row.parties.find(party.findHolder).entityType">
           <div class="well well-sm">
-            <h4>{{permit.permits.row.parties.find(permit.findHolder).typeDesc + " " + (permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner ? (" and " + permit.permits.row.parties.find(permit.findInfOwner).typeDesc) : "")}}</h4>
-            <una-party-ro party="permit.permits.row.parties.find(permit.findHolder)"></una-party-ro>
-            <div class="well well-sm" ng-show="permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).suburb">
-              <h4>Office Physical {{permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).isMailing ? "and Mailing" : ""}} Address</h4>
-              <una-address-ro addr="permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical)"></una-address-ro>
+            <h4>{{permit.permits.row.parties.find(party.findHolder).typeDesc + " " + (permit.permits.row.parties.find(party.findHolder).isInfrastructureOwner ? (" and " + permit.permits.row.parties.find(party.findInfOwner).typeDesc) : "")}}</h4>
+            <una-party-ro party="permit.permits.row.parties.find(party.findHolder)"></una-party-ro>
+            <div class="well well-sm" ng-show="permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPhysical).suburb">
+              <h4>Office Physical {{permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPhysical).isMailing ? "and Mailing" : ""}} Address</h4>
+              <una-address-ro addr="permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPhysical)"></una-address-ro>
             </div>
-            <div class="well well-sm" ng-show="!permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).isMailing && permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPostal).suburb">
+            <div class="well well-sm" ng-show="!permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPhysical).isMailing && permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPostal).suburb">
               <h4>Office Mailing Address</h4>
-              <una-address-ro addr="permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPostal)"></una-address-ro>
+              <una-address-ro addr="permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPostal)"></una-address-ro>
             </div>
           </div>
-          <div class="well well-sm" ng-show="permit.permits.row.parties.find(permit.findHolder).entityType !== 'Person' || permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).country !== 'Nigeria'">
-            <h4>{{permit.permits.row.parties.find(permit.findHolderContact).typeDesc}}</h4>
-            <una-party-ro party="permit.permits.row.parties.find(permit.findHolderContact)"></una-party-ro>
-            <div class="well well-sm" ng-show="!!permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPhysical).suburb">
-              <h4>Office Physical Address {{permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPhysical).isMailing ? "and Office Mailing Address" : ""}}</h4>
-              <una-address-ro addr="permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPhysical)"></una-address-ro>
+          <div class="well well-sm" ng-show="permit.permits.row.parties.find(party.findHolder).entityType !== 'Person' || permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPhysical).country !== 'Nigeria'">
+            <h4>{{permit.permits.row.parties.find(party.findHolderContact).typeDesc}}</h4>
+            <una-party-ro party="permit.permits.row.parties.find(party.findHolderContact)"></una-party-ro>
+            <div class="well well-sm" ng-show="!!permit.permits.row.parties.find(party.findHolderContact).addresses.find(address.findPhysical).suburb">
+              <h4>Office Physical Address {{permit.permits.row.parties.find(party.findHolderContact).addresses.find(address.findPhysical).isMailing ? "and Office Mailing Address" : ""}}</h4>
+              <una-address-ro addr="permit.permits.row.parties.find(party.findHolderContact).addresses.find(address.findPhysical)"></una-address-ro>
             </div>
-            <div class="well well-sm" ng-show="!permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPhysical).isMailing && !!permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPostal).suburb">
+            <div class="well well-sm" ng-show="!permit.permits.row.parties.find(party.findHolderContact).addresses.find(address.findPhysical).isMailing && !!permit.permits.row.parties.find(party.findHolderContact).addresses.find(address.findPostal).suburb">
               <h4>Office Mailing Address</h4>
-              <una-address-ro addr="permit.permits.row.parties.find(permit.findHolderContact).addresses.find(address.findPostal)"></una-address-ro>
+              <una-address-ro addr="permit.permits.row.parties.find(party.findHolderContact).addresses.find(address.findPostal)"></una-address-ro>
             </div>
           </div>
-          <div class="well well-sm" ng-show="!permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner">
-            <h4>{{permit.permits.row.parties.find(permit.findInfOwner).typeDesc}}</h4>
-            <una-party-ro party="permit.permits.row.parties.find(permit.findInfOwner)"></una-party-ro>
-            <div class="well well-sm" ng-show="!!permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPhysical).suburb">
-              <h4>Office Physical Address {{permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPhysical).isMailing ? "and Office Mailing Address" : ""}}</h4>
-              <una-address-ro addr="permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPhysical)"></una-address-ro>
+          <div class="well well-sm" ng-show="!permit.permits.row.parties.find(party.findHolder).isInfrastructureOwner">
+            <h4>{{permit.permits.row.parties.find(party.findInfOwner).typeDesc}}</h4>
+            <una-party-ro party="permit.permits.row.parties.find(party.findInfOwner)"></una-party-ro>
+            <div class="well well-sm" ng-show="!!permit.permits.row.parties.find(party.findInfOwner).addresses.find(address.findPhysical).suburb">
+              <h4>Office Physical Address {{permit.permits.row.parties.find(party.findInfOwner).addresses.find(address.findPhysical).isMailing ? "and Office Mailing Address" : ""}}</h4>
+              <una-address-ro addr="permit.permits.row.parties.find(party.findInfOwner).addresses.find(address.findPhysical)"></una-address-ro>
             </div>
-            <div class="well well-sm" ng-show="!permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPhysical).isMailing && !!permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPostal).suburb">
+            <div class="well well-sm" ng-show="!permit.permits.row.parties.find(party.findInfOwner).addresses.find(address.findPhysical).isMailing && !!permit.permits.row.parties.find(party.findInfOwner).addresses.find(address.findPostal).suburb">
               <h4>Office Mailing Address</h4>
-              <una-address-ro addr="permit.permits.row.parties.find(permit.findInfOwner).addresses.find(address.findPostal)"></una-address-ro>
+              <una-address-ro addr="permit.permits.row.parties.find(party.findInfOwner).addresses.find(address.findPostal)"></una-address-ro>
             </div>
           </div>
         </div>
@@ -176,7 +176,7 @@
         <div id="PermitApplicationMap" ng-controller="geoDataController">
           <div class="row">
             <div class="col-xs-12 afterMap">
-              <div id="map" class="center-block" ng-class="{'isPreview': permit.permits.row.isPreview}" showdrawingcontrols></div>
+              <div id="map" class="center-block" ng-class="{'isPreview': permit.permits.row.isPreview}" showdrawingcontrols permit></div>
               <input id="pac-input" type="text" name="pac-input" placeholder="Search Box" class="controls center-block" />
             </div>
           </div>
@@ -232,7 +232,7 @@
               </div>
             </div>
             <div class="col-xs-7 col-sm-8 col-lg-9" ng-hide="!permit.permits.row.isPreview">
-              <span>{{permit.permits.row.infLoc === "Business" ? "Business District" : permit.permits.row.infLoc === "HighDensity" ? "High Density Zone" : "No Business or High Density"}}</span>
+              <span>{{permit.permits.row.infState}}</span>
             </div>
           </div>
           <div class="form-group row" ng-show="permit.permits.row.infState == 'Planned'">
@@ -302,7 +302,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="animate-show" ng-repeat="fee in permit.calc.fees | filter: permit.calc.applicationFilter">
+                <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.applicationFilter">
                   <td>{{fee.name}}</td>
                   <td class="text-right">{{fee.units($parent.permit.permits.row.totalDistance, $parent.permit.permits.row.distances.length, $parent.permit.permits.row.consPermits)}}</td>
                   <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
@@ -313,18 +313,18 @@
               <tfoot>
                 <tr class="animate-show">
                   <td class="text-right" colspan="4"><strong>Application Fee Total</strong></td>
-                  <td class="text-right"><strong>{{permit.calc.total(permit.calc.fees, permit.calc.applicationFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length, permit.permits.row.consPermits) | currency: "N&nbsp;": 0 }}</strong></td>
+                  <td class="text-right"><strong>{{calc.total(calc.fees, calc.applicationFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length, permit.permits.row.consPermits) | currency: "N&nbsp;": 0 }}</strong></td>
                 </tr>
               </tfoot>
             </table>
           </div>
           <p ng-hide="permit.permits.row.isPreview">
-            If you had not declared your infrastructure the fee would be: <strong>{{permit.calc.total(permit.calc.fees, permit.calc.undeclaredFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length, permit.permits.row.consPermits) | currency: "N&nbsp;": 0 }}</strong>
+            If you had not declared your infrastructure the fee would be: <strong>{{calc.total(calc.fees, calc.undeclaredFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length, permit.permits.row.consPermits) | currency: "N&nbsp;": 0 }}</strong>
           </p>
           <p ng-hide="!permit.permits.row.isPreview">
             To pay for the above raise a bank draft / bank cheque <br />
             to: <strong>{{bankDraftRecipient}}</strong> <br />
-            for the amount of: <strong>{{permit.calc.total(permit.calc.fees, permit.calc.applicationFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length, permit.permits.row.consPermits) | currency: "N&nbsp;": 0 }}</strong>
+            for the amount of: <strong>{{calc.total(calc.fees, calc.applicationFilter, permit.permits.row.totalDistance, permit.permits.row.distances.length, permit.permits.row.consPermits) | currency: "N&nbsp;": 0 }}</strong>
           </p>
           <p ng-hide="!permit.permits.row.isPreview">
             Present this bank draft/ bank cheque at the @Constants.UnaAbbr office together with this application. <br />
@@ -336,7 +336,7 @@
             <a class="anchorjs-link" href="#PermitApplicationSubmit" aria-label="Anchor link for: permit application submit">Preview and Submit Application</a>
           </h2>
           <div class="col-xs-12 row" ng-hide="permit.permits.row.isPreview" title="You need three green lights before the Preview button will be available">
-            <span class="label" ng-class="{'label-success': !!permit.permits.row.parties.find(permit.findHolder).entityType, 'label-warning': !permit.permits.row.parties.find(permit.findHolder).entityType}">{{permit.permits.row.parties.find(permit.findHolder).typeDesc}} Declared </span>
+            <span class="label" ng-class="{'label-success': !!permit.permits.row.parties.find(party.findHolder).entityType, 'label-warning': !permit.permits.row.parties.find(party.findHolder).entityType}">{{permit.permits.row.parties.find(party.findHolder).typeDesc}} Declared </span>
             <span class="label" ng-class="{'label-success': permit.permits.row.totalDistance > 0, 'label-warning': permit.permits.row.totalDistance <= 0}">Route Declared </span>
             <span class="label" ng-class="{'label-success': !permit.permits.row.isPreview, 'label-warning': permit.permits.row.isPreview}">Ready to Preview </span>
           </div>
@@ -344,7 +344,7 @@
           <p ng-hide="permit.permits.row.isPreview">Note that contact details will be checked as part of the approval process.</p>
           <div class="form-group btn-group col-xs-12 row" aria-label="Print Preview and Submit">
             <div class="col-xs-3" title="You need three green lights, and all required fields entered, before the Preview button will be available">
-              <label class="btn btn-radio btn-info" ng-class="{'active': !permit.permits.row.isPreview}" ng-disabled="!(!!permit.permits.row.parties.find(permit.findHolder).entityType) || permit.permits.row.totalDistance === 0 || permit.permits.row.isPreview || PermitApplication.$invalid">
+              <label class="btn btn-radio btn-info" ng-class="{'active': !permit.permits.row.isPreview}" ng-disabled="!(!!permit.permits.row.parties.find(party.findHolder).entityType) || permit.permits.row.totalDistance === 0 || permit.permits.row.isPreview || PermitApplication.$invalid">
                 <input type="radio" name="isPrintPreview" ng-model="permit.permits.row.isPreview" ng-value="true" ng-change="GDFitMap()" autocomplete="off">Preview &gt;&gt;
               </label>
             </div>
@@ -374,10 +374,10 @@
         </li>
         <li>
           <a href="#PermitApplicationParties">Permit Parties</a>
-          <ul class="nav nav-stacked" ng-show="!!permit.permits.row.parties.find(permit.findHolder).entityType">
-            <li><a href="#PermitApplicationHolder">{{permit.permits.row.parties.find(permit.findHolder).typeDesc}}</a></li>
-            <li ng-show="permit.permits.row.parties.find(permit.findHolder).entityType !== 'Person' || permit.permits.row.parties.find(permit.findHolder).addresses.find(address.findPhysical).country !== 'Nigeria'"><a href="#PermitApplicationHolderContact">Holder Contact</a></li>
-            <li ng-show="!permit.permits.row.parties.find(permit.findHolder).isInfrastructureOwner"><a href="#PermitApplicationInfOwner">{{permit.permits.row.parties.find(permit.findInfOwner).typeDesc}}</a></li>
+          <ul class="nav nav-stacked" ng-show="!!permit.permits.row.parties.find(party.findHolder).entityType">
+            <li><a href="#PermitApplicationHolder">{{permit.permits.row.parties.find(party.findHolder).typeDesc}}</a></li>
+            <li ng-show="permit.permits.row.parties.find(party.findHolder).entityType !== 'Person' || permit.permits.row.parties.find(party.findHolder).addresses.find(address.findPhysical).country !== 'Nigeria'"><a href="#PermitApplicationHolderContact">Holder Contact</a></li>
+            <li ng-show="!permit.permits.row.parties.find(party.findHolder).isInfrastructureOwner"><a href="#PermitApplicationInfOwner">{{permit.permits.row.parties.find(party.findInfOwner).typeDesc}}</a></li>
           </ul>
         </li>
         <li>
@@ -555,3 +555,4 @@
 {
   <script src="@mapInitUrl" async defer></script>
 }
+

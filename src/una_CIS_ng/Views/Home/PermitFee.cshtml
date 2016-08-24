@@ -23,35 +23,49 @@
         <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infState == 'Decommissioning'}">
           <input type="radio" name="infState" ng-model="calc.infState" value="Decommissioning" autocomplete="off" ng-required="true"> Decommissioning
         </label>
+        <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infState == 'Infringing'}">
+          <input type="radio" name="infState" ng-model="calc.infState" value="Infringing" autocomplete="off" ng-required="true"> Infringing
+        </label>
       </div>
+      <ul>
+        <li class="small">
+          Select 'Infringing' for Infrastructure being removed by LASIMRA or their authorised agencies.
+        </li>
+      </ul>
     </div>
   </div>
   <div class="form-group row" ng-class="{'bg-danger': !calc.permState}">
     <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Permit state:</label>
     <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure State">
-        <label class="btn btn-radio btn-primary" ng-class="{'active': calc.permState == 'New'}">
+        <label class="btn btn-radio btn-primary" ng-class="{'active': calc.permState == 'New'}" ng-show="calc.infState !== 'Infringing'">
           <input type="radio" name="permState" ng-model="calc.permState" value="New" autocomplete="off" ng-required="true"> Applying<br />for New
         </label>
-        <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'Temporary'}" ng-show="calc.infState != 'Planned'">
+        <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'Temporary'}" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
           <input type="radio" name="permState" ng-model="calc.permState" value="Temporary" autocomplete="off" ng-required="true"> Applying<br />for Temporary
         </label>
-        <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'Existing'}" ng-show="calc.infState != 'Planned'">
+        <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'Existing'}" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
           <input type="radio" name="permState" ng-model="calc.permState" value="Existing" autocomplete="off" ng-required="true"> Have<br />Existing
         </label>
-        <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'Cannot'}" ng-show="calc.infState != 'Planned'">
+        <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'Cannot'}" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
           <input type="radio" name="permState" ng-model="calc.permState" value="Cannot" autocomplete="off" ng-required="true"> Cannot Apply<br />(non-conforming)
+        </label>
+        <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'None'}" ng-hide="calc.infState !== 'Infringing'">
+          <input type="radio" name="permState" ng-model="calc.permState" value="None" autocomplete="off" ng-required="true"> None
         </label>
       </div>
       <ul>
-        <li class="small">
+        <li class="small" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
           Temporary Permits and Non-Conforming Permits are only for existing infrastructure, built before July 2004, and expire after one year.
         </li>
-        <li class="small">
+        <li class="small" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
           If applying for a Temporary Permit, you will still have to apply for a Right-of-Way Permit to keep your infrastructure or a Construction Permit to Decommission your infrastructure.
         </li>
-        <li class="small">
+        <li class="small" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
           If applying for a Non-Conforming Permit, you will still have to apply for a Construction Permit to Decommission your infrastructure.
+        </li>
+        <li class="small" ng-hide="calc.infState !== 'Infringing'">
+          Select 'None' for Infrastructure being removed by LASIMRA or their authorised agencies.
         </li>
       </ul>
     </div>
@@ -79,16 +93,21 @@
     <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Un-permitted Infrastructure Discovery:</label>
     <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
-        <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infDisc == 'Declared'}">
+        <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infDisc == 'Declared'}" ng-show="calc.infState !== 'Infringing'">
           <input type="radio" name="consType" ng-model="calc.infDisc" value="Declared" autocomplete="off" ng-required="true"> Declared by Owner
         </label>
         <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infDisc == 'Discovered'}">
           <input type="radio" name="consType" ng-model="calc.infDisc" value="Discovered" autocomplete="off" ng-required="true"> Discovered by Audit
         </label>
       </div>
+      <ul>
+        <li class="small" ng-hide="calc.infState !== 'Infringing'">
+          Select 'Discovered by Audit' for Infrastructure being removed by LASIMRA or their authorised agencies.
+        </li>
+      </ul>
     </div>
   </div>
-  <div class="form-group row" ng-class="{'bg-danger': !calc.consType}" ng-show="calc.infType == 'Underground'">
+  <div class="form-group row" ng-class="{'bg-danger': !calc.consType}" ng-show="calc.infState !== 'Infringing' && calc.infType === 'Underground'">
     <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Construction Method:</label>
     <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
@@ -133,6 +152,11 @@
       <div class="input-group">
         <input name="consPermits" id="consPermits" ng-model="calc.consPermits" type="number" />
       </div>
+      <ul>
+        <li class="small">
+          Construction Permits are also required for Infrastructure being decommissioned or removed by LASIMRA or their authorised agencies.
+        </li>
+      </ul>
     </div>
   </div>
   <div class="form-group row" ng-class="{'bg-danger': calc.section < 1}" ng-show="calc.infType === 'Underground' && calc.consType === 'HorizontalDrilling'">
@@ -143,7 +167,7 @@
       </div>
     </div>
   </div>
-  <h3>Permit Application Fees</h3>
+  <h3>{{calc.infState !== 'Infringing' ? "Permit Application Fees" : "Removal of Infringing Infrastructure Fees"}}</h3>
   <div class="table-responsive">
     <table class="table table-striped table-condensed table-hover">
       <thead>
@@ -166,88 +190,91 @@
       </tbody>
       <tfoot>
         <tr class="animate-show">
-          <td class="text-right" colspan="4"><strong>Permit Application Fee Total</strong></td>
+          <td class="text-right" colspan="4"><strong>{{calc.infState !== 'Infringing' ? "Permit Application Fee Total" : "Removal of Infringing Infrastructure Fee Total"}}</strong></td>
           <td class="text-right"><strong>{{calc.total(calc.fees, calc.applicationFilter, calc.dimension, calc.section, calc.consPermits) | currency: "N&nbsp;": 0 }}</strong></td>
         </tr>
       </tfoot>
     </table>
   </div>
-  <h3>First Renewal Fees</h3>
-  <div class="table-responsive">
-    <table class="table table-striped table-condensed table-hover">
-      <thead>
-        <tr>
-          <th class="col-xs-6">Item</th>
-          <th class="col-xs-1 text-right">Unit</th>
-          <th class="col-xs-1 text-right">Rate</th>
-          <th class="col-xs-2">&nbsp;</th>
-          <th class="col-xs-2 text-right">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.firstRenewalFilter">
-          <td>{{fee.name}}</td>
-          <td class="text-right">{{fee.units(calc.dimension, calc.section, calc.consPermits)}}</td>
-          <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
-          <td>{{fee.rateDesc()}}</td>
-          <td class="text-right">{{fee.total(calc.dimension, calc.section, calc.consPermits) | currency: "N&nbsp;": 0}}</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr class="animate-show">
-          <td class="text-right" colspan="4"><strong>First Renewal Fee Total</strong></td>
-          <td class="text-right"><strong>{{calc.total(calc.fees, calc.firstRenewalFilter, calc.dimension, calc.section, calc.consPermits) | currency: "N&nbsp;": 0 }}</strong></td>
-        </tr>
-      </tfoot>
-    </table>
+  <div ng-show="calc.infState !== 'Infringing'">
+    <h3>First Renewal Fees</h3>
+    <div class="table-responsive">
+      <table class="table table-striped table-condensed table-hover">
+        <thead>
+          <tr>
+            <th class="col-xs-6">Item</th>
+            <th class="col-xs-1 text-right">Unit</th>
+            <th class="col-xs-1 text-right">Rate</th>
+            <th class="col-xs-2">&nbsp;</th>
+            <th class="col-xs-2 text-right">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.firstRenewalFilter">
+            <td>{{fee.name}}</td>
+            <td class="text-right">{{fee.units(calc.dimension, calc.section, calc.consPermits)}}</td>
+            <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
+            <td>{{fee.rateDesc()}}</td>
+            <td class="text-right">{{fee.total(calc.dimension, calc.section, calc.consPermits) | currency: "N&nbsp;": 0}}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="animate-show">
+            <td class="text-right" colspan="4"><strong>First Renewal Fee Total</strong></td>
+            <td class="text-right"><strong>{{calc.total(calc.fees, calc.firstRenewalFilter, calc.dimension, calc.section, calc.consPermits) | currency: "N&nbsp;": 0 }}</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <h3>Renewal Fees</h3>
+    <div class="table-responsive">
+      <table class="table table-striped table-condensed table-hover">
+        <thead>
+          <tr>
+            <th class="col-xs-6">Item</th>
+            <th class="col-xs-1 text-right">Unit</th>
+            <th class="col-xs-1 text-right">Rate</th>
+            <th class="col-xs-2">&nbsp;</th>
+            <th class="col-xs-2 text-right">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.renewalFilter">
+            <td>{{fee.name}}</td>
+            <td class="text-right">{{fee.units(calc.dimension, calc.section, calc.consPermits)}}</td>
+            <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
+            <td>{{fee.rateDesc()}}</td>
+            <td class="text-right">{{fee.total(calc.dimension, calc.section, calc.consPermits) | currency: "N&nbsp;": 0}}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="animate-show">
+            <td class="text-right" colspan="4"><strong>Renewal Fee Total</strong></td>
+            <td class="text-right"><strong>{{calc.total(calc.fees, calc.renewalFilter, calc.dimension, calc.section, calc.consPermits) | currency: "N&nbsp;": 0 }}</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <h3>Special Penalties</h3>
+    <p>Contact @Constants.CisAbbr if any of these apply to you</p>
+    <div class="table-responsive">
+      <table class="table table-striped table-condensed table-hover">
+        <thead>
+          <tr>
+            <th class="col-xs-7">Item</th>
+            <th class="col-xs-1 text-right">Rate</th>
+            <th class="col-xs-4">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.penaltyFilter">
+            <td>{{fee.name}}</td>
+            <td class="text-right">{{fee.rate}}</td>
+            <td>{{fee.rateDesc()}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <h3>Renewal Fees</h3>
-  <div class="table-responsive">
-    <table class="table table-striped table-condensed table-hover">
-      <thead>
-        <tr>
-          <th class="col-xs-6">Item</th>
-          <th class="col-xs-1 text-right">Unit</th>
-          <th class="col-xs-1 text-right">Rate</th>
-          <th class="col-xs-2">&nbsp;</th>
-          <th class="col-xs-2 text-right">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.renewalFilter">
-          <td>{{fee.name}}</td>
-          <td class="text-right">{{fee.units(calc.dimension, calc.section, calc.consPermits)}}</td>
-          <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
-          <td>{{fee.rateDesc()}}</td>
-          <td class="text-right">{{fee.total(calc.dimension, calc.section, calc.consPermits) | currency: "N&nbsp;": 0}}</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr class="animate-show">
-          <td class="text-right" colspan="4"><strong>Renewal Fee Total</strong></td>
-          <td class="text-right"><strong>{{calc.total(calc.fees, calc.renewalFilter, calc.dimension, calc.section, calc.consPermits) | currency: "N&nbsp;": 0 }}</strong></td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-  <h3>Special Penalties</h3>
-  <p>Contact @Constants.CisAbbr if any of these apply to you</p>
-  <div class="table-responsive">
-    <table class="table table-striped table-condensed table-hover">
-      <thead>
-        <tr>
-          <th class="col-xs-7">Item</th>
-          <th class="col-xs-1 text-right">Rate</th>
-          <th class="col-xs-4">&nbsp;</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.penaltyFilter">
-          <td>{{fee.name}}</td>
-          <td class="text-right">{{fee.rate}}</td>
-          <td>{{fee.rateDesc()}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+
 </div>

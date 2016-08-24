@@ -35,6 +35,15 @@ namespace una_CIS_ng.Controllers
       return View();
     }
 
+    public IActionResult Penalty()
+    {
+      ViewData["Message"] = "Penalty";
+      ViewData["GoogleAPIKey"] = _appCodes.GoogleApiKey;
+      ViewData["GoogleAPIBrowserKey"] = _appCodes.GoogleApiBrowserKey;
+
+      return View();
+    }
+
     public IActionResult PermitInfo()
     {
       ViewData["Message"] = "General Permit Information";

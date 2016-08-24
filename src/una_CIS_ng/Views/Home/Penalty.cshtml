@@ -1,0 +1,433 @@
+﻿@using System
+@using una_CIS_ng.Core
+
+@{
+  ViewData["Title"] = "Penalty - Removed Infrastructure";
+  var mapKey = ViewData["GoogleAPIBrowserKey"];
+  var mapInitUrl = "https://maps.googleapis.com/maps/api/js?key=" + mapKey + "&libraries=drawing,geometry,places&callback=initMap";
+}
+
+<div class="container bs-docs-container" ng-controller="penaltyController">
+  <div class="row">
+    <div class="col-md-9 col-lg-10" role="main">
+      <form name="PenaltyInfrastructure" class="form-horizontal" role="form" ng-submit="penalty.Save()">
+        <div class="bs-docs-section">
+          <h1 id="PenaltyInfrastructure" class="page-header">
+            <a class="anchorjs-link" href="#PenaltyInfrastructure" aria-label="Anchor link for: penalty infrastructure">Penalty for Removal of Infringing Infrastructure</a>
+          </h1>
+        </div>
+        <div class="bs-docs-section" ng-hide="penalty.infringing.isPreview">
+          <h2 id="PenaltyInfrastructureInstructions">
+            <a class="anchorjs-link" href="#PenaltyInfrastructureInstructions" aria-label="Anchor link for: penalty infrastructure instructions">Instructions</a>
+          </h2>
+          <p>To declare the (to be) removed infrastructure, and determine Penalties for it, several things are required:</p>
+          <ul>
+            <li>The <a href="#PenaltyInfrastructureParties">{{penalty.infringing.parties.find(party.findInfOwner).typeDesc}}</a> or their agent must be identified.<br />Where practical, parties that would be directly affected by the removal of the infrastructure should be identified also.</li>
+            <li>The <a href="#PenaltyInfrastructureLocation">location / route of their infrastructure</a> must be clearly identified.</li>
+            <li>The Penalty Notice for Removal of Infrastructure must be submitted by clicking the submit button below.</li>
+          </ul>
+          <div class="bs-callout-sm bs-callout-success">
+            <small>Note that the information provided through this form is not 'private' for the purposes of the @Constants.UnaFullTitle. <br />However, the contact details are defined as 'protected' information and their disclosure is strictly controlled.</small>
+          </div>
+          <div class="bs-callout-sm bs-callout-warning">
+            <small>Some other agencies may impose their own penalties also - @Constants.LasimraAbbr and its authorised agencies are not responsible for this.</small>
+          </div>
+          <p>
+            Please see <a href="./PermitInfo">Permit Info</a> for more information about obtaining Permits and the penalties that may apply when they are not obtained.
+          </p>
+        </div>
+        <div class="bs-docs-section" ng-hide="penalty.infringing.isPreview">
+          <h2 id="PenaltyInfrastructureParties">
+            <a class="anchorjs-link" href="#PenaltyInfrastructureParties" aria-label="Anchor link for: penalty infrastructure parties">Parties to the Penalty Notice</a>
+          </h2>
+          <div id="PenaltyInfrastructureOwner" class="well well-sm">
+            <h3>{{penalty.infringing.parties.find(party.findInfOwner).typeDesc}}</h3>
+            <una-party party="penalty.infringing.parties.find(party.findInfOwner)"></una-party>
+            <div class="well well-sm" ng-show="!!penalty.infringing.parties.find(party.findInfOwner).entityType">
+              <una-address addr="penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPhysical)"></una-address>
+            </div>
+            <div class="well well-sm" ng-show="!!penalty.infringing.parties.find(party.findInfOwner).entityType">
+              <div ng-show="penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPhysical).isMailing">
+                <h4>Office Postal Address</h4>
+                <dl class="dl-horizontal">
+                  <dt>Office Postal Address:</dt>
+                  <dd>Use the Office Physical Address</dd>
+                </dl>
+              </div>
+              <div ng-show="!penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPhysical).isMailing">
+                <una-address addr="penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPostal)"></una-address>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bs-docs-section" ng-show="penalty.infringing.isPreview">
+          <div class="well well-sm">
+            <h4>{{penalty.infringing.parties.find(party.findInfOwner).typeDesc}}</h4>
+            <una-party-ro party="penalty.infringing.parties.find(party.findInfOwner)"></una-party-ro>
+            <div class="well well-sm" ng-show="!!penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPhysical).suburb">
+              <h4>Office Physical Address {{penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPhysical).isMailing ? "and Office Mailing Address" : ""}}</h4>
+              <una-address-ro addr="penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPhysical)"></una-address-ro>
+            </div>
+            <div class="well well-sm" ng-show="!penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPhysical).isMailing && !!penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPostal).suburb">
+              <h4>Office Mailing Address</h4>
+              <una-address-ro addr="penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPostal)"></una-address-ro>
+            </div>
+          </div>
+        </div>
+        <div class="bs-docs-section">
+          <h2 id="PenaltyInfrastructureLocation">
+            <a class="anchorjs-link" href="#PenaltyInfrastructureLocation" aria-label="Anchor link for: penalty infrastructure location">Location / Route of Infrastructure</a>
+          </h2>
+          <div class="form-group row" ng-hide="penalty.infringing.isPreview">
+            <div class="cols-xs-12 col-sm-9 col-lg-6">
+              <p>
+                Drawing on the map, show the route of the infrastructure (to be) removed.<br />
+                The GPS coordinates, and total distance in meters (rounded down to the nearest meter) will be calculated.<br />
+                If you make a mistake then you will need to reset the map to erase all of the routes and start again.
+              </p>
+            </div>
+            <div class="cols-xs-12 col-sm-9 col-lg-6">
+              <p>If you have to declare a lot of infrastructure (to be) removed then you can do multiple submissions as follows:</p>
+              <ol>
+                <li>Enter all of the required contact information above</li>
+                <li>Draw a section of the infrastructure below</li>
+                <li>Declare the state of the infrastructure</li>
+                <li>"Preview" and then "Submit" the penalty notice (all the information you have entered will still remain on screen)</li>
+                <li>Click the "Reset Map" button to clear the map data (your newly submitted infrastructure will show up)</li>
+                <li>Draw the next section of infrastructure (to be) removed and continue with step 3 above.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div id="PenaltyInfrastructureMap" ng-controller="geoDataController">
+          <div class="row">
+            <div class="col-xs-12 afterMap">
+              <div id="map" class="center-block" ng-class="{'isPreview': penalty.infringing.isPreview}" showdrawingcontrols penalty></div>
+              <input id="pac-input" type="text" name="pac-input" placeholder="Search Box" class="controls center-block" />
+            </div>
+          </div>
+          <div class="row" ng-hide="penalty.infringing.isPreview">
+            <div class="col-xs-2 col-xs-offset-1 col-sm-offset-2 text-right">Zoom to<br />infrastructure:</div>
+            <div class="col-xs-2" title="Zoom the map to fit your infrastructure"><input class="btn" id="FitMap" type="button" value="Fit Map" ng-click="geoData.FitMap()" /></div>
+            <div class="col-xs-2 text-right">Clear<br />Map Data:</div>
+            <div class="col-xs-2" title="Clear all of the infrastructure data you've drawn"><input class="btn" id="ResetMap" type="button" value="Reset Map" ng-click="geoData.ResetMap(true)" /></div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <h3 id="PenaltyInfrastructureLocationCalculation">Location Details</h3>
+            </div>
+          </div>
+          <div class="row" ng-show="!!penalty.infringing.locationRoutes && penalty.infringing.locationRoutes.length > 0">
+            <div class="col-xs-5">
+              <div ng-repeat="locationRoute in penalty.infringing.locationRoutes">
+                <strong>Route of Your Infrastructure</strong>
+                <ul ng-repeat="lonLat in locationRoute">
+                  <li>{{"Lon:" + lonLat[0].toFixed(7) + " Lat:" + lonLat[1].toFixed(7)}}</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-xs-7">
+              <div ng-repeat="locationDescs in penalty.infringing.locationDescriptions">
+                <strong>Location of Your Infrastructure</strong>
+                <ul ng-repeat="locDesc in locationDescs track by $index">
+                  <li>{{locDesc}}</li>
+                </ul>
+              </div>
+            </div>
+            <!-- This hidden field is present to force recalculation of the various fees below -->
+            <pre id="location" ng-show="false">{{penalty | json}}</pre>
+          </div>
+        </div>
+        <div class="bs-docs-section">
+          <h2 id="PenaltyInfrastructureInfState">
+            <a class="anchorjs-link" href="#PenaltyInfrastructureInfState" aria-label="Anchor link for: penalty infrastructure infrastructure state">Infrastructure State</a>
+          </h2>
+          <div class="form-group row">
+            <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Infrastructure state:</label>
+            <div class="col-xs-7 col-sm-8 col-lg-9">
+              <span>{{penalty.infringing.infState}}</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-xs-5 col-sm-4 col-lg-3 text-right">Location Includes:</label>
+            <div class="col-xs-7 col-sm-6" ng-hide="penalty.infringing.isPreview">
+              <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Location">
+                <label class="btn btn-radio btn-primary" ng-class="{'active': penalty.infringing.infLoc === 'Business'}">
+                  <input type="radio" name="infLoc" ng-model="penalty.infringing.infLoc" value="Business" autocomplete="off" ng-required="true"> Business <br />District
+                </label>
+                <label class="btn btn-radio btn-primary" ng-class="{'active': penalty.infringing.infLoc === 'HighDensity'}">
+                  <input type="radio" name="infLoc" ng-model="penalty.infringing.infLoc" value="HighDensity" autocomplete="off" ng-required="true"> High Density <br />Zone
+                </label>
+                <label class="btn btn-radio btn-primary" ng-class="{'active': !penalty.infringing.infLoc === 'Other'}">
+                  <input type="radio" name="infLoc" ng-model="penalty.infringing.infLoc" value="Other" autocomplete="off" ng-required="true"> No Business or <br /> High Density
+                </label>
+              </div>
+            </div>
+            <div class="col-xs-7 col-sm-8 col-lg-9" ng-hide="!penalty.infringing.isPreview">
+              <span>{{penalty.infringing.infLoc === "Business" ? "Business District" : penalty.infringing.infLoc === "HighDensity" ? "High Density Zone" : "No Business or High Density"}}</span>
+            </div>
+          </div>
+        </div>
+        @*<pre ng-show="true">{{penalty.infringing | json}}</pre>
+        <pre ng-show="true">{{calc.fees | json}}</pre>*@
+
+        <div class="bs-docs-section" ng-show="!!penalty.infringing.locationRoutes && penalty.infringing.locationRoutes.length > 0">
+          <h2 id="PenaltyInfrastructureFeeEstimation">
+            <a class="anchorjs-link" href="#PenaltyInfrastructureFeeEstimation" aria-label="Anchor link for: penalty infrastructure fee estimation">Penalty for Removal of Infrastructure Fees</a>
+          </h2>
+          <div>
+            <p ng-hide="penalty.infringing.isPreview">Note that the fees will be recalculated on the server.</p>
+            <p>Assuming that a full and valid declaration for the infrastructure has been made the fees and penalties shown will be correct.</p>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-condensed table-hover">
+              <thead>
+                <tr>
+                  <th class="col-xs-6">Item</th>
+                  <th class="col-xs-1 text-right">Unit</th>
+                  <th class="col-xs-1 text-right">Rate</th>
+                  <th class="col-xs-2">&nbsp;</th>
+                  <th class="col-xs-2 text-right">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="animate-show" ng-repeat="fee in calc.fees | filter: calc.applicationFilter">
+                  <td>{{fee.name}}</td>
+                  <td class="text-right">{{fee.units($parent.penalty.infringing.totalDistance, $parent.penalty.infringing.distances.length, $parent.penalty.infringing.consPermits)}}</td>
+                  <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
+                  <td>{{fee.rateDesc()}}</td>
+                  <td class="text-right">{{fee.total($parent.penalty.infringing.totalDistance, $parent.penalty.infringing.distances.length, $parent.penalty.infringing.consPermits) | currency: "N&nbsp;": 0}}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="animate-show">
+                  <td class="text-right" colspan="4"><strong>Removal of Infringing Infrastructure Fee Total</strong></td>
+                  <td class="text-right"><strong>{{calc.total(calc.fees, calc.applicationFilter, penalty.infringing.totalDistance, penalty.infringing.distances.length, penalty.infringing.consPermits) | currency: "N&nbsp;": 0 }}</strong></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <p ng-hide="!penalty.infringing.isPreview">
+            To pay for the above raise a bank draft / bank cheque <br />
+            to: <strong>{{bankDraftRecipient}}</strong> <br />
+            for the amount of: <strong>{{calc.total(calc.fees, calc.applicationFilter, penalty.infringing.totalDistance, penalty.infringing.distances.length, penalty.infringing.consPermits) | currency: "N&nbsp;": 0 }}</strong>
+          </p>
+          <p ng-hide="!penalty.infringing.isPreview">
+            Present this bank draft/ bank cheque at the @Constants.UnaAbbr office together with this penalty notice. <br />
+            This payment must be made and processed on or before <strong>@DateTime.Now.AddDays(7).ToString("dddd, dd MMMM, yyyy")</strong> or additional penalties will be applied, including daily penalties
+          </p>
+        </div>
+        <div class="bs-docs-section hidden-print">
+          <h2 id="PenaltyInfrastructureSubmit">
+            <a class="anchorjs-link" href="#PenaltyInfrastructureSubmit" aria-label="Anchor link for: penalty infrastructure submit">Preview and Submit Penalty Notice</a>
+          </h2>
+          <p ng-hide="penalty.infringing.isPreview" title="You all required fields entered before the Preview button will be available">Enter all required information above before attempting to Preview and Submit this penalty notice.</p>
+          <p ng-hide="penalty.infringing.isPreview">Note that contact details need to be checked as part of the penalty process.</p>
+          <div class="form-group btn-group col-xs-12 row" aria-label="Print Preview and Submit">
+            <div class="col-xs-3" title="You all required fields entered before the Preview button will be available">
+              <label class="btn btn-radio btn-info" ng-class="{'active': !penalty.infringing.isPreview}" ng-disabled="!(!!penalty.infringing.parties.find(party.findInfOwner).entityType) || penalty.infringing.totalDistance === 0 || penalty.infringing.isPreview || PenaltyInfrastructure.$invalid">
+                <input type="radio" name="isPrintPreview" ng-model="penalty.infringing.isPreview" ng-value="true" ng-change="GDFitMap()" autocomplete="off">Preview &gt;&gt;
+              </label>
+            </div>
+            <div class="col-xs-3">
+              <label class="btn btn-radio btn-warning" ng-class="{'active': penalty.infringing.isPreview}" ng-disabled="!penalty.infringing.isPreview">
+                <input type="radio" name="isPrintPreview" ng-model="penalty.infringing.isPreview" ng-value="false" ng-change="GDFitMap()" autocomplete="off">&lt;&lt; Correct
+              </label>
+            </div>
+            <div class="col-xs-3">
+              <button class="btn btn-primary" id="rowPartiesSave" type="submit" ng-disabled="!penalty.infringing.isPreview">Submit &gt;&gt;</button>
+            </div>
+            <div class="col-xs-3">
+              <div class="bg-success">{{submitResult}}</div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <nav class="col-md-3 col-lg-2 hidden-xs hidden-sm hidden-print" id="rightSideNav">
+      <ul class="nav nav-stacked affix-top" id="sidebar">
+        <li ng-hide="penalty.infringing.isPreview">
+          <a href="#PenaltyInfrastructureInstructions">Instructions</a>
+        </li>
+        <li>
+          <a href="#PenaltyInfrastructureParties">Permit Parties</a>
+          <ul class="nav nav-stacked" ng-show="!!penalty.infringing.parties.find(party.findInfOwner).entityType">
+            <li><a href="#PenaltyInfrastructureOwner">{{penalty.infringing.parties.find(party.findInfOwner).typeDesc}}</a></li>
+            @*<li ng-hide="penalty.infringing.parties.find(party.findInfOwner).isPermitHolder"><a href="#PenaltyPermitHolderContact">Holder Contact</a></li>*@
+          </ul>
+        </li>
+        <li>
+          <a href="#PenaltyInfrastructureLocation">Location</a>
+          <ul class="nav nav-stacked">
+            <li><a href="#PenaltyInfrastructureMap">Map</a></li>
+            <li><a href="#PenaltyInfrastructureLocationCalculation">Details</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#PenaltyInfrastructureInfState">Inf. State</a>
+        </li>
+        <li>
+          <a href="#PenaltyInfrastructureFeeEstimation">Penalties Calc.</a>
+        </li>
+        <li>
+          <a href="#PenaltyInfrastructureSubmit">Submit</a>
+        </li>
+      </ul>
+
+    </nav>
+  </div>
+
+  @*<div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="HeadingConstructionPermit">
+        <h4 class="panel-title">
+          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#ConstructionPermit" aria-expanded="false" aria-controls="collapseRowConstructionPermitHolder">
+            Construction Permit Holder
+          </a>
+        </h4>
+      </div>
+      <div id="ConstructionPermit" class="panel-collapse collapse" role="tabpanel" aria-labelledby="HeadingConstructionPermit">
+        <div class="panel-body">
+          <p>Enter details about how the Construction will be performed.</p>
+          <dl>
+            <dt title="Traffic Management may be Required">Will the construction be in or next to any roadway / driveway / vehicle access?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Vehicle Access">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpVehicleAccess" id="cpVehicleAccessYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpVehicleAccess" id="cpVehicleAccessNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Traffic Management definitely Required">Will vehicle access be obstructed during construction?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Impacting to Vehicle Access">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpVehicleAccessImpact" id="cpVehicleAccessImpactYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpVehicleAccessImpact" id="cpVehicleAccessImpactNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Pedestrian Management may be Required">Will the construction be in or next to any pathway / walkway / pedestrian access?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Pedestrian Access">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpPedestrianAccess" id="cpPedestrianAccessYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpPedestrianAccess" id="cpPedestrianAccessNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Pedestrian Management definitely Required">Will pedestrian access be obstructed during construction?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Impacting to Pedestrian Access">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpPedestrianAccessImpact" id="cpPedestrianAccessImpactYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpPedestrianAccessImpact" id="cpPedestrianAccessImpactNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Engineering Report may be Required">Will the construction be in, under or next to any structure?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Structure">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpStructure" id="cpStructureYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpStructure" id="cpStructureNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Engineering Report definitely Required">Will any structure next to / over the construction be potentially affected in terms of its appearance / function / structural integrity?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Potentially Impacting Structure">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpStructureImpact" id="cpStructureImpactYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpStructureImpact" id="cpStructureImpactNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+          </dl>
+          <p>Enter details about the immediate area (50m) around Construction.</p>
+          <dl>
+            <dt title="Restricted Hours of Operation, Noise Levels, Use of Artificial Lighting, Number of Vehicles parked on street">Are there residential dwellings?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Residences">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpAreaResidential" id="cpAreaResidentialYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpAreaResidential" id="cpAreaResidentialNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Restricted Hours of Operation, Noise Levels, Number of Vehicles parked on street">Are there office buildings?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Offices">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpAreaOffice" id="cpAreaOfficeYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpAreaOffice" id="cpAreaOfficeNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Restricted Number of Vehicles parked on street">Are there industrial buildings and other structures?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Industry and Other Structures">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpAreaIndustrial" id="cpAreaIndustrialYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpAreaIndustrial" id="cpAreaIndustrialNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+            <dt title="Restricted Number of Vehicles parked on street, potential security restrictions">Are there Federal / State services (including emergency services, hospitals)?</dt>
+            <dd>
+              <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Federal / State Services / Emergency Services">
+                <label class="btn btn-primary active">
+                  <input type="radio" name="cpAreaSpecial" id="cpAreaSpecialYes" autocomplete="off" checked> Yes
+                </label>
+                <label class="btn btn-primary">
+                  <input type="radio" name="cpAreaSpecial" id="cpAreaSpecialNo" autocomplete="off"> No
+                </label>
+              </div>
+            </dd>
+          </dl>
+          <p>Enter the required details for whom the Construction permit(s) will be issued to.</p>
+          <dl>
+            <dt>Organisation Name</dt>
+            <dd><input id="cpOrgName" type="text" /></dd>
+            <dt>Organisation Physical Address</dt>
+            <dd><input id="cpOrgAddressPhysical" type="text" /></dd>
+            <dt>Organisation Mailing Address</dt>
+            <dd><input id="cpOrgAddressMailing" type="text" /></dd>
+            <dt>Organisation Phone Number</dt>
+            <dd><input id="cpOrgPhone" type="text" /></dd>
+            <dt>Organisation Email Address</dt>
+            <dd><input id="cpOrgEmail" type="email" /></dd>
+            <dt>Organisation Contact Person</dt>
+            <dd><input id="cpOrgContact" type="text" /></dd>
+            <dt>Organisation Contact Phone</dt>
+            <dd><input id="cpOrgContactPhone" type="text" /></dd>
+          </dl>
+          <p>Construction permits have a short life span and are limited in area. The area will also be limited on the basis of how the construction will impact the use of public assets such as roads and footpaths.</p>
+          <p>We recommend you break up your route into several areas and request an appropriate number of Construction permits covering each area and spread across several time periods. Taking into account all of the factors that will affect your construction.</p>
+        </div>
+      </div>
+    </div>*@
+</div>
+
+@section scripts
+{
+  <script src="@mapInitUrl" async defer></script>
+}

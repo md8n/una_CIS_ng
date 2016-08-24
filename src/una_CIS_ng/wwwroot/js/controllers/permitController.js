@@ -153,14 +153,15 @@
       }
     };
 
-    permitScope.permit.findHolder = function (elem) { return elem.type === "holder" };
-    permitScope.permit.findHolderContact = function (elem) { return elem.type === "holderContact" };
-    permitScope.permit.findInfOwner = function (elem) { return elem.type === "infOwner" };
+    permitScope.party = {};
+    permitScope.party.findHolder = function (elem) { return elem.type === "holder" };
+    permitScope.party.findHolderContact = function (elem) { return elem.type === "holderContact" };
+    permitScope.party.findInfOwner = function (elem) { return elem.type === "infOwner" };
 
     permitScope.permit.setInfOwnerRequired = function () {
       var ppsrp = $scope.permit.permits.row.parties;
-      var holder = ppsrp.find(permitScope.permit.findHolder);
-      var infOwner = ppsrp.find(permitScope.permit.findInfOwner);
+      var holder = ppsrp.find(permitScope.party.findHolder);
+      var infOwner = ppsrp.find(permitScope.party.findInfOwner);
 
       infOwner.isRequired = !holder.isInfrastructureOwner;
       infOwner.addresses.forEach(function(addr) { addr.isRequired = infOwner.isRequired; });
@@ -175,29 +176,29 @@
     permitScope.map.locationPolylines = [];
     permitScope.map.markers = [];
 
-    permitScope.permit.calc = permitScope.permit.calc || {};
-    permitScope.permit.calc.fees = [];
+    permitScope.calc = permitScope.calc || {};
+    permitScope.calc.fees = [];
 
     var handleFeeDefinitions = function (response) {
-      permitScope.permit.calc.fees = permitScope.permit.calc.fees || [];
+      permitScope.calc.fees = permitScope.calc.fees || [];
       if (!!response) {
         var scopePrefix = "permitScope.permit.permits.row.";
-        permitScope.permit.calc.fees = response.map(function (obj) { return new feeDefinition(obj.feeType, obj.condition.replace(/\bcalc\./g, scopePrefix), obj.name, obj.unit, obj.divider, obj.measure, !!obj.rate ? obj.rate : obj.rateDesc); });
+        permitScope.calc.fees = response.map(function (obj) { return new feeDefinition(obj.feeType, obj.condition.replace(/\bcalc\./g, scopePrefix), obj.name, obj.unit, obj.divider, obj.measure, !!obj.rate ? obj.rate : obj.rateDesc); });
       }
     };
-    permitScope.permit.calc.All = feeDefinitionService.query(handleFeeDefinitions);
+    permitScope.calc.All = feeDefinitionService.query(handleFeeDefinitions);
 
-    permitScope.permit.calc.applicationFilter = function (element) {
-      var calc = $scope.permit.calc;
+    permitScope.calc.applicationFilter = function (element) {
+      var calc = $scope.calc;
       return (element.feeType === "application" || element.feeType === "penalty") && eval(element.condition);
     };
 
-    permitScope.permit.calc.undeclaredFilter = function (element) {
-      var calc = $scope.permit.calc;
+    permitScope.calc.undeclaredFilter = function (element) {
+      var calc = $scope.calc;
       return (element.feeType === "application" || element.feeType === "penaltyUndeclared") && eval(element.condition);
     };
 
-    permitScope.permit.calc.total = function (elements, filter, dimension, section, permits) {
+    permitScope.calc.total = function (elements, filter, dimension, section, permits) {
       var els = filter ? elements.filter(filter) : elements;
 
       if (els.length === 0) {

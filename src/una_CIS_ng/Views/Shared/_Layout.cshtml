@@ -10,7 +10,7 @@
 
   <environment names="Development">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/lib/angular-ui-bootstrap/ui-bootstrap-csp.css"/>
+    <link rel="stylesheet" href="~/lib/angular-ui-bootstrap/ui-bootstrap-csp.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/bs-callout.css" />
     <link rel="stylesheet" href="~/css/sidebar.css" />
@@ -18,8 +18,8 @@
   <environment names="Staging,Production">
     <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
           asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"/>
-    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true"/>
+          asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
   </environment>
 
   @RenderSection("styles", required: false)
@@ -86,18 +86,21 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="~/js/PolyfillArray.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @*<script src="~/js/unaMap.js" asp-append-version="true"></script>*@
     <script src="~/js/unaApp.js" asp-append-version="true"></script>
     <script src="~/js/services/geoDataServiceFactory.js" asp-append-version="true"></script>
-    <script src="~/js/services/permitServiceFactory.js" asp-append-version="true"></script>
+    <script src="~/js/services/penaltyServiceFactory.js" asp-append-version="true"></script>
     <script src="~/js/services/feeDefinitionServiceFactory.js" asp-append-version="true"></script>
+    <script src="~/js/services/permitServiceFactory.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/permitController.js" asp-append-version="true"></script>
+    <script src="~/js/services/penaltyServiceFactory.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/penaltyController.js" asp-append-version="true"></script>
     <script src="~/js/factories/feeDefinitionFactory.js" asp-append-version="true"></script>
     <script src="~/js/directives/unaAddress.js" asp-append-version="true"></script>
     <script src="~/js/directives/unaAddressRo.js" asp-append-version="true"></script>
     <script src="~/js/directives/unaParty.js" asp-append-version="true"></script>
     <script src="~/js/directives/unaPartyRo.js" asp-append-version="true"></script>
     <script src="~/js/controllers/geoDataController.js" asp-append-version="true"></script>
-    <script src="~/js/controllers/permitController.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/penaltyController.js" asp-append-version="true"></script>
     <script src="~/js/controllers/feeCalculatorController.js" asp-append-version="true"></script>
     <script src="~/js/sidebar.js" asp-append-version="true" type="text/javascript"></script>
   </environment>

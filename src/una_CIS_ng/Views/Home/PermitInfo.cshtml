@@ -64,202 +64,33 @@
         </dd>
       </dl>
       <p>For a Right-of-Way Permit most operators will be the Permit Holder and Infrastructure Owner, and they will have a person from within their organisation to be the Permit Holder Contact.</p>
-      <h3 id="PermitInfoFees">Fees, Charges and Penalties for Issuing and Retaining Permits</h3>
+      <h3 id="PermitInfoFees">Fees, Charges and Penalties</h3>
       <p>
         Note: These fees, charges and penalties, and the rules related to their application,
         are subject to change at the discretion of @Constants.LasimraAbbr and at the discretion of its appointed agencies (after consultation with @Constants.LasimraAbbr).
         No refund is offered for any changes.
       </p>
-      <div class="table-responsive">
-        <table class="table table-striped table-hover table-condensed">
+      <div class="table-responsive" ng-controller="feeCalculatorController">
+        <table class="table table-striped table-condensed table-hover">
           <thead>
             <tr>
-              <th class="col-xs-1">Charge Type</th>
-              <th class="col-xs-1 text-center">Schedule</th>
-              <th class="col-xs-6 text-center">Description</th>
-              <th class="col-xs-3 text-center">Rate</th>
-              <th class="col-xs-1 text-center">Charge</th>
+              <th class="col-xs-2">Type</th>
+              <th class="col-xs-7">Description</th>
+              <th class="col-xs-1 text-right">Rate</th>
+              <th class="col-xs-2">&nbsp;</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Permit</td>
-              <td>Application</td>
-              <td>Application Form Fee</td>
-              <td class="text-center">flat fee</td>
-              <td class="text-right">N50,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Application</td>
-              <td>Construction - Tower / Mast / Dish</td>
-              <td class="text-center">flat fee</td>
-              <td class="text-right">N20,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Application</td>
-              <td>Construction - Underground</td>
-              <td class="text-center">flat fee</td>
-              <td class="text-right">N10,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Application</td>
-              <td>Transmission Tower Elevation</td>
-              <td class="text-center">for every three (3) feet<br />(0.914 metres)</td>
-              <td class="text-right">N10,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Application</td>
-              <td>(Other) Tower Elevation</td>
-              <td class="text-center">for every five (5) feet<br />(1.524 metres)</td>
-              <td class="text-right">N8,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Application</td>
-              <td>Dish Diameter</td>
-              <td class="text-center">for every 1.5 metres<br />(~4 feet 11 inches)</td>
-              <td class="text-right">N100,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Application</td>
-              <td>Location in Business / High Density Zone</td>
-              <td class="text-center">flat fee</td>
-              <td class="text-right">N50,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Application</td>
-              <td>Right-of-Way - Underground Horizontal Drilling</td>
-              <td class="text-center">per metre</td>
-              <td class="text-right">N500</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Application</td>
-              <td>Right-of-Way - Underground Horizontal Drilling Pits (x2)</td>
-              <td class="text-center">per section</td>
-              <td class="text-right">N6,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Application</td>
-              <td>Right-of-Way - Underground Trenching</td>
-              <td class="text-center">per metre</td>
-              <td class="text-right">N3,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Application</td>
-              <td>Right-of-Way - Underground Remediation</td>
-              <td class="text-center">per metre</td>
-              <td class="text-right">N10,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Annual</td>
-              <td>Location Fee (first).  To be paid with Application Fee</td>
-              <td class="text-center">flat fee</td>
-              <td class="text-right">N50,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Annual</td>
-              <td>Location Fee - Tower</td>
-              <td class="text-center">for every five (5) feet<br />(1.524 metres)</td>
-              <td class="text-right">N2,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Annual</td>
-              <td>Application Renewal (first anniversary)</td>
-              <td class="text-center">flat fee</td>
-              <td class="text-right">N25,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Annual</td>
-              <td>Permit Renewal - Tower</td>
-              <td class="text-center">for every five (5) feet<br />(1.524 metres) or part therein</td>
-              <td class="text-right">N10,000</td>
-            </tr>
-            <tr>
-              <td>Permit</td>
-              <td>Annual</td>
-              <td>Permit Renewal - Dish</td>
-              <td class="text-center">flat fee</td>
-              <td class="text-right">N100,000</td>
-            </tr>
-            <tr>
-              <td>Temporary Permit</td>
-              <td>Annual</td>
-              <td>Existing (un-permitted) Infrastructure - Application</td>
-              <td class="text-center">flat fee</td>
-              <td class="text-right">N50,000</td>
-            </tr>
-            <tr>
-              <td>Temporary Permit</td>
-              <td>Annual</td>
-              <td>Existing (un-permitted) Infrastructure - Transmission Tower Elevation</td>
-              <td class="text-center">for every three (3) feet<br />(0.914 metres)</td>
-              <td class="text-right">N12,000</td>
-            </tr>
-            <tr>
-              <td>Temporary Permit</td>
-              <td>Annual</td>
-              <td>Existing (un-permitted) Infrastructure - Dish Diameter</td>
-              <td class="text-center">for every 1.5 metres<br />(~4 feet 11 inches) or part therein</td>
-              <td class="text-right">N100,000</td>
-            </tr>
-            <tr>
-              <td>Settlement Fee</td>
-              <td>Annual</td>
-              <td>Existing Non-Conforming Antenna - As assessed and agreed with @Constants.LasimraAbbr or its Agent</td>
-              <td class="text-center">flat fee</td>
-              <td class="text-right">N50,000<br />- N250,000</td>
-            </tr>
-            <tr>
-              <td>Penalty</td>
-              <td>Offence</td>
-              <td>Unused Infrastructure - Failure to notify, to decommission, and / or to decommission within thirty (30) days.</td>
-              <td class="text-center">flat fee<br />(per infrastructure)</td>
-              <td class="text-right">N25,000</td>
-            </tr>
-            <tr>
-              <td>Penalty</td>
-              <td>Offence</td>
-              <td>Failure to rectify after notice period has expired.  @Constants.LasimraAbbr or its Agent orders action</td>
-              <td class="text-center">flat fee<br />(per infrastructure)</td>
-              <td class="text-right">Cost of action<br />(all inclusive)</td>
-            </tr>
-            <tr>
-              <td>Penalty</td>
-              <td>Offence</td>
-              <td>Un-permitted Underground Infrastructure - Declared by Operator</td>
-              <td class="text-center">per metre</td>
-              <td class="text-right">N20,000</td>
-            </tr>
-            <tr>
-              <td>Penalty</td>
-              <td>Offence</td>
-              <td>Un-permitted Underground Infrastructure - Discovered by Audit</td>
-              <td class="text-center">per metre</td>
-              <td class="text-right">N50,000</td>
-            </tr>
-            <tr>
-              <td>Penalty</td>
-              <td>Offence</td>
-              <td>Every other contravention or omission without a specific penalty listed above</td>
-              <td class="text-center">daily flat fee<br />(per offence)</td>
-              <td class="text-right">N50,000</td>
+            <tr class="animate-show" ng-repeat="fee in calc.fees">
+              <td>{{fee.feeType}}</td>
+              <td>{{fee.name}}</td>
+              <td class="text-right">{{fee.rate | currency: "N&nbsp;": 0}}</td>
+              <td>{{fee.rateDesc()}}</td>
             </tr>
           </tbody>
         </table>
       </div>
+
       <h3 id="PermitInfoNotes">Important Notes about Permits</h3>
       <p id="PermitInfoPayment">Paying for Permits</p>
       <ul>

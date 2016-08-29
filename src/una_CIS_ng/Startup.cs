@@ -115,7 +115,7 @@ namespace una_CIS_ng
       cspPolicy += "form-action " + defCsp + "; ";
       cspPolicy += "connect-src " + defCsp + "; ";
       // TODO: Figure out what needs unsafe inline and unsafe eval (fee directives does need eval)
-      cspPolicy += "script-src 'unsafe-inline' 'unsafe-eval' " + defCsp + " https://maps.googleapis.com https://ajax.googleapis.com dc.services.visualstudio.com; ";
+      cspPolicy += "script-src 'unsafe-eval' " + defCsp + " https://maps.googleapis.com https://ajax.googleapis.com dc.services.visualstudio.com; ";
       cspPolicy += "style-src 'unsafe-inline' " + defCsp + " https://fonts.googleapis.com; ";
       cspPolicy += "font-src " + defCsp + " https://fonts.gstatic.com; ";
       cspPolicy += "img-src " + defCsp + " https://maps.googleapis.com https://maps.gstatic.com https://csi.gstatic.com; ";

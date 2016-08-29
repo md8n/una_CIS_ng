@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using una_CIS_ng.Data;
 using una_CIS_ng.Models;
 using una_CIS_ng.Repository;
@@ -60,6 +64,14 @@ namespace una_CIS_ng
       });
 
       services.AddMvc();
+      services.Configure<MvcOptions>(options =>
+      {
+        options.InputFormatters
+          .OfType<JsonInputFormatter>()
+          .First()
+          .SupportedMediaTypes
+          .Add(MediaTypeHeaderValue.Parse("application/csp-report"));
+      });
       services.AddMvcCore();
 
       // Add application services.
@@ -68,7 +80,7 @@ namespace una_CIS_ng
 
       // Add repository services.
       services.AddSingleton<IGeoDataRepository, GeoDataRepository>();
-      services.AddSingleton<IFeeDefinitionRepository,FeeDefinitionRepository>();
+      services.AddSingleton<IFeeDefinitionRepository, FeeDefinitionRepository>();
       services.AddSingleton<IPermitRepository, PermitRepository>();
       services.AddSingleton<IPenaltyRepository, PenaltyRepository>();
 
@@ -82,22 +94,44 @@ namespace una_CIS_ng
 
       app.UseApplicationInsightsRequestTelemetry();
 
+
+      string defCsp;
       if (env.IsDevelopment())
       {
+        defCsp = "'self' http://una.cis.ng/ http://localhost:5000/";
+
         app.UseDeveloperExceptionPage();
         app.UseDatabaseErrorPage();
         app.UseBrowserLink();
       }
       else
       {
+        defCsp = "'self' http://una.cis.ng/ http://unacisng.azurewebsites.net/";
+
         app.UseExceptionHandler("/Home/Error");
       }
+
+      var cspPolicy = "default-src 'none'; ";
+      cspPolicy += "form-action " + defCsp + "; ";
+      cspPolicy += "connect-src " + defCsp + "; ";
+      // TODO: Figure out what needs unsafe inline and unsafe eval (fee directives does need eval)
+      cspPolicy += "script-src 'unsafe-inline' 'unsafe-eval' " + defCsp + " https://maps.googleapis.com https://ajax.googleapis.com dc.services.visualstudio.com; ";
+      cspPolicy += "style-src 'unsafe-inline' " + defCsp + " https://fonts.googleapis.com; ";
+      cspPolicy += "font-src " + defCsp + " https://fonts.gstatic.com; ";
+      cspPolicy += "img-src " + defCsp + " https://maps.googleapis.com https://maps.gstatic.com https://csi.gstatic.com; ";
+      cspPolicy += "object-src " + defCsp + "; ";
+      cspPolicy += "report-uri /cspreport; ";
 
       app.UseApplicationInsightsExceptionTelemetry();
       app.UseStaticFiles();
       app.UseIdentity();
 
       // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
+      app.Use(async (ctx, next) =>
+      {
+        ctx.Response.Headers.Add("Content-Security-Policy", cspPolicy);
+        await next();
+      });
 
       app.UseMvc(routes =>
       {

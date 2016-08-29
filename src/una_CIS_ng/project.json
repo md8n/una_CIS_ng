@@ -42,7 +42,7 @@
       "type": "build"
     },
     "MongoDB.Driver": "2.2.4",
-    "Sendgrid": "8.0.2"
+    "Sendgrid": "8.0.4"
   },
 
   "tools": {

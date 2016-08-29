@@ -1949,7 +1949,7 @@
       "runtime.native.System.Security.Cryptography/4.0.0-rc2-24027": {
         "type": "package"
       },
-      "Sendgrid/8.0.2": {
+      "Sendgrid/8.0.4": {
         "type": "package",
         "dependencies": {
           "Microsoft.AspNet.WebApi.Client": "5.2.3",
@@ -4534,12 +4534,12 @@
         "runtime.native.System.Security.Cryptography.nuspec"
       ]
     },
-    "Sendgrid/8.0.2": {
-      "sha512": "8gIDRom2EVSVtsqOoJukEnNwL9qQcyF6nETQqFLnFklCrNsKECnQbxGPXL3Kx3N3rN3hO2e7kbaQC1Xf2UzU5A==",
+    "Sendgrid/8.0.4": {
+      "sha512": "JdA9tSswDEG3j+n2wqYjemPdbemYVnWum3VST6S5GBzb/g7lftrfESvv683cvrqa2zIWuVNVni6nhqYxPGsuPw==",
       "type": "package",
-      "path": "Sendgrid/8.0.2",
+      "path": "Sendgrid/8.0.4",
       "files": [
-        "Sendgrid.8.0.2.nupkg.sha512",
+        "Sendgrid.8.0.4.nupkg.sha512",
         "Sendgrid.nuspec",
         "lib/SendGrid.dll"
       ]
@@ -7253,7 +7253,7 @@
       "Microsoft.VisualStudio.Web.CodeGeneration.Tools >= 1.0.0-preview1-final",
       "Microsoft.VisualStudio.Web.CodeGenerators.Mvc >= 1.0.0-preview1-final",
       "MongoDB.Driver >= 2.2.4",
-      "Sendgrid >= 8.0.2",
+      "Sendgrid >= 8.0.4",
       "iTextSharp-LGPL >= 4.1.6"
     ],
     ".NETFramework,Version=v4.6.1": []

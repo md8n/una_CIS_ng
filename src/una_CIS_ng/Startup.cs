@@ -95,10 +95,10 @@ namespace una_CIS_ng
       app.UseApplicationInsightsRequestTelemetry();
 
 
-      string defCsp;
+      var defCsp = "'self' http://una.cis.ng/ https://maxcdn.bootstrapcdn.com/ ";
       if (env.IsDevelopment())
       {
-        defCsp = "'self' http://una.cis.ng/ http://localhost:5000/ https://ajax.aspnetcdn.com/";
+        defCsp += "http://localhost:5000/";
 
         app.UseDeveloperExceptionPage();
         app.UseDatabaseErrorPage();
@@ -106,7 +106,7 @@ namespace una_CIS_ng
       }
       else
       {
-        defCsp = "'self' http://una.cis.ng/ http://unacisng.azurewebsites.net/  https://ajax.aspnetcdn.com/";
+        defCsp += "http://unacisng.azurewebsites.net/";
 
         app.UseExceptionHandler("/Home/Error");
       }
@@ -120,6 +120,7 @@ namespace una_CIS_ng
       cspPolicy += "font-src " + defCsp + " https://fonts.gstatic.com/; ";
       cspPolicy += "img-src " + defCsp + " https://maps.googleapis.com/ https://maps.gstatic.com/ https://csi.gstatic.com/; ";
       cspPolicy += "object-src " + defCsp + "; ";
+      cspPolicy += "manifest-src " + defCsp + "; ";
       cspPolicy += "report-uri /cspreport; ";
 
       app.UseApplicationInsightsExceptionTelemetry();
@@ -130,6 +131,9 @@ namespace una_CIS_ng
       app.Use(async (ctx, next) =>
       {
         ctx.Response.Headers.Add("Content-Security-Policy", cspPolicy);
+        ctx.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+        ctx.Response.Headers.Add("X-Frame-Options", "DENY");
+        ctx.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
         await next();
       });
 

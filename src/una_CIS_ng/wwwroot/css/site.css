@@ -93,13 +93,13 @@ dl.dl-horizontal dt {
   height: 360px; /* 270 pt */
 }
 
-#map.isPreview {
-  pointer-events: none;
-}
+  #map.isPreview {
+    pointer-events: none;
+  }
 
-#map.isPreview .gmnoprint, #map.isPreview .gm-style-cc, #map.isPreview .gm-fullscreen-control, #map.isPreview #pac-input {
-  display: none;
-}
+    #map.isPreview .gmnoprint, #map.isPreview .gm-style-cc, #map.isPreview .gm-fullscreen-control, #map.isPreview #pac-input {
+      display: none;
+    }
 
 .afterMap {
   padding-bottom: 15px;
@@ -151,6 +151,19 @@ dl.dl-horizontal dt {
   width: 345px;
 }
 
+.flex-container {
+  /*display: flex;*/
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+  .flex-container > .animate-show {
+    flex: 0 1 auto;
+  }
+
 .animate-show.ng-hide-add, .animate-show.ng-leave {
   animation: animBlockRem 0.8s ease-in-out;
 }
@@ -161,17 +174,18 @@ dl.dl-horizontal dt {
 
 @keyframes animBlockAdd {
   0% {
-    /*display: none;*/
+    display: none;
     opacity: 0;
   }
 
   1% {
-    /*display: block;*/
+    display: block;
     opacity: 0;
     transform: scaleY(0);
   }
 
   100% {
+    display: block;
     opacity: 1;
     transform: scaleY(1);
   }
@@ -179,17 +193,18 @@ dl.dl-horizontal dt {
 
 @keyframes animBlockRem {
   100% {
-    /*display: none;*/
+    display: none;
     opacity: 0;
   }
 
   99% {
-    /*display: block;*/
+    display: block;
     opacity: 0;
     transform: scaleY(0);
   }
 
   0% {
+    display: block;
     opacity: 1;
     transform: scaleY(1);
   }

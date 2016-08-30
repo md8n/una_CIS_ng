@@ -11,20 +11,22 @@
     </div>
   </div>
 </div>
-<div class="form-group animate-show" ng-show="partyInfo.entityType === 'Person'">
-  <div class="col-sm-4">
-    <label title="Personal names / First names">Personal name</label>
-    <input class="form-control" type="text" name="{{'row_' + partyInfo.type + '_PersonalName'}}" placeholder="Personal name" ng-model="partyInfo.personalName" maxlength="128" ng-required="partyInfo.isRequired && partyInfo.entityType === 'Person'">
+<div class="flex-container">
+  <div class="form-group animate-show" ng-show="partyInfo.entityType === 'Person'">
+    <div class="col-sm-4">
+      <label title="Personal names / First names">Personal name</label>
+      <input class="form-control" type="text" name="{{'row_' + partyInfo.type + '_PersonalName'}}" placeholder="Personal name" ng-model="partyInfo.personalName" maxlength="128" ng-required="partyInfo.isRequired && partyInfo.entityType === 'Person'">
+    </div>
+    <div class="col-sm-5">
+      <label title="Surname / Family name / Patronymic">Surname</label>
+      <input class="form-control" type="text" name="{{'row_' + partyInfo.type + '_Surname'}}" placeholder="Surname" ng-model="partyInfo.surname" maxlength="128" ng-required="partyInfo.isRequired && partyInfo.entityType === 'Person'">
+    </div>
   </div>
-  <div class="col-sm-5">
-    <label title="Surname / Family name / Patronymic">Surname</label>
-    <input class="form-control" type="text" name="{{'row_' + partyInfo.type + '_Surname'}}" placeholder="Surname" ng-model="partyInfo.surname" maxlength="128" ng-required="partyInfo.isRequired && partyInfo.entityType === 'Person'">
-  </div>
-</div>
-<div class="form-group animate-show" ng-show="partyInfo.entityType === 'Organisation'">
-  <label class="col-sm-4 col-lg-3 text-right">Organisation Name</label>
-  <div class="col-sm-5">
-    <input class="form-control" name="{{'row_' + partyInfo.type + '_Name'}}" type="text" placeholder="Name" ng-model="partyInfo.name" maxlength="128" ng-required="partyInfo.isRequired && partyInfo.entityType === 'Organisation'">
+  <div class="form-group animate-show" ng-show="partyInfo.entityType === 'Organisation'">
+    <label class="col-sm-4 col-lg-3 text-right">Organisation Name</label>
+    <div class="col-sm-5">
+      <input class="form-control" name="{{'row_' + partyInfo.type + '_Name'}}" type="text" placeholder="Name" ng-model="partyInfo.name" maxlength="128" ng-required="partyInfo.isRequired && partyInfo.entityType === 'Organisation'">
+    </div>
   </div>
 </div>
 <div class="animate-show" ng-show="!!partyInfo.entityType">

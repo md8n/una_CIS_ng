@@ -97,7 +97,7 @@ dl.dl-horizontal dt {
   pointer-events: none;
 }
 
-#map.isPreview .gmnoprint, #map.isPreview .gm-style-cc, #map.isPreview .gm-fullscreen-control, #map.isPreview #pac-input  {
+#map.isPreview .gmnoprint, #map.isPreview .gm-style-cc, #map.isPreview .gm-fullscreen-control, #map.isPreview #pac-input {
   display: none;
 }
 
@@ -132,9 +132,9 @@ dl.dl-horizontal dt {
   margin-right: auto;
 }
 
-#pac-input:focus {
-  border-color: #4d90fe;
-}
+  #pac-input:focus {
+    border-color: #4d90fe;
+  }
 
 #type-selector {
   color: #fff;
@@ -142,13 +142,57 @@ dl.dl-horizontal dt {
   padding: 5px 11px 0px 11px;
 }
 
-#type-selector label {
-  font-size: 13px;
-  font-weight: 300;
-}
+  #type-selector label {
+    font-size: 13px;
+    font-weight: 300;
+  }
 
 #target {
   width: 345px;
+}
+
+.animate-show.ng-hide-add, .animate-show.ng-leave {
+  animation: animBlockRem 0.8s ease-in-out;
+}
+
+.animate-show.ng-hide-remove, .animate-show.ng-enter {
+  animation: animBlockAdd 0.8s ease-in-out;
+}
+
+@keyframes animBlockAdd {
+  0% {
+    /*display: none;*/
+    opacity: 0;
+  }
+
+  1% {
+    /*display: block;*/
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes animBlockRem {
+  100% {
+    /*display: none;*/
+    opacity: 0;
+  }
+
+  99% {
+    /*display: block;*/
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  0% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
 }
 
 /* Special reduced sizes for very small screens */

@@ -38,7 +38,7 @@
     <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Permit state:</label>
     <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure State">
-        <label class="btn btn-radio btn-primary" ng-class="{'active': calc.permState == 'New'}" ng-show="calc.infState !== 'Infringing'">
+        <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'New'}" ng-show="calc.infState !== 'Infringing'">
           <input type="radio" name="permState" ng-model="calc.permState" value="New" autocomplete="off" ng-required="true"> Applying<br />for New
         </label>
         <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'Temporary'}" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
@@ -50,21 +50,21 @@
         <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'Cannot'}" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
           <input type="radio" name="permState" ng-model="calc.permState" value="Cannot" autocomplete="off" ng-required="true"> Cannot Apply<br />(non-conforming)
         </label>
-        <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'None'}" ng-hide="calc.infState !== 'Infringing'">
+        <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.permState == 'None'}" ng-show="calc.infState === 'Infringing'">
           <input type="radio" name="permState" ng-model="calc.permState" value="None" autocomplete="off" ng-required="true"> None
         </label>
       </div>
       <ul>
-        <li class="small" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
+        <li class="small animate-show" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
           Temporary Permits and Non-Conforming Permits are only for existing infrastructure, built before July 2004, and expire after one year.
         </li>
-        <li class="small" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
+        <li class="small animate-show" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
           If applying for a Temporary Permit, you will still have to apply for a Right-of-Way Permit to keep your infrastructure or a Construction Permit to Decommission your infrastructure.
         </li>
-        <li class="small" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
+        <li class="small animate-show" ng-show="calc.infState !== 'Planned' && calc.infState !== 'Infringing'">
           If applying for a Non-Conforming Permit, you will still have to apply for a Construction Permit to Decommission your infrastructure.
         </li>
-        <li class="small" ng-hide="calc.infState !== 'Infringing'">
+        <li class="small animate-show" ng-show="calc.infState === 'Infringing'">
           Select 'None' for Infrastructure being removed by LASIMRA or their authorised agencies.
         </li>
       </ul>
@@ -89,11 +89,11 @@
       </div>
     </div>
   </div>
-  <div class="form-group row" ng-class="{'bg-danger': !calc.infDisc}" ng-show="calc.infState != 'Planned' && calc.permState != 'Existing' && calc.infType == 'Underground'">
+  <div class="form-group row animate-show" ng-class="{'bg-danger': !calc.infDisc}" ng-show="calc.infState != 'Planned' && calc.permState != 'Existing' && calc.infType == 'Underground'">
     <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Un-permitted Infrastructure Discovery:</label>
     <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
-        <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infDisc == 'Declared'}" ng-show="calc.infState !== 'Infringing'">
+        <label class="btn btn-radio btn-primary animate-show" ng-class="{'active': calc.infDisc == 'Declared'}" ng-show="calc.infState !== 'Infringing'">
           <input type="radio" name="consType" ng-model="calc.infDisc" value="Declared" autocomplete="off" ng-required="true"> Declared by Owner
         </label>
         <label class="btn btn-radio btn-primary" ng-class="{'active': calc.infDisc == 'Discovered'}">
@@ -101,13 +101,13 @@
         </label>
       </div>
       <ul>
-        <li class="small" ng-hide="calc.infState !== 'Infringing'">
+        <li class="small animate-show" ng-show="calc.infState === 'Infringing'">
           Select 'Discovered by Audit' for Infrastructure being removed by LASIMRA or their authorised agencies.
         </li>
       </ul>
     </div>
   </div>
-  <div class="form-group row" ng-class="{'bg-danger': !calc.consType}" ng-show="calc.infState !== 'Infringing' && calc.infType === 'Underground'">
+  <div class="form-group row animate-show" ng-class="{'bg-danger': !calc.consType}" ng-show="calc.infState !== 'Infringing' && calc.infType === 'Underground'">
     <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Construction Method:</label>
     <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="btn-group btn-group-justified" role="group" aria-label="Infrastructure Type">
@@ -146,7 +146,7 @@
       </div>
     </div>
   </div>
-  <div class="form-group row" ng-class="{'bg-danger': calc.consPermits < 1}" ng-show="calc.infState == 'Planned' && calc.infType === 'Underground'">
+  <div class="form-group row animate-show" ng-class="{'bg-danger': calc.consPermits < 1}" ng-show="calc.infState == 'Planned' && calc.infType === 'Underground'">
     <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Construction Permits:</label>
     <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="input-group">
@@ -159,7 +159,7 @@
       </ul>
     </div>
   </div>
-  <div class="form-group row" ng-class="{'bg-danger': calc.section < 1}" ng-show="calc.infType === 'Underground' && calc.consType === 'HorizontalDrilling'">
+  <div class="form-group row animate-show" ng-class="{'bg-danger': calc.section < 1}" ng-show="calc.infType === 'Underground' && calc.consType === 'HorizontalDrilling'">
     <label class="col-xs-3 col-sm-4 col-md-3 col-lg-2 text-right">Sections:</label>
     <div class="col-xs-9 col-sm-8 col-md-9 col-lg-10">
       <div class="input-group">
@@ -196,7 +196,7 @@
       </tfoot>
     </table>
   </div>
-  <div ng-show="calc.infState !== 'Infringing'">
+  <div class="animate-show" ng-show="calc.infState !== 'Infringing'">
     <h3>First Renewal Fees</h3>
     <div class="table-responsive">
       <table class="table table-striped table-condensed table-hover">

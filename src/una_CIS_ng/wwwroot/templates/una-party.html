@@ -27,16 +27,16 @@
     <input class="form-control" name="{{'row_' + partyInfo.type + '_Name'}}" type="text" placeholder="Name" ng-model="partyInfo.name" maxlength="128" ng-required="partyInfo.isRequired && partyInfo.entityType === 'Organisation'">
   </div>
 </div>
-<div ng-show="!!partyInfo.entityType">
-  <small ng-show="partyInfo.isEmailRequired">An email address is required. If you do not have an email address you may not be the {{partyInfo.typeDesc}}. The Permit Application will be emailed to this address.</small>
+<div class="animate-show" ng-show="!!partyInfo.entityType">
+  <small class="animate-show" ng-show="partyInfo.isEmailRequired">An email address is required. If you do not have an email address you may not be the {{partyInfo.typeDesc}}. The Permit Application will be emailed to this address.</small>
   <div class="form-group">
     <label class="col-sm-4 col-lg-3 text-right">Email</label>
     <div class="col-sm-5">
       <input class="form-control" name="{{'row_' + partyInfo.type + '_Email'}}" type="email" placeholder="Email" ng-model="partyInfo.email" maxlength="512" ng-required="partyInfo.isRequired && partyInfo.isEmailRequired">
     </div>
   </div>
-  <small ng-show="partyInfo.entityType === 'Person'">If the {{partyInfo.typeDesc}} is a Person, then a Mobile Phone number is required.</small>
-  <small ng-show="partyInfo.isNigeriaNumbersOnly">All phone numbers provided must be Nigeria based, satellite service numbers are not acceptable.</small>
+  <small class="animate-show" ng-show="partyInfo.entityType === 'Person'">If the {{partyInfo.typeDesc}} is a Person, then a Mobile Phone number is required.</small>
+  <small class="animate-show" ng-show="partyInfo.isNigeriaNumbersOnly">All phone numbers provided must be Nigeria based, satellite service numbers are not acceptable.</small>
   <div class="form-group">
     <label class="col-sm-4 col-lg-3 text-right">Mobile Phone</label>
     <div class="col-sm-5">

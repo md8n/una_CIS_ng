@@ -7,7 +7,7 @@
 <div class="row" ng-controller="geoDataController">
   <div class="row">
     <div class="col-xs-12 preMap afterMap">
-      <div id="map" class="center-block"></div>
+      <div id="map" class="center-block" permit></div>
       <input id="pac-input" type="text" name="pac-input" placeholder="Search Box" class="controls center-block" />
     </div>
   </div>
@@ -15,5 +15,21 @@
 
 @section scripts
 {
+  <environment names="Development">
+    <script src="~/js/services/permitServiceFactory.js" asp-append-version="true"></script>
+    <script src="~/js/services/penaltyServiceFactory.js" asp-append-version="true"></script>
+    <script src="~/js/services/geoDataServiceFactory.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/permitController.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/penaltyController.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/geoDataController.js" asp-append-version="true"></script>
+  </environment>
+  <environment names="Staging,Production">
+    <script src="~/js/services/permitServiceFactory.js" asp-append-version="true"></script>
+    <script src="~/js/services/penaltyServiceFactory.js" asp-append-version="true"></script>
+    <script src="~/js/services/geoDataServiceFactory.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/permitController.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/penaltyController.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/geoDataController.js" asp-append-version="true"></script>
+  </environment>
   <script src="@mapInitUrl" async defer></script>
 }

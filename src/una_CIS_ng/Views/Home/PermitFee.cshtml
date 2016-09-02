@@ -278,3 +278,17 @@
   </div>
 
 </div>
+
+@section scripts
+{
+  <environment names="Development">
+    <script src="~/js/services/feeDefinitionServiceFactory.js" asp-append-version="true"></script>
+    <script src="~/js/factories/feeDefinitionFactory.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/feeCalculatorController.js" asp-append-version="true"></script>
+  </environment>
+  <environment names="Staging,Production">
+    <script src="~/js/services/feeDefinitionServiceFactory.js" asp-append-version="true"></script>
+    <script src="~/js/factories/feeDefinitionFactory.js" asp-append-version="true"></script>
+    <script src="~/js/controllers/feeCalculatorController.js" asp-append-version="true"></script>
+  </environment>
+}

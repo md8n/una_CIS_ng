@@ -3,16 +3,16 @@
 (function (angular) {
   "use strict";
 
-  var handlePermits = function (response) {
-    // Una.gMap is the google maps object returned by Map.cshtml and Permit.cshtml
-    $scope.permit = $scope.permit || {};
-    $scope.permit.geoFeatures = [];
-    if (Una.gMap) {
-      $scope.permit.geoFeatures = response.map(function (obj) { return obj.Permit; });
-      $scope.permit.geoFeatures.forEach(function (permit) { Una.gMap.data.addGeoJson(permit); });
-    }
-    //alert("Loaded GeoData Successfully");
-  };
+  //var handlePermits = function (response) {
+  //  // Una.gMap is the google maps object returned by Map.cshtml and Permit.cshtml
+  //  $scope.permit = $scope.permit || {};
+  //  $scope.permit.geoFeatures = [];
+  //  if (Una.gMap) {
+  //    $scope.permit.geoFeatures = response.map(function (obj) { return obj.Permit; });
+  //    $scope.permit.geoFeatures.forEach(function (permit) { Una.gMap.data.addGeoJson(permit); });
+  //  }
+  //  //alert("Loaded GeoData Successfully");
+  //};
 
   angular
     .module("unaApp") // defined in unaApp.js
@@ -228,8 +228,18 @@
     };
 
     permitScope.IsDbConnected = permitService.IsDbConnected();
+
+    // Call the Permit's own GeoData then feed the result to the GeoData Controller
     permitScope.permit.GeoData = permitService.GeoData().$promise.then(permitScope.GDHandleGeoData);
 
+    // Allow permit's own GeoData to be callable by other controllers
+    // Note that it in turn will call the GeoDataController
+    $rootScope.$on("PermitGeoData", function() {
+      //alert('called permit geodata');
+      permitScope.permit.GeoData();
+    });
+
+    // Call to the GeoDataController exposed methods
     permitScope.GDHandleGeoData = function () { $rootScope.$emit("GeoDataHandleGeoData", {}); }
     permitScope.GDFitMap = function () { $rootScope.$emit("GeoDataFitMap", {}); }
   }

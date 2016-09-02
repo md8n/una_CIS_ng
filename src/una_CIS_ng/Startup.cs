@@ -96,9 +96,14 @@ namespace una_CIS_ng
 
 
       var defCsp = "'self' http://una.cis.ng/ https://maxcdn.bootstrapcdn.com/ ";
+      var defCsCsp = string.Empty;
+      var defFrCsp = "https://www.google.com/maps/embed ";
+      var defScCsp = "https://maps.googleapis.com/ https://ajax.googleapis.com/ http://browser-update.org/ dc.services.visualstudio.com ";
       if (env.IsDevelopment())
       {
-        defCsp += "http://localhost:5000/";
+        defCsp += "http://localhost:5000/ ";
+        defCsCsp += "http://localhost:50791/ ws://localhost:50791/ ";
+        defScCsp += "http://localhost:50791/ ";
 
         app.UseDeveloperExceptionPage();
         app.UseDatabaseErrorPage();
@@ -106,19 +111,20 @@ namespace una_CIS_ng
       }
       else
       {
-        defCsp += "http://unacisng.azurewebsites.net/";
+        defCsp += "http://unacisng.azurewebsites.net/ ";
 
         app.UseExceptionHandler("/Home/Error");
       }
 
       var cspPolicy = "default-src 'none'; ";
       cspPolicy += "form-action " + defCsp + "; ";
-      cspPolicy += "connect-src " + defCsp + "; ";
+      cspPolicy += "connect-src " + defCsp + defCsCsp + "; ";
       // TODO: Figure out what needs unsafe inline and unsafe eval (fee directives does need eval)
-      cspPolicy += "script-src 'unsafe-eval' " + defCsp + " https://maps.googleapis.com/ https://ajax.googleapis.com/ dc.services.visualstudio.com; ";
+      cspPolicy += "script-src 'unsafe-eval' " + defCsp + defScCsp + "; ";
       cspPolicy += "style-src 'unsafe-inline' " + defCsp + " https://fonts.googleapis.com/; ";
       cspPolicy += "font-src " + defCsp + " https://fonts.gstatic.com/; ";
       cspPolicy += "img-src " + defCsp + " https://maps.googleapis.com/ https://maps.gstatic.com/ https://csi.gstatic.com/; ";
+      cspPolicy += "frame-src " + defCsp + defFrCsp + "; ";
       cspPolicy += "object-src " + defCsp + "; ";
       cspPolicy += "manifest-src " + defCsp + "; ";
       cspPolicy += "report-uri /cspreport; ";

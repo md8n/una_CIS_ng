@@ -46,11 +46,17 @@
         if (mapEl.hasAttribute("permit")) {
           pageService = permitService;
           pageScope = permitScope;
-          pageData = pageScope.permit.permits.row;
+          //$scope.geoData.PeGeoData = $scope.geoData.PermitGeoData;
+          if (!!pageScope) {
+            pageData = pageScope.permit.permits.row;
+          }
         } else if (mapEl.hasAttribute("penalty")) {
           pageService = penaltyService;
           pageScope = penaltyScope;
-          pageData = pageScope.penalty.infringing;
+          //$scope.geoData.PeGeoData = $scope.geoData.PenaltyGeoData;
+          if (!!pageScope) {
+            pageData = pageScope.penalty.infringing;
+          }
         }
 
         resetMap(mapEl.hasAttribute("showdrawingcontrols"));
@@ -392,12 +398,16 @@
         return;
       }
 
-      //geoDataService.All().$promise.then(handleGeoData);
-      pageService.GeoData().$promise.then(handleGeoData);
-
       //alert(JSON.stringify(pageData.locations));
+      if (!!pageService) {
+        pageService.GeoData().$promise.then(handleGeoData);
+        //$scope.geoData.PeGeoData();
+      }
 
       if (!!pageScope) {
+        //alert('resetMap 2b');
+        //pageScope.GeoData().$promise.then(handleGeoData);
+
         // Clear the data (this impacts the fee calculation)
         pageData.distances.length = 0;
         pageData.totalDistance = 0;
@@ -445,9 +455,12 @@
     $scope.geoData.ResetMap = resetMap;
     $scope.geoData.FitMap = fitMap;
 
-    //activate();
-
-    //function activate() { }
+    // Call to the Permit / Penalty exposed method (these call back to GeoData)
+    $scope.geoData.PermitGeoData = function() {
+      //alert('calling permit geodata'); 
+      $rootScope.$emit("PermitGeoData", {});
+    }
+    $scope.geoData.PenaltyGeoData = function () { $rootScope.$emit("PenaltyGeoData", {}); }
   }
 
   geoDataController.$inject = ["$scope", "geoDataService", "permitService", "penaltyService"];

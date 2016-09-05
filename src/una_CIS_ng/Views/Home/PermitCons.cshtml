@@ -1,0 +1,153 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="HeadingConstructionPermit">
+    <h4 class="panel-title">
+      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#ConstructionPermit" aria-expanded="false" aria-controls="collapseRowConstructionPermitHolder">
+        Construction Permit Holder
+      </a>
+    </h4>
+  </div>
+  <div id="ConstructionPermit" class="panel-collapse collapse" role="tabpanel" aria-labelledby="HeadingConstructionPermit">
+    <div class="panel-body">
+      <p>Enter details about how the Construction will be performed.</p>
+      <dl>
+        <dt title="Traffic Management may be Required">Will the construction be in or next to any roadway / driveway / vehicle access?</dt>
+        <dd>
+          <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Vehicle Access">
+            <label class="btn btn-primary active">
+              <input type="radio" name="cpVehicleAccess" id="cpVehicleAccessYes" autocomplete="off" checked> Yes
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="cpVehicleAccess" id="cpVehicleAccessNo" autocomplete="off"> No
+            </label>
+          </div>
+        </dd>
+        <dt title="Traffic Management definitely Required">Will vehicle access be obstructed during construction?</dt>
+        <dd>
+          <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Impacting to Vehicle Access">
+            <label class="btn btn-primary active">
+              <input type="radio" name="cpVehicleAccessImpact" id="cpVehicleAccessImpactYes" autocomplete="off" checked> Yes
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="cpVehicleAccessImpact" id="cpVehicleAccessImpactNo" autocomplete="off"> No
+            </label>
+          </div>
+        </dd>
+        <dt title="Pedestrian Management may be Required">Will the construction be in or next to any pathway / walkway / pedestrian access?</dt>
+        <dd>
+          <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Pedestrian Access">
+            <label class="btn btn-primary active">
+              <input type="radio" name="cpPedestrianAccess" id="cpPedestrianAccessYes" autocomplete="off" checked> Yes
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="cpPedestrianAccess" id="cpPedestrianAccessNo" autocomplete="off"> No
+            </label>
+          </div>
+        </dd>
+        <dt title="Pedestrian Management definitely Required">Will pedestrian access be obstructed during construction?</dt>
+        <dd>
+          <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Impacting to Pedestrian Access">
+            <label class="btn btn-primary active">
+              <input type="radio" name="cpPedestrianAccessImpact" id="cpPedestrianAccessImpactYes" autocomplete="off" checked> Yes
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="cpPedestrianAccessImpact" id="cpPedestrianAccessImpactNo" autocomplete="off"> No
+            </label>
+          </div>
+        </dd>
+        <dt title="Engineering Report may be Required">Will the construction be in, under or next to any structure?</dt>
+        <dd>
+          <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Next to Structure">
+            <label class="btn btn-primary active">
+              <input type="radio" name="cpStructure" id="cpStructureYes" autocomplete="off" checked> Yes
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="cpStructure" id="cpStructureNo" autocomplete="off"> No
+            </label>
+          </div>
+        </dd>
+        <dt title="Engineering Report definitely Required">Will any structure next to / over the construction be potentially affected in terms of its appearance / function / structural integrity?</dt>
+        <dd>
+          <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Potentially Impacting Structure">
+            <label class="btn btn-primary active">
+              <input type="radio" name="cpStructureImpact" id="cpStructureImpactYes" autocomplete="off" checked> Yes
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="cpStructureImpact" id="cpStructureImpactNo" autocomplete="off"> No
+            </label>
+          </div>
+        </dd>
+      </dl>
+      <p>Enter details about the immediate area (50m) around Construction.</p>
+      <dl>
+        <dt title="Restricted Hours of Operation, Noise Levels, Use of Artificial Lighting, Number of Vehicles parked on street">Are there residential dwellings?</dt>
+        <dd>
+          <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Residences">
+            <label class="btn btn-primary active">
+              <input type="radio" name="cpAreaResidential" id="cpAreaResidentialYes" autocomplete="off" checked> Yes
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="cpAreaResidential" id="cpAreaResidentialNo" autocomplete="off"> No
+            </label>
+          </div>
+        </dd>
+        <dt title="Restricted Hours of Operation, Noise Levels, Number of Vehicles parked on street">Are there office buildings?</dt>
+        <dd>
+          <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Offices">
+            <label class="btn btn-primary active">
+              <input type="radio" name="cpAreaOffice" id="cpAreaOfficeYes" autocomplete="off" checked> Yes
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="cpAreaOffice" id="cpAreaOfficeNo" autocomplete="off"> No
+            </label>
+          </div>
+        </dd>
+        <dt title="Restricted Number of Vehicles parked on street">Are there industrial buildings and other structures?</dt>
+        <dd>
+          <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Industry and Other Structures">
+            <label class="btn btn-primary active">
+              <input type="radio" name="cpAreaIndustrial" id="cpAreaIndustrialYes" autocomplete="off" checked> Yes
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="cpAreaIndustrial" id="cpAreaIndustrialNo" autocomplete="off"> No
+            </label>
+          </div>
+        </dd>
+        <dt title="Restricted Number of Vehicles parked on street, potential security restrictions">Are there Federal / State services (including emergency services, hospitals)?</dt>
+        <dd>
+          <div class="btn-group" data-toggle="buttons" role="group" aria-label="Construction Near Federal / State Services / Emergency Services">
+            <label class="btn btn-primary active">
+              <input type="radio" name="cpAreaSpecial" id="cpAreaSpecialYes" autocomplete="off" checked> Yes
+            </label>
+            <label class="btn btn-primary">
+              <input type="radio" name="cpAreaSpecial" id="cpAreaSpecialNo" autocomplete="off"> No
+            </label>
+          </div>
+        </dd>
+      </dl>
+      <p>Enter the required details for whom the Construction permit(s) will be issued to.</p>
+      <dl>
+        <dt>Organisation Name</dt>
+        <dd><input id="cpOrgName" type="text" /></dd>
+        <dt>Organisation Physical Address</dt>
+        <dd><input id="cpOrgAddressPhysical" type="text" /></dd>
+        <dt>Organisation Mailing Address</dt>
+        <dd><input id="cpOrgAddressMailing" type="text" /></dd>
+        <dt>Organisation Phone Number</dt>
+        <dd><input id="cpOrgPhone" type="text" /></dd>
+        <dt>Organisation Email Address</dt>
+        <dd><input id="cpOrgEmail" type="email" /></dd>
+        <dt>Organisation Contact Person</dt>
+        <dd><input id="cpOrgContact" type="text" /></dd>
+        <dt>Organisation Contact Phone</dt>
+        <dd><input id="cpOrgContactPhone" type="text" /></dd>
+      </dl>
+      <p>Construction permits have a short life span and are limited in area. The area will also be limited on the basis of how the construction will impact the use of public assets such as roads and footpaths.</p>
+      <p>We recommend you break up your route into several areas and request an appropriate number of Construction permits covering each area and spread across several time periods. Taking into account all of the factors that will affect your construction.</p>
+    </div>
+  </div>
+</div>

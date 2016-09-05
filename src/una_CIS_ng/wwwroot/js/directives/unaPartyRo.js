@@ -3,11 +3,11 @@
 
   angular
     .module("unaApp")
-    .directive("unaPartyRo",
+    .directive("unaPartyro",
       function() {
         return {
           restrict: "E",
-          scope: { partyInfo: "=party"},
+          scope: { partyInfo: "=partyro"},
           templateUrl: "../../templates/una-party-ro.html"
         };
       });

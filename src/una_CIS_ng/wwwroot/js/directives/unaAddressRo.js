@@ -3,11 +3,11 @@
 
   angular
     .module("unaApp")
-    .directive("unaAddressRo",
+    .directive("unaAddressro",
       function() {
         return {
           restrict: "E",
-          scope: { addressInfo: "=addr"},
+          scope: { addressInfo: "=addrro"},
           templateUrl: "../../templates/una-address-ro.html"
         };
       });

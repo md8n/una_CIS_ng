@@ -63,14 +63,14 @@
         <div class="bs-docs-section animate-show" ng-show="penalty.infringing.isPreview">
           <div class="well well-sm">
             <h4>{{penalty.infringing.parties.find(party.findInfOwner).typeDesc}}</h4>
-            <una-party-ro party="penalty.infringing.parties.find(party.findInfOwner)"></una-party-ro>
+            <una-partyro partyro="penalty.infringing.parties.find(party.findInfOwner)"></una-partyro>
             <div class="well well-sm animate-show" ng-show="!!penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPhysical).suburb">
               <h4>Office Physical Address {{penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPhysical).isMailing ? "and Office Mailing Address" : ""}}</h4>
-              <una-address-ro addr="penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPhysical)"></una-address-ro>
+              <una-addressro addrro="penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPhysical)"></una-addressro>
             </div>
             <div class="well well-sm animate-show" ng-show="!penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPhysical).isMailing && !!penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPostal).suburb">
               <h4>Office Mailing Address</h4>
-              <una-address-ro addr="penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPostal)"></una-address-ro>
+              <una-addressro addrro="penalty.infringing.parties.find(party.findInfOwner).addresses.find(address.findPostal)"></una-addressro>
             </div>
           </div>
         </div>
@@ -452,12 +452,12 @@
   <script src="~/js/services/permitServiceFactory.js" asp-append-version="true"></script>
   <script src="~/js/services/penaltyServiceFactory.js" asp-append-version="true"></script>
   <script src="~/js/factories/feeDefinitionFactory.js" asp-append-version="true"></script>
-  <script src="~/js/directives/unaAddress.js" asp-append-version="true"></script>
+  @*<script src="~/js/directives/unaAddress.js" asp-append-version="true"></script>
   <script src="~/js/directives/unaAddressRo.js" asp-append-version="true"></script>
   <script src="~/js/directives/unaElectronicAddress.js" asp-append-version="true"></script>
   <script src="~/js/directives/unaElectronicAddressRo.js" asp-append-version="true"></script>
   <script src="~/js/directives/unaParty.js" asp-append-version="true"></script>
-  <script src="~/js/directives/unaPartyRo.js" asp-append-version="true"></script>
+  <script src="~/js/directives/unaPartyRo.js" asp-append-version="true"></script>*@
   <script src="~/js/controllers/permitController.js" asp-append-version="true"></script>
   <script src="~/js/controllers/geoDataController.js" asp-append-version="true"></script>
   <script src="~/js/controllers/penaltyController.js" asp-append-version="true"></script>

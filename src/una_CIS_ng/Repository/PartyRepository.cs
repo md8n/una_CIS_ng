@@ -10,12 +10,15 @@ namespace una_CIS_ng.Repository
 {
   public class PartyRepository : IPartyRepository
   {
+    private readonly IAddressRepository _addressRepository;
+    private readonly IElectronicAddressRepository _electronicAddressRepository;
     private readonly AppCodes _appCodes;
+
     private MongoClient _client;
-    private IAddressRepository _addressRepository;
-    private IElectronicAddressRepository _electronicAddressRepository;
     private IMongoDatabase _database;
     private const string CollectionName = "Party";
+
+    private bool _entityRefreshNeeded;
 
     #region Constructors
     public PartyRepository(IAddressRepository addressRepository, IElectronicAddressRepository electronicAddressRepository, IOptions<AppCodes> appCodes)
@@ -23,6 +26,7 @@ namespace una_CIS_ng.Repository
       _appCodes = appCodes.Value;
       _addressRepository = addressRepository;
       _electronicAddressRepository = electronicAddressRepository;
+      _entityRefreshNeeded = false;
 
       // calling connect ensure that the _client and _database members are set
       Connect();
@@ -113,6 +117,8 @@ namespace una_CIS_ng.Repository
 
     private async void RefreshChildEntities(Party party)
     {
+      _entityRefreshNeeded = false;
+
       if (ReferenceEquals(party, null))
       {
         return;
@@ -139,6 +145,11 @@ namespace una_CIS_ng.Repository
       }
 
       party.addresses = addrList.ToArray();
+
+      if (_entityRefreshNeeded)
+      {
+        await AddOrUpdateAsync(party);
+      }
     }
 
     /// <summary>
@@ -156,6 +167,8 @@ namespace una_CIS_ng.Repository
           return elecAddrById;
         }
       }
+
+      _entityRefreshNeeded = true;
 
       // Then try a 'full' match
       var elecAddrFull = await _electronicAddressRepository.FindAsync(electronicAddress, false);
@@ -193,6 +206,8 @@ namespace una_CIS_ng.Repository
           return addrById;
         }
       }
+
+      _entityRefreshNeeded = true;
 
       // Then try a 'full' match
       var addrFull = await _addressRepository.FindAsync(address, false);

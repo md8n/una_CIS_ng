@@ -84,7 +84,8 @@ namespace una_CIS_ng
       services.AddSingleton<IPermitRepository, PermitRepository>();
       services.AddSingleton<IPenaltyRepository, PenaltyRepository>();
       services.AddSingleton<IPartyRepository, PartyRepository>();
-
+      services.AddSingleton<IAddressRepository, AddressRepository>();
+      services.AddSingleton<IElectronicAddressRepository, ElectronicAddressRepository>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

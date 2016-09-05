@@ -83,6 +83,7 @@ namespace una_CIS_ng
       services.AddSingleton<IFeeDefinitionRepository, FeeDefinitionRepository>();
       services.AddSingleton<IPermitRepository, PermitRepository>();
       services.AddSingleton<IPenaltyRepository, PenaltyRepository>();
+      services.AddSingleton<IPartyRepository, PartyRepository>();
 
     }
 

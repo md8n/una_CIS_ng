@@ -8,21 +8,7 @@
     <span><strong>{{partyInfo.name}}</strong></span>
   </div>
 </div>
-<div class="row" ng-show="!!partyInfo.email">
-  <label class="col-xs-4 col-lg-3 text-right">Email</label>
-  <div class="col-xs-8 col-lg-9">
-    <span>{{partyInfo.email}}</span>
-  </div>
-</div>
-<div class="row" ng-show="!!partyInfo.mobile">
-  <label class="col-xs-4 col-lg-3 text-right">Mobile Phone</label>
-  <div class="col-xs-8 col-lg-9">
-    <span>{{partyInfo.mobile}}</span>
-  </div>
-</div>
-<div class="row" ng-show="!!partyInfo.officePhone">
-  <label class="col-xs-4 col-lg-3 text-right">Office Phone</label>
-  <div class="col-xs-8 col-lg-9">
-    <span>{{partyInfo.officePhone}}</span>
-  </div>
+
+<div ng-repeat="elecAddress in partyInfo.electronicAddresses">
+  <una-electronicaddress-ro elec="elecAddress" parent="partyInfo"></una-electronicaddress-ro>
 </div>

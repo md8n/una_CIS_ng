@@ -34,6 +34,6 @@
   <small class="animate-show" ng-show="partyInfo.entityType === 'Person'">If the {{partyInfo.typeDesc}} is a Person, then a Mobile Phone number is required.</small>
   <small class="animate-show" ng-show="partyInfo.isNigeriaNumbersOnly">All phone numbers provided must be Nigeria based, satellite service numbers are not acceptable.</small>
   <div class="flex-container" ng-repeat="elecAddress in partyInfo.electronicAddresses">
-    <una-electronicaddress elec="elecAddress"></una-electronicaddress>
+    <una-electronicaddress elec="elecAddress" parent="partyInfo"></una-electronicaddress>
   </div>
 </div>

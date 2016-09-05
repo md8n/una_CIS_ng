@@ -26,11 +26,13 @@ namespace una_CIS_ng.Controllers
   public class PermitController : Controller
   {
     private readonly IPermitRepository _permitRepository;
+    private readonly IPartyRepository _partyRepository;
     private readonly AppCodes _appCodes;
 
-    public PermitController(IPermitRepository permitRepository, IOptions<AppCodes> optionsAccessor)
+    public PermitController(IPermitRepository permitRepository, IPartyRepository partyRepository, IOptions<AppCodes> optionsAccessor)
     {
       _permitRepository = permitRepository;
+      _partyRepository = partyRepository;
       _appCodes = optionsAccessor.Value;
     }
 
@@ -129,12 +131,22 @@ namespace una_CIS_ng.Controllers
       var permit = ExtractPermit(jPerm);
 
       // Save the permit
-      var objId = await _permitRepository.AddOrUpdateAsync(permit);
-      if (objId == ObjectId.Empty)
+      var permitId = await _permitRepository.AddOrUpdateAsync(permit);
+      if (permitId == ObjectId.Empty)
       {
         return BadRequest("Could not save permit application");
       }
-      permit.id = objId;
+      permit.id = permitId;
+
+      // Save the parties
+      foreach (var party in permit.parties)
+      {
+        var partyId = await _partyRepository.AddOrUpdateAsync(party);
+        if (partyId != ObjectId.Empty)
+        {
+          party.id = partyId;
+        }
+      }
 
       var oMem = BuildPermitPDF(permit);
 
@@ -197,7 +209,7 @@ namespace una_CIS_ng.Controllers
       //  return BadRequest(); // + failedRecipients.Select(f => f.Address));
       //}
 
-      return Ok(objId);
+      return Ok(permitId);
     }
 
     private static MemoryStream BuildPermitPDF(Permit permit)
@@ -216,7 +228,8 @@ namespace una_CIS_ng.Controllers
 
     private static Permit ExtractPermit(JObject jPerm)
     {
-      var permit = new Permit {submissionTime = DateTime.UtcNow, deprecationTime = null};
+      var subTime = DateTime.UtcNow;
+      var permit = new Permit {submissionTime = subTime, approvalTime = null, deprecationTime = null};
 
       foreach (var jPermKid in jPerm.Children())
       {
@@ -306,43 +319,7 @@ namespace una_CIS_ng.Controllers
               break;
             case "parties":
               var parties = new List<Party>();
-              if (jArray == null)
-              {
-                foreach (var jPrty in jValue.Children().OfType<JProperty>())
-                {
-                  var jPrtyVal = jPrty.Value;
-                  var jPrtyJson = jPrtyVal.ToString(Formatting.Indented);
-                  var party = BsonSerializer.Deserialize<Party>(jPrtyJson);
-                  if (party.id == null || party.id == ObjectId.Empty)
-                  {
-                    party.id = ObjectId.GenerateNewId();
-                  }
-                  var addresses = new List<Address>();
-
-                  foreach (var jp in jPrtyVal.Children().OfType<JProperty>().Where(jp => jp.Name == "addresses"))
-                  {
-                    var newAddr = jp.Value
-                      .OfType<JProperty>()
-                      .Select(jpAddr => jpAddr.Value.ToString(Formatting.Indented))
-                      .Select(jAddrJson => BsonSerializer.Deserialize<Address>(jAddrJson))
-                      .ToList();
-
-                    foreach (var addr in newAddr)
-                    {
-                      if (addr.id == null || addr.id == ObjectId.Empty)
-                      {
-                        addr.id = ObjectId.GenerateNewId();
-                      }
-                    }
-
-                    addresses.AddRange(newAddr);
-                  }
-
-                  party.addresses = addresses.ToArray();
-                  parties.Add(party);
-                }
-              }
-              else
+              if (jArray != null)
               {
                 parties.AddRange(jArray.Select(jParty => JsonConvert.DeserializeObject<Party>(jParty.ToString())));
               }

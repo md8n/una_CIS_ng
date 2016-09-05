@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -14,6 +15,10 @@ namespace una_CIS_ng.Models
 
     public string entityType { get; set; }
 
+    public DateTime submissionTime { get; set; }
+
+    public DateTime? deprecationTime { get; set; }
+
     public string personalName { get; set; }
     public string surname { get; set; }
 
@@ -22,11 +27,17 @@ namespace una_CIS_ng.Models
     /// </summary>
     public string name { get; set; }
 
+    [BsonIgnoreIfNull]
     public string email { get; set; }
 
+    [BsonIgnoreIfNull]
     public string mobile { get; set; }
 
+    [BsonIgnoreIfNull]
     public string officePhone { get; set; }
+
+    [BsonIgnoreIfNull]
+    public ElectronicAddress[] electronicAddresses { get; set; }
 
     [BsonIgnoreIfNull]
     public Address[] addresses { get; set; }
@@ -133,6 +144,69 @@ namespace una_CIS_ng.Models
       prty.addresses = addrs.ToArray();
 
       return prty;
+    }
+
+    public static Party CleanElectronicAddresses(this Party prty)
+    {
+      var addrs = new List<ElectronicAddress>();
+
+      var newEmails = prty.electronicAddresses.CheckOldFormElectronicAddress(prty.email, "email");
+      addrs.AddRange(newEmails);
+      prty.email = null;
+
+      var newMobiles = prty.electronicAddresses.CheckOldFormElectronicAddress(prty.mobile, "mobile");
+      addrs.AddRange(newMobiles);
+      prty.mobile = null;
+
+      var newOfficePhones = prty.electronicAddresses.CheckOldFormElectronicAddress(prty.officePhone, "officePhone");
+      addrs.AddRange(newOfficePhones);
+      prty.officePhone = null;
+
+      prty.electronicAddresses = addrs.ToArray();
+
+      return prty;
+    }
+
+    public static List<ElectronicAddress> CheckOldFormElectronicAddress(this ElectronicAddress[] electronicAddresses,
+      string oldAddr, string addrType)
+    {
+      var addrs = new List<ElectronicAddress>();
+
+      var newAddrs = electronicAddresses.Where(e => e.type == addrType).ToList();
+      addrs.AddRange(newAddrs);
+
+      if (string.IsNullOrWhiteSpace(oldAddr))
+      {
+        return addrs;
+      }
+
+      if (!newAddrs.Any() || newAddrs.Any(e => e.value != oldAddr))
+      {
+        // not used from json
+        //"ownerAbbr", "typeDesc", "placeHolder", "maxLength", "includeExtension", "isRequired"
+
+        addrs.Add(oldAddr.BuildElectronicAddress(addrType));
+      }
+
+      return addrs;
+    }
+
+    public static ElectronicAddress BuildElectronicAddress(this string oldAddr, string addrType)
+    {
+      if (string.IsNullOrWhiteSpace(oldAddr))
+      {
+        return null;
+      }
+
+      return new ElectronicAddress
+      {
+        id = ObjectId.GenerateNewId(),
+        submissionTime = DateTime.UtcNow,
+        deprecationTime = null,
+        type = addrType,
+        value = oldAddr,
+        extension = string.Empty
+      };
     }
   }
 }

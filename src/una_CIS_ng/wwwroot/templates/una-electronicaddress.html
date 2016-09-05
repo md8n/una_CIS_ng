@@ -1,0 +1,9 @@
+﻿<div class="form-group">
+  <label class="col-sm-4 col-lg-3 text-right">{{elecInfo.typeDesc}}</label>
+  <div class="col-sm-5">
+    <input class="form-control" name="{{'row_' + elecInfo.ownerAbbr + '_' + elecInfo.type + '_value'}}" type="{{elecInfo.type == 'email' ? 'email' : 'text'}}" placeholder="{{elecInfo.placeHolder}}" ng-model="elecInfo.value" maxlength="{{elecInfo.maxLength}}"  ng-required="elecInfo.isRequired">
+  </div>
+  <div class="col-sm-3" ng-show="elecInfo.includeExtension">
+    <input class="form-control" name="{{'row_' + elecInfo.ownerAbbr + '_' + elecInfo.type + '_extn'}}" type="text" placeholder="ext" ng-model="elecInfo.extension" maxlength="50">
+  </div>
+</div>

@@ -3,17 +3,6 @@
 (function (angular) {
   "use strict";
 
-  //var handlePermits = function (response) {
-  //  // Una.gMap is the google maps object returned by Map.cshtml and Permit.cshtml
-  //  $scope.permit = $scope.permit || {};
-  //  $scope.permit.geoFeatures = [];
-  //  if (Una.gMap) {
-  //    $scope.permit.geoFeatures = response.map(function (obj) { return obj.Permit; });
-  //    $scope.permit.geoFeatures.forEach(function (permit) { Una.gMap.data.addGeoJson(permit); });
-  //  }
-  //  //alert("Loaded GeoData Successfully");
-  //};
-
   angular
     .module("unaApp") // defined in unaApp.js
     .controller("permitController", ["$scope", "$rootScope", "permitService", "feeDefinition", "feeDefinitionService", permitController]);
@@ -51,6 +40,44 @@
             "isEmailRequired": true,
             "isNigeriaNumbersOnly": false,
             "isRequired": true,
+            "electronicAddresses": [
+              {
+                //"id": null,
+                "ownerAbbr": "holder",
+                "type": "email",
+                "typeDesc": "Email",
+                "placeHolder": "email",
+                "maxLength": "512",
+                "includeExtension": false,
+                "isRequired": true,
+                "value": "",
+                "extension": ""
+              },
+              {
+                //"id": null,
+                "ownerAbbr": "holder",
+                "type": "mobile",
+                "typeDesc": "Mobile",
+                "placeHolder": "+234.xxx xxx xxxx",
+                "maxLength": "36",
+                "includeExtension": false,
+                "isRequired": true,
+                "value": "",
+                "extension": ""
+              },
+              {
+                //"id": null,
+                "ownerAbbr": "holder",
+                "type": "officePhone",
+                "typeDesc": "Office Phone",
+                "placeHolder": "+234.xxx xxx xxxx",
+                "maxLength": "36",
+                "includeExtension": true,
+                "isRequired": false,
+                "value": "",
+                "extension": ""
+              }
+            ],
             "addresses": [
               {
                 //"id": null,
@@ -76,77 +103,153 @@
               }
             ]
           },
-          {
-            //"id": null,
-            "type": "holderContact",
-            "typeDesc": "Permit Holder Contact",
-            "entityType": "Person",
-            "entityTypeIsFixed": true,
-            "isEmailRequired": true,
-            "isNigeriaNumbersOnly": true,
-            "isRequired": false,
-            "addresses": [
-              {
-                //"id": null,
-                "ownerTitle": "Permit Holder Contact",
-                "ownerAbbr": "holderContact",
-                "counterDesc": "Primary",
-                "addrForm": "Physical",
-                "addrAdvice": "",
-                "type": "physical",
-                "isMailing": false,
-                "mailingTypeIsFixed": false,
-                "country": "Nigeria"
-              },
-              {
-                //"id": null,
-                "ownerTitle": "Permit Holder Contact",
-                "ownerAbbr": "holderContact",
-                "counterDesc": "Primary",
-                "addrForm": "Postal",
-                "addrAdvice": "",
-                "type": "postal",
-                "isMailing": true,
-                "mailingTypeIsFixed": true,
-                "country": "Nigeria"
-              }
-            ]
-          },
-          {
-            //"id": null,
-            "type": "infOwner",
-            "typeDesc": "Infrastructure Owner",
-            "isInfrastructureOwner": true,
-            "entityType": "Organisation",
-            "entityTypeIsFixed": false,
-            "isEmailRequired": false,
-            "isNigeriaNumbersOnly": false,
-            "isRequired": false,
-            "addresses": [
-              {
-                //"id": null,
-                "ownerTitle": "Infrastructure Owner",
-                "ownerAbbr": "infOwner",
-                "counterDesc": "Primary",
-                "addrForm": "Office Physical",
-                "addrAdvice": "",
-                "type": "physical",
-                "isMailing": false,
-                "mailingTypeIsFixed": false
-              },
-              {
-                //"id": null,
-                "ownerTitle": "Infrastructure Owner",
-                "ownerAbbr": "infOwner",
-                "counterDesc": "Primary",
-                "addrForm": "Office Postal",
-                "addrAdvice": "",
-                "type": "postal",
-                "isMailing": true,
-                "mailingTypeIsFixed": true
-              }
-            ]
-          }
+  {
+    //"id": null,
+    "type": "holderContact",
+    "typeDesc": "Permit Holder Contact",
+    "entityType": "Person",
+    "entityTypeIsFixed": true,
+    "isEmailRequired": true,
+    "isNigeriaNumbersOnly": true,
+    "isRequired": false,
+    "electronicAddresses": [
+      {
+        //"id": null,
+        "ownerAbbr": "holderContact",
+        "type": "email",
+        "typeDesc": "Email",
+        "placeHolder": "email",
+        "maxLength": "512",
+        "includeExtension": false,
+        "isRequired": true,
+        "value": "",
+        "extension": ""
+      },
+      {
+        //"id": null,
+        "ownerAbbr": "holderContact",
+        "type": "mobile",
+        "typeDesc": "Mobile",
+        "placeHolder": "+234.xxx xxx xxxx",
+        "maxLength": "36",
+        "includeExtension": false,
+        "isRequired": true,
+        "value": "",
+        "extension": ""
+      },
+      {
+        //"id": null,
+        "ownerAbbr": "holderContact",
+        "type": "officePhone",
+        "typeDesc": "Office Phone",
+        "placeHolder": "+234.xxx xxx xxxx",
+        "maxLength": "36",
+        "includeExtension": true,
+        "isRequired": false,
+        "value": "",
+        "extension": ""
+      }
+    ],
+    "addresses": [
+      {
+        //"id": null,
+        "ownerTitle": "Permit Holder Contact",
+        "ownerAbbr": "holderContact",
+        "counterDesc": "Primary",
+        "addrForm": "Physical",
+        "addrAdvice": "",
+        "type": "physical",
+        "isMailing": false,
+        "mailingTypeIsFixed": false,
+        "country": "Nigeria"
+      },
+      {
+        //"id": null,
+        "ownerTitle": "Permit Holder Contact",
+        "ownerAbbr": "holderContact",
+        "counterDesc": "Primary",
+        "addrForm": "Postal",
+        "addrAdvice": "",
+        "type": "postal",
+        "isMailing": true,
+        "mailingTypeIsFixed": true,
+        "country": "Nigeria"
+      }
+    ]
+  },
+  {
+    //"id": null,
+    "type": "infOwner",
+    "typeDesc": "Infrastructure Owner",
+    "isInfrastructureOwner": true,
+    "entityType": "Organisation",
+    "entityTypeIsFixed": false,
+    "isEmailRequired": false,
+    "isNigeriaNumbersOnly": false,
+    "isRequired": false,
+    "electronicAddresses": [
+      {
+        //"id": null,
+        "ownerAbbr": "infOwner",
+        "type": "email",
+        "typeDesc": "Email",
+        "placeHolder": "email",
+        "maxLength": "512",
+        "includeExtension": false,
+        "isRequired": true,
+        "value": "",
+        "extension": ""
+      },
+      {
+        //"id": null,
+        "ownerAbbr": "infOwner",
+        "type": "mobile",
+        "typeDesc": "Mobile",
+        "placeHolder": "+234.xxx xxx xxxx",
+        "maxLength": "36",
+        "includeExtension": false,
+        "isRequired": true,
+        "value": "",
+        "extension": ""
+      },
+      {
+        //"id": null,
+        "ownerAbbr": "infOwner",
+        "type": "officePhone",
+        "typeDesc": "Office Phone",
+        "placeHolder": "+234.xxx xxx xxxx",
+        "maxLength": "36",
+        "includeExtension": true,
+        "isRequired": false,
+        "value": "",
+        "extension": ""
+      }
+    ],
+    "addresses": [
+      {
+        //"id": null,
+        "ownerTitle": "Infrastructure Owner",
+        "ownerAbbr": "infOwner",
+        "counterDesc": "Primary",
+        "addrForm": "Office Physical",
+        "addrAdvice": "",
+        "type": "physical",
+        "isMailing": false,
+        "mailingTypeIsFixed": false
+      },
+      {
+        //"id": null,
+        "ownerTitle": "Infrastructure Owner",
+        "ownerAbbr": "infOwner",
+        "counterDesc": "Primary",
+        "addrForm": "Office Postal",
+        "addrAdvice": "",
+        "type": "postal",
+        "isMailing": true,
+        "mailingTypeIsFixed": true
+      }
+    ]
+  }
 
         ],
         "isPreview": false
@@ -164,12 +267,17 @@
       var infOwner = ppsrp.find(permitScope.party.findInfOwner);
 
       infOwner.isRequired = !holder.isInfrastructureOwner;
-      infOwner.addresses.forEach(function(addr) { addr.isRequired = infOwner.isRequired; });
+      infOwner.addresses.forEach(function (addr) { addr.isRequired = infOwner.isRequired; });
     };
 
     permitScope.address = {};
     permitScope.address.findPhysical = function (elem) { return elem.type === "physical" };
     permitScope.address.findPostal = function (elem) { return elem.type === "postal" };
+
+    permitScope.electronicAddress = {};
+    permitScope.electronicAddress.findEmail = function (elem) { return elem.type === "email" };
+    permitScope.electronicAddress.findMobile = function (elem) { return elem.type === "mobile" };
+    permitScope.electronicAddress.findOfficePhone = function (elem) { return elem.type === "officePhone" };
 
     // locationPolylines must be held with the map to work effectively
     permitScope.map = permitScope.map || {};
@@ -234,7 +342,7 @@
 
     // Allow permit's own GeoData to be callable by other controllers
     // Note that it in turn will call the GeoDataController
-    $rootScope.$on("PermitGeoData", function() {
+    $rootScope.$on("PermitGeoData", function () {
       //alert('called permit geodata');
       permitScope.permit.GeoData();
     });

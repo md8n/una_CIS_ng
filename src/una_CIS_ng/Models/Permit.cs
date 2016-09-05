@@ -12,8 +12,19 @@ namespace una_CIS_ng.Models
 
     public string type { get; set; }
 
+    /// <summary>
+    /// Records when a permit / permit application was first submitted
+    /// </summary>
     public DateTime submissionTime { get; set; }
 
+    /// <summary>
+    /// Records when a permit was first approved (i.e. transition from permit application to permit)
+    /// </summary>
+    public DateTime? approvalTime { get; set; }
+
+    /// <summary>
+    /// Records when a permit / permit application was deprecated (eqv. to deleted)
+    /// </summary>
     public DateTime? deprecationTime { get; set; }
 
     public string infState { get; set; }

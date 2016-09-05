@@ -26,11 +26,13 @@ namespace una_CIS_ng.Controllers
   public class PenaltyController : Controller
   {
     private readonly IPenaltyRepository _penaltyRepository;
+    private readonly IPartyRepository _partyRepository;
     private readonly AppCodes _appCodes;
 
-    public PenaltyController(IPenaltyRepository penaltyRepository, IOptions<AppCodes> optionsAccessor)
+    public PenaltyController(IPenaltyRepository penaltyRepository, IPartyRepository partyRepository, IOptions<AppCodes> optionsAccessor)
     {
       _penaltyRepository = penaltyRepository;
+      _partyRepository = partyRepository;
       _appCodes = optionsAccessor.Value;
     }
 
@@ -126,17 +128,27 @@ namespace una_CIS_ng.Controllers
         return BadRequest("Penalty data was of the wrong type");
       }
 
-      var permit = ExtractPenalty(jPenlt);
+      var penalty = ExtractPenalty(jPenlt);
 
       // Save the permit
-      var objId = await _penaltyRepository.AddOrUpdateAsync(permit);
-      if (objId == ObjectId.Empty)
+      var penaltyId = await _penaltyRepository.AddOrUpdateAsync(penalty);
+      if (penaltyId == ObjectId.Empty)
       {
         return BadRequest("Could not save penalty data");
       }
-      permit.id = objId;
+      penalty.id = penaltyId;
 
-      var oMem = BuildPenaltyPDF(permit);
+      // Save the parties
+      foreach (var party in penalty.parties)
+      {
+        var partyId = await _partyRepository.AddOrUpdateAsync(party);
+        if (partyId != ObjectId.Empty)
+        {
+          party.id = partyId;
+        }
+      }
+
+      var oMem = BuildPenaltyPDF(penalty);
 
       var apiKey = _appCodes.SendGridApiKey;
       dynamic sg = new SendGridAPIClient(apiKey);
@@ -197,7 +209,7 @@ namespace una_CIS_ng.Controllers
       //  return BadRequest(); // + failedRecipients.Select(f => f.Address));
       //}
 
-      return Ok(objId);
+      return Ok(penaltyId);
     }
 
     private static MemoryStream BuildPenaltyPDF(Penalty permit)

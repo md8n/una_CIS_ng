@@ -136,7 +136,12 @@ namespace una_CIS_ng
       // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
       app.Use(async (ctx, next) =>
       {
-        ctx.Response.Headers.Add("Content-Security-Policy", cspPolicy);
+        var headersDictionary = ctx.Request.Headers;
+        var userAgent = headersDictionary[HeaderNames.UserAgent].ToString();
+        // Check for "Trident" it implies Internet Explorer
+        // Otherwise use the standard CSP header
+        ctx.Response.Headers.Add(
+          userAgent.Contains("Trident") ? "X-Content-Security-Policy" : "Content-Security-Policy", cspPolicy);
         ctx.Response.Headers.Add("X-Content-Type-Options", "nosniff");
         ctx.Response.Headers.Add("X-Frame-Options", "DENY");
         ctx.Response.Headers.Add("X-XSS-Protection", "1; mode=block");

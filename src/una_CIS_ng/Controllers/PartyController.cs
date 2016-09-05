@@ -40,6 +40,11 @@ namespace una_CIS_ng.Controllers
     {
       var prtyList = await _partyRepository.GetAllPartyAsync();
 
+      foreach (var party in prtyList)
+      {
+        CleanPartyObj(party);
+      }
+
       var allParties = (
         from prty in prtyList
         select prty into party
@@ -67,6 +72,8 @@ namespace una_CIS_ng.Controllers
       {
         return NotFound();
       }
+
+      CleanPartyObj(obj);
 
       return Ok(obj);
     }
@@ -148,6 +155,12 @@ namespace una_CIS_ng.Controllers
       var delRes = await _partyRepository.DeleteAsync(id);
 
       return Ok(delRes);
+    }
+
+    private static void CleanPartyObj(Party party)
+    {
+      party.CleanAddresses();
+      party.CleanElectronicAddresses();
     }
 
     private static List<Address> ExtractAddresses(JObject jPrtyVal)

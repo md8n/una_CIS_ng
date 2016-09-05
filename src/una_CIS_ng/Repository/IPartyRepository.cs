@@ -27,6 +27,14 @@ namespace una_CIS_ng.Repository
     Task<Party> GetAsync(ObjectId id);
 
     /// <summary>
+    /// Finds a matching Party using matching details from party
+    /// </summary>
+    /// <param name="party"></param>
+    /// <param name="fullMatchOnly"></param>
+    /// <returns></returns>
+    Task<Party> FindAsync(Party party, bool fullMatchOnly);
+
+    /// <summary>
     /// Add or Update a Party record
     /// </summary>
     /// <param name="party"></param>

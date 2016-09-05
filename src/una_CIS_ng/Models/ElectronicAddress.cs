@@ -138,6 +138,30 @@ namespace una_CIS_ng.Models
   public static class ElectronicAddressHelper
   {
     /// <summary>
+    /// Build an ElectronicAddress from a string and a type
+    /// </summary>
+    /// <param name="oldAddr"></param>
+    /// <param name="addrType"></param>
+    /// <returns></returns>
+    public static ElectronicAddress BuildElectronicAddress(this string oldAddr, string addrType)
+    {
+      if (string.IsNullOrWhiteSpace(oldAddr) || string.IsNullOrWhiteSpace(addrType))
+      {
+        return null;
+      }
+
+      return new ElectronicAddress
+      {
+        id = ObjectId.GenerateNewId(),
+        submissionTime = DateTime.UtcNow,
+        deprecationTime = null,
+        type = addrType,
+        value = oldAddr,
+        extension = string.Empty
+      };
+    }
+
+    /// <summary>
     /// Merge ElectronicAddress b into ElectronicAddress a
     /// </summary>
     public static ElectronicAddress Merge(this ElectronicAddress a, ElectronicAddress b)

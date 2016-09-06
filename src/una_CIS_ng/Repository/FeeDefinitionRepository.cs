@@ -34,8 +34,9 @@ namespace una_CIS_ng.Repository
 
     public async Task<List<FeeDefinition>> GetAllFeeDefinitionAsync()
     {
+      var filter = new BsonDocument();
       var gdColl = Collection();
-      var docList = await gdColl.Find(_ => true).ToListAsync();
+      var docList = await gdColl.Find(filter).ToListAsync();
 
       return docList;
     }
@@ -43,8 +44,8 @@ namespace una_CIS_ng.Repository
     public async Task<FeeDefinition> GetAsync(ObjectId id)
     {
       //return new FeeDefinition();
-      var feeDefinitionTask = await Collection()
-        .FindAsync(x => x._id.Equals(id));
+      var filter = Builders<FeeDefinition>.Filter.Eq("id", id);
+      var feeDefinitionTask = await Collection().FindAsync(filter);
       var list = await feeDefinitionTask.ToListAsync();
       var feeDefinition = list.FirstOrDefault();
 
@@ -54,25 +55,23 @@ namespace una_CIS_ng.Repository
     public async Task<ObjectId> AddOrUpdateAsync(FeeDefinition feeDefinition)
     {
       var upOpt = new UpdateOptions {IsUpsert = true};
+      var filter = Builders<FeeDefinition>.Filter.Eq("_id", feeDefinition._id);
+      var replaceResult = await Collection().ReplaceOneAsync(filter, feeDefinition, upOpt);
+
+      if (replaceResult.IsAcknowledged)
+      {
+        return (ObjectId)replaceResult.UpsertedId;
+      }
+
       return ObjectId.Empty;
-      //var replaceResult = await Collection()
-      //  .ReplaceOneAsync(x => x._id.Equals(feeDefinition._id), geoData, upOpt);
-
-      //if (replaceResult.IsAcknowledged)
-      //{
-      //  return (ObjectId) replaceResult.UpsertedId;
-      //}
-
-      //return ObjectId.Empty;
     }
 
     public async Task<bool> DeleteAsync(ObjectId id)
     {
-      return false;
-      //var deleteResult = await Collection()
-      //  .DeleteOneAsync(x => ((FeeDefinition)x)._id.Equals(id));
+      var filter = Builders<FeeDefinition>.Filter.Eq("_id", id);
+      var deleteResult = await Collection().DeleteOneAsync(filter);
 
-      //return deleteResult.IsAcknowledged;
+      return deleteResult.IsAcknowledged;
     }
     #endregion
 

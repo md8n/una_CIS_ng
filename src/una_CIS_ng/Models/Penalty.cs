@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver.GeoJsonObjectModel;
@@ -47,4 +49,34 @@ namespace una_CIS_ng.Models
     //[BsonElement("permit")]
     //public BsonDocument Permi { get; set; }
   }
+
+  public static class PenaltyHelper
+  {
+    public static Penalty CleanParties(this Penalty pnlt)
+    {
+      if (ReferenceEquals(pnlt.parties, null))
+      {
+        pnlt.parties = new Party[0];
+      }
+
+      // clean up of unneeded elements
+      var infOwner = pnlt.parties.FirstOrDefault(p => p.type == "infOwner");
+      var affected = pnlt.parties.Where(p => p.type == "affected").ToList();
+
+      if (affected != null && affected.Any())
+      {
+      }
+
+      var prtys = new List<Party> { infOwner };
+
+      foreach (var prty in prtys)
+      {
+        prty.CleanChildEntites();
+      }
+      pnlt.parties = prtys.ToArray();
+
+      return pnlt;
+    }
+  }
 }
+

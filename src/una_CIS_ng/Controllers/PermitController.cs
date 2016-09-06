@@ -334,36 +334,7 @@ namespace una_CIS_ng.Controllers
       }
 
       // clean up of unneeded elements
-      var permitHolder = permit.parties.FirstOrDefault(p => p.type == "holder");
-      var holderContact = permit.parties.FirstOrDefault(p => p.type == "holderContact");
-      var infOwner = permit.parties.FirstOrDefault(p => p.type == "infOwner");
-
-      if (permitHolder != null)
-      {
-        if (permitHolder.isInfrastructureOwner)
-        {
-          infOwner = null;
-        }
-        if (permitHolder.entityType == "Person" && permitHolder.addresses.Any(a => a.type == "physical" && a.country == "Nigeria"))
-        {
-          holderContact = null;
-        }
-      }
-
-      var prtys = new List<Party> {permitHolder};
-      if (holderContact != null)
-      {
-        prtys.Add(holderContact);
-      }
-      if (infOwner != null)
-      {
-        prtys.Add(infOwner);
-      }
-      foreach (var prty in prtys)
-      {
-        prty.CleanAddresses();
-      }
-      permit.parties = prtys.ToArray();
+      permit.CleanParties();
 
       return permit;
     }

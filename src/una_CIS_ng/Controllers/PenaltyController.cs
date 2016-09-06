@@ -352,9 +352,12 @@ namespace una_CIS_ng.Controllers
 
       foreach (var prty in prtys)
       {
-        prty.CleanAddresses();
+        prty.CleanChildEntites();
       }
       penalty.parties = prtys.ToArray();
+
+      // clean up of unneeded elements
+      penalty.CleanParties();
 
       return penalty;
     }

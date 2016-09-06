@@ -33,15 +33,29 @@ namespace una_CIS_ng.Repository
 
     public async Task<List<Address>> GetAllAddressAsync()
     {
+      var isCollectionEmpty = await IsEmpty();
+      if (isCollectionEmpty)
+      {
+        return new List<Address>();
+      }
+
+      var filter = new BsonDocument();
       var gdColl = Collection();
-      var docList = await gdColl.Find(_ => true).ToListAsync();
+      var docList = await gdColl.Find(filter).ToListAsync();
+
       return docList;
     }
 
     public async Task<Address> GetAsync(ObjectId id)
     {
-      var addressTask = await Collection()
-        .FindAsync(x => x.id.Equals(id));
+      var isCollectionEmpty = await IsEmpty();
+      if (isCollectionEmpty)
+      {
+        return null;
+      }
+
+      var filter = Builders<Address>.Filter.Eq("id", id);
+      var addressTask = await Collection().FindAsync(filter);
       var list = await addressTask.ToListAsync();
       var address = list.FirstOrDefault();
 
@@ -50,21 +64,24 @@ namespace una_CIS_ng.Repository
 
     public async Task<Address> FindAsync(Address address, bool fullMatchOnly = true)
     {
-      var addressTask = await Collection()
-        .FindAsync(x => x.Equals(address));
+      var isCollectionEmpty = await IsEmpty();
+      if (isCollectionEmpty)
+      {
+        return null;
+      }
+
+      var filter = new BsonDocument();
+      var addressTask = await Collection().FindAsync(filter);
       var list = await addressTask.ToListAsync();
-      var foundAddress = list.FirstOrDefault();
+
+      var foundAddress = list.FirstOrDefault(a => a.Equals(address));
 
       if (!ReferenceEquals(foundAddress, null) || fullMatchOnly)
       {
         return foundAddress;
       }
 
-      addressTask = await Collection()
-          .FindAsync(x => x.MinEquals(address));
-      list = await addressTask.ToListAsync();
-
-      foundAddress = list.FirstOrDefault();
+      foundAddress = list.FirstOrDefault(a => a.MinEquals(address));
 
       return foundAddress;
     }
@@ -72,15 +89,20 @@ namespace una_CIS_ng.Repository
     public async Task<ObjectId> AddOrUpdateAsync(Address address)
     {
       var upOpt = new UpdateOptions {IsUpsert = true};
-      var replaceResult = await Collection()
-        .ReplaceOneAsync(x => x.id.Equals(address.id), address, upOpt);
+      var filter = Builders<Address>.Filter.Eq("id", address.id);
+      var replaceResult = await Collection().ReplaceOneAsync(filter, address, upOpt);
 
-      if (replaceResult.IsAcknowledged)
+      if (!replaceResult.IsAcknowledged)
+      {
+        return ObjectId.Empty;
+      }
+
+      if (replaceResult.MatchedCount == 0)
       {
         return (ObjectId)replaceResult.UpsertedId;
       }
 
-      return ObjectId.Empty;
+      return address.id.Value;
     }
 
     public async Task<bool> DeleteAsync(ObjectId id)
@@ -91,6 +113,14 @@ namespace una_CIS_ng.Repository
       return deleteResult.IsAcknowledged;
     }
     #endregion
+
+    private async Task<bool> IsEmpty()
+    {
+      var filter = new BsonDocument();
+      var isEmptyTask = await Collection().FindAsync(filter);
+
+      return !isEmptyTask.Any();
+    }
 
     private IMongoCollection<Address> Collection()
     {

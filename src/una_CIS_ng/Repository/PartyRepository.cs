@@ -42,8 +42,15 @@ namespace una_CIS_ng.Repository
 
     public async Task<List<Party>> GetAllPartyAsync()
     {
+      var isCollectionEmpty = await IsEmpty();
+      if (isCollectionEmpty)
+      {
+        return new List<Party>();
+      }
+
+      var filter = new BsonDocument();
       var gdColl = Collection();
-      var docList = await gdColl.Find(_ => true).ToListAsync();
+      var docList = await gdColl.Find(filter).ToListAsync();
 
       foreach (var party in docList)
       {
@@ -55,8 +62,14 @@ namespace una_CIS_ng.Repository
 
     public async Task<Party> GetAsync(ObjectId id)
     {
-      var partyTask = await Collection()
-        .FindAsync(x => x.id.Equals(id));
+      var isCollectionEmpty = await IsEmpty();
+      if (isCollectionEmpty)
+      {
+        return null;
+      }
+
+      var filter = Builders<Party>.Filter.Eq("id", id);
+      var partyTask = await Collection().FindAsync(filter);
       var list = await partyTask.ToListAsync();
       var party = list.FirstOrDefault();
 
@@ -67,10 +80,17 @@ namespace una_CIS_ng.Repository
 
     public async Task<Party> FindAsync(Party party, bool fullMatchOnly)
     {
-      var partyTask = await Collection()
-        .FindAsync(x => x.Equals(party));
+      var isCollectionEmpty = await IsEmpty();
+      if (isCollectionEmpty)
+      {
+        return null;
+      }
+
+      var filter = new BsonDocument();
+      var partyTask = await Collection().FindAsync(filter);
       var list = await partyTask.ToListAsync();
-      var foundParty = list.FirstOrDefault();
+
+      var foundParty = list.FirstOrDefault(p => p.Equals(party));
 
       if (!ReferenceEquals(foundParty, null) || fullMatchOnly)
       {
@@ -79,11 +99,7 @@ namespace una_CIS_ng.Repository
         return foundParty;
       }
 
-      partyTask = await Collection()
-          .FindAsync(x => x.MinEquals(party));
-      list = await partyTask.ToListAsync();
-
-      foundParty = list.FirstOrDefault();
+      foundParty = list.FirstOrDefault(p => p.MinEquals(party));
 
       RefreshChildEntities(foundParty);
 
@@ -95,15 +111,21 @@ namespace una_CIS_ng.Repository
       RefreshChildEntities(party);
 
       var upOpt = new UpdateOptions {IsUpsert = true};
+      var filter = Builders<Party>.Filter.Eq("id", party.id);
       var replaceResult = await Collection()
-        .ReplaceOneAsync(x => x.id.Equals(party.id), party, upOpt);
+        .ReplaceOneAsync(filter, party, upOpt);
 
-      if (replaceResult.IsAcknowledged)
+      if (!replaceResult.IsAcknowledged)
+      {
+        return ObjectId.Empty;
+      }
+
+      if (replaceResult.MatchedCount == 0)
       {
         return (ObjectId)replaceResult.UpsertedId;
       }
 
-      return ObjectId.Empty;
+      return party.id.Value;
     }
 
     public async Task<bool> DeleteAsync(ObjectId id)
@@ -124,9 +146,16 @@ namespace una_CIS_ng.Repository
         return;
       }
 
-      var elecAddrList = new List<ElectronicAddress>();
+      if (ReferenceEquals(party.electronicAddresses, null))
+      {
+        _entityRefreshNeeded = true;
+      }
+
+      party.CleanChildEntites();
 
       // Try a cascading series of attempts to get a matching entity
+      var elecAddrList = new List<ElectronicAddress>();
+
       foreach (var electronicAddress in party.electronicAddresses)
       {
         var elecAddr = await RefreshElectronicAddress(electronicAddress);
@@ -135,16 +164,24 @@ namespace una_CIS_ng.Repository
 
       party.electronicAddresses = elecAddrList.ToArray();
 
-      var addrList = new List<Address>();
-
-      // Try a cascading series of attempts to get a matching entity
-      foreach (var address in party.addresses)
+      if (ReferenceEquals(party.addresses, null))
       {
-        var addr = await RefreshAddress(address);
-        addrList.Add(addr);
+        party.addresses = new Address[0];
+        _entityRefreshNeeded = true;
       }
+      else
+      {
+        var addrList = new List<Address>();
 
-      party.addresses = addrList.ToArray();
+        // Try a cascading series of attempts to get a matching entity
+        foreach (var address in party.addresses)
+        {
+          var addr = await RefreshAddress(address);
+          addrList.Add(addr);
+        }
+
+        party.addresses = addrList.ToArray();
+      }
 
       if (_entityRefreshNeeded)
       {
@@ -228,6 +265,14 @@ namespace una_CIS_ng.Repository
       address.id = await _addressRepository.AddOrUpdateAsync(address);
 
       return address;
+    }
+
+    private async Task<bool> IsEmpty()
+    {
+      var filter = new BsonDocument();
+      var isEmptyTask = await Collection().FindAsync(filter);
+
+      return !isEmptyTask.Any();
     }
 
     private IMongoCollection<Party> Collection()

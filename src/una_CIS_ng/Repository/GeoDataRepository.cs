@@ -34,19 +34,22 @@ namespace una_CIS_ng.Repository
 
     public async Task<List<BsonDocument>> GetAllGeoDataAsync()
     {
+      var filter = new BsonDocument();
       var gdColl = Collection();
-      var docList = await gdColl.Find(_ => true).ToListAsync();
+      var docList = await gdColl.Find(filter).ToListAsync();
 
       return docList;
     }
 
     public async Task<IAsyncCursor<BsonDocument>> GetBoundedGeoDataAsync<TCoordinates>(GeoJsonBoundingBox<TCoordinates> boundingBox) where TCoordinates : GeoJsonCoordinates
     {
-      return await Collection().FindAsync(x => true);
+      var filter = new BsonDocument();
+      return await Collection().FindAsync(filter);
     }
 
     public async Task<BsonDocument> GetAsync(ObjectId id)
     {
+      var filter = Builders<BsonDocument>.Filter.Eq("_id", id);
       return new BsonDocument();
       //var geoDataTask = await Collection()
       //  .FindAsync(x => x.Id.Equals(id));

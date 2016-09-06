@@ -171,8 +171,68 @@ namespace una_CIS_ng.Models
 
   public static class PartyHelper
   {
-    public static Party CleanAddresses(this Party prty)
+    /// <summary>
+    /// Merge party b into party a - does not merge the child entities or IsInfrastructureOwner
+    /// </summary>
+    public static Party Merge(this Party a, Party b)
     {
+      if (ReferenceEquals(null, b))
+      {
+        return a;
+      }
+
+      if (string.IsNullOrWhiteSpace(a.type))
+      {
+        a.type = b.type ?? string.Empty;
+      }
+      if (string.IsNullOrWhiteSpace(a.entityType))
+      {
+        a.entityType = b.entityType ?? string.Empty;
+      }
+      if (string.IsNullOrWhiteSpace(a.personalName))
+      {
+        a.personalName = b.personalName ?? string.Empty;
+      }
+      if (string.IsNullOrWhiteSpace(a.surname))
+      {
+        a.surname = b.surname ?? string.Empty;
+      }
+      if (string.IsNullOrWhiteSpace(a.email))
+      {
+        a.email = b.email ?? string.Empty;
+      }
+      if (string.IsNullOrWhiteSpace(a.mobile))
+      {
+        a.mobile = b.mobile ?? string.Empty;
+      }
+      if (string.IsNullOrWhiteSpace(a.officePhone))
+      {
+        a.officePhone = b.officePhone ?? string.Empty;
+      }
+
+      return a;
+    }
+
+    public static Party CleanChildEntites(this Party prty)
+    {
+      if (ReferenceEquals(prty, null))
+      {
+        return null;
+      }
+
+      prty.CleanElectronicAddresses();
+      prty.CleanAddresses();
+
+      return prty;
+    }
+
+    private static Party CleanAddresses(this Party prty)
+    {
+      if (ReferenceEquals(prty.addresses, null))
+      {
+        prty.addresses = new Address[0];
+      }
+
       var physicalAddress = prty.addresses.FirstOrDefault(a => a.type == "physical");
       var postalAddress = prty.addresses.FirstOrDefault(a => a.type == "postal");
 
@@ -197,9 +257,14 @@ namespace una_CIS_ng.Models
       return prty;
     }
 
-    public static Party CleanElectronicAddresses(this Party prty)
+    private static Party CleanElectronicAddresses(this Party prty)
     {
       var addrs = new List<ElectronicAddress>();
+
+      if (ReferenceEquals(prty.electronicAddresses, null))
+      {
+        prty.electronicAddresses = new ElectronicAddress[0];
+      }
 
       var newEmails = prty.electronicAddresses.CheckOldFormElectronicAddress(prty.email, "email");
       addrs.AddRange(newEmails);
@@ -218,7 +283,7 @@ namespace una_CIS_ng.Models
       return prty;
     }
 
-    public static List<ElectronicAddress> CheckOldFormElectronicAddress(this ElectronicAddress[] electronicAddresses,
+    private static List<ElectronicAddress> CheckOldFormElectronicAddress(this ElectronicAddress[] electronicAddresses,
       string oldAddr, string addrType)
     {
       var addrs = new List<ElectronicAddress>();

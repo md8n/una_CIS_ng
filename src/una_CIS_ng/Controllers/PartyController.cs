@@ -42,7 +42,7 @@ namespace una_CIS_ng.Controllers
 
       foreach (var party in prtyList)
       {
-        CleanPartyObj(party);
+        party.CleanChildEntites();
       }
 
       var allParties = (
@@ -73,7 +73,7 @@ namespace una_CIS_ng.Controllers
         return NotFound();
       }
 
-      CleanPartyObj(obj);
+      obj.CleanChildEntites();
 
       return Ok(obj);
     }
@@ -137,8 +137,7 @@ namespace una_CIS_ng.Controllers
       party.addresses = ExtractAddresses(jPrty).ToArray();
       party.electronicAddresses = ExtractElectronicAddresses(jPrty).ToArray();
 
-      party.CleanAddresses();
-      party.CleanElectronicAddresses();
+      party.CleanChildEntites();
 
       return party;
     }
@@ -155,12 +154,6 @@ namespace una_CIS_ng.Controllers
       var delRes = await _partyRepository.DeleteAsync(id);
 
       return Ok(delRes);
-    }
-
-    private static void CleanPartyObj(Party party)
-    {
-      party.CleanAddresses();
-      party.CleanElectronicAddresses();
     }
 
     private static List<Address> ExtractAddresses(JObject jPrtyVal)

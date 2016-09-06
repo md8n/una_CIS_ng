@@ -33,16 +33,29 @@ namespace una_CIS_ng.Repository
 
     public async Task<List<ElectronicAddress>> GetAllElectronicAddressAsync()
     {
+      var isCollectionEmpty = await IsEmpty();
+      if (isCollectionEmpty)
+      {
+        return new List<ElectronicAddress>();
+      }
+
+      var filter = new BsonDocument();
       var gdColl = Collection();
-      var docList = await gdColl.Find(_ => true).ToListAsync();
+      var docList = await gdColl.Find(filter).ToListAsync();
 
       return docList;
     }
 
     public async Task<ElectronicAddress> GetAsync(ObjectId id)
     {
-      var electronicAddressTask = await Collection()
-        .FindAsync(x => x.id.Equals(id));
+      var isCollectionEmpty = await IsEmpty();
+      if (isCollectionEmpty)
+      {
+        return null;
+      }
+
+      var filter = Builders<ElectronicAddress>.Filter.Eq("id", id);
+      var electronicAddressTask = await Collection().FindAsync(filter);
       var list = await electronicAddressTask.ToListAsync();
       var electronicAddress = list.FirstOrDefault();
 
@@ -51,21 +64,23 @@ namespace una_CIS_ng.Repository
 
     public async Task<ElectronicAddress> FindAsync(ElectronicAddress electronicAddress, bool fullMatchOnly = true)
     {
-      var electronicAddressTask = await Collection()
-        .FindAsync(x => x.Equals(electronicAddress));
+      var isCollectionEmpty = await IsEmpty();
+      if (isCollectionEmpty)
+      {
+        return null;
+      }
+
+      var filter = new BsonDocument();
+      var electronicAddressTask = await Collection().FindAsync(filter);
       var list = await electronicAddressTask.ToListAsync();
-      var foundElectronicAddress = list.FirstOrDefault();
+      var foundElectronicAddress = list.FirstOrDefault(e => e.Equals(electronicAddress));
 
       if (!ReferenceEquals(foundElectronicAddress, null) || fullMatchOnly)
       {
         return foundElectronicAddress;
       }
 
-      electronicAddressTask = await Collection()
-          .FindAsync(x => x.MinEquals(electronicAddress));
-      list = await electronicAddressTask.ToListAsync();
-
-      foundElectronicAddress = list.FirstOrDefault();
+      foundElectronicAddress = list.FirstOrDefault(e => e.MinEquals(electronicAddress));
 
       return foundElectronicAddress;
     }
@@ -73,15 +88,20 @@ namespace una_CIS_ng.Repository
     public async Task<ObjectId> AddOrUpdateAsync(ElectronicAddress electronicAddress)
     {
       var upOpt = new UpdateOptions { IsUpsert = true };
-      var replaceResult = await Collection()
-        .ReplaceOneAsync(x => x.id.Equals(electronicAddress.id), electronicAddress, upOpt);
+      var filter = Builders<ElectronicAddress>.Filter.Eq("id", electronicAddress.id);
+      var replaceResult = await Collection().ReplaceOneAsync(filter, electronicAddress, upOpt);
 
-      if (replaceResult.IsAcknowledged)
+      if (!replaceResult.IsAcknowledged)
+      {
+        return ObjectId.Empty;
+      }
+
+      if (replaceResult.MatchedCount == 0)
       {
         return (ObjectId)replaceResult.UpsertedId;
       }
 
-      return ObjectId.Empty;
+      return electronicAddress.id.Value;
     }
 
     public async Task<bool> DeleteAsync(ObjectId id)
@@ -92,6 +112,14 @@ namespace una_CIS_ng.Repository
       return deleteResult.IsAcknowledged;
     }
     #endregion
+
+    private async Task<bool> IsEmpty()
+    {
+      var filter = new BsonDocument();
+      var isEmptyTask = await Collection().FindAsync(filter);
+
+      return !isEmptyTask.Any();
+    }
 
     private IMongoCollection<ElectronicAddress> Collection()
     {
